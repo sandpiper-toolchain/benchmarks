@@ -1,0 +1,45 @@
+name: Score submissions
+
+on:
+  pull_request:
+    paths:
+      - "*/submissions/**"
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install geopandas rasterio scipy numpy shapely
+
+      - name: Find changed submission files
+        id: changed
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          changed=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
+            | grep 'submissions/.*/result\.geojson' || true)
+          echo "files=$changed" >> "$GITHUB_OUTPUT"
+
+      - name: Score each submission
+        if: steps.changed.outputs.files != ''
+        run: |
+          for f in ${{ steps.changed.outputs.files }}; do
+            echo "=== Scoring $f ==="
+            benchmark_dir=$(echo "$f" | cut -d/ -f1)
+            python "$benchmark_dir/scoring/score.py" "$f" \
+              --output "${f%result.geojson}score_output.json"
+          done
+
+      - name: Upload score artifacts
+        if: steps.changed.outputs.files != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: scores
+          path: "**/score_output.json"

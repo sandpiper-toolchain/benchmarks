@@ -1,0 +1,16 @@
+# Submission metadata — fill this in when contributing a new result.
+
+method_name: "Example Submission"
+method_description: >
+  A placeholder submission showing the expected file layout.
+  Replace result.geojson with your own output.
+
+tool_name: null          # e.g. "sandplover", "pyGEOS", "custom script"
+tool_version: null       # e.g. "0.5.0"
+tool_url: null           # link to tool repo or paper
+
+author_name: null
+author_orcid: null       # optional
+
+date: null               # ISO 8601, e.g. 2025-01-15
+notes: null
