@@ -17,7 +17,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install geopandas rasterio scipy numpy shapely
+        run: pip install geopandas rasterio scipy numpy shapely pyyaml
 
       - name: Find changed submission files
         id: changed
@@ -43,3 +43,43 @@ jobs:
         with:
           name: scores
           path: "**/score_output.json"
+
+  compile:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install geopandas rasterio scipy numpy shapely pyyaml
+
+      - name: Compile results tables
+        run: |
+          # Find every benchmark that has a compile_results.py script
+          benchmarks=$(find . -path '*/scoring/compile_results.py' \
+            | sed 's|/scoring/compile_results.py||' \
+            | sed 's|^./||')
+          for bdir in $benchmarks; do
+            echo "=== Compiling $bdir ==="
+            python "$bdir/scoring/compile_results.py" "$bdir/"
+          done
+
+      - name: Commit updated results tables
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Stage any results_table.json files that changed
+          git add '**/results_table.json'
+          if git diff --cached --quiet; then
+            echo "No results_table.json files changed — nothing to commit."
+          else
+            git commit -m "chore: update results_table.json [skip ci]"
+            git push
+          fi

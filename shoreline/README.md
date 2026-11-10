@@ -10,14 +10,18 @@ Russia), extract the delta shoreline as a GeoJSON polyline.
 | File | Description |
 |------|-------------|
 | `data/selenga_clipped.tif` | Single-band binary GeoTIFF. Pixel value `1` = land, `0` = water. |
-| `data/reference.geojson` | Hand-mapped reference shoreline (GeoJSON polyline, same CRS as mask). |
+| `data/references.yaml` / `data/ref_*.geojson` | Reference shoreline(s); see `references.yaml` for provenance. |
 
-The mask is derived from a Landsat scene. The reference shoreline was
-digitised manually against the same imagery.
+The mask is derived from a Landsat scene. Reference shorelines are
+hand-digitised against the same imagery by one or more contributors.
+They represent expert interpretations, not absolute ground truth — small
+differences between references reflect genuine uncertainty in shoreline
+placement.
 
 ## Scoring
 
-Three metrics are reported:
+Three metrics are reported, each computed against every reference in
+`data/references.yaml`:
 
 | Metric | Description |
 |--------|-------------|
@@ -40,14 +44,22 @@ python scoring/score.py submissions/my-method/result.geojson
    ├── result.geojson    # your extracted shoreline (polyline, any projected CRS)
    └── metadata.yaml     # tool name, version, author — copy from submissions/example/
    ```
-3. Open a pull request. CI will automatically score your submission and post
-   the results as a build artifact.
+3. Open a pull request. CI will automatically score your submission against
+   all reference digitizations in `data/references.yaml` and post the results
+   as a build artifact.
+
+> **Note:** Scores are reported per reference and, when multiple references
+> exist, as a mean ± std across them.  References are human-produced
+> expert interpretations — inter-reference spread reflects natural
+> digitization uncertainty, not scoring noise.
 
 ## Results
 
-> Reference shoreline not yet committed — results table will be populated
-> once `data/reference.geojson` is available.
+> Reference shorelines not yet committed — results table will be populated
+> once `data/ref_*.geojson` files are available.
 
-| Method | Mean dist. error (m) | Pixel F1 | Roughness diff (%) |
-|--------|----------------------|----------|--------------------|
-| *(none yet)* | — | — | — |
+| Method | MDE vs. refs (m) | Pixel F1 vs. refs | Roughness diff (%) | Date |
+|--------|------------------|-------------------|--------------------|------|
+| *(none yet)* | — | — | — | — |
+
+*±  values indicate mean ± std across multiple references.*

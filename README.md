@@ -2,10 +2,10 @@
 
 **Benchmarks for geomorphology analysis tools.**
 
-This repository hosts standardised benchmark problems for delta and coastal
-geomorphology. Each benchmark provides:
+This repository hosts standardised benchmark problems for geomorphology. 
+Each benchmark provides:
 
-- A real-world input dataset
+- A real-world or synthetic input dataset
 - A reference solution (ground truth)
 - A scoring script that can be run locally or in CI
 - A results table comparing different tools and methods
