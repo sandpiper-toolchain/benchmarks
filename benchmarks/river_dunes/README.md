@@ -15,6 +15,10 @@ properties:
 Submissions are a single CSV file — one row per detected bedform, across all
 370 profiles.
 
+**This benchmark is an adaptation of the exhaustive testing in a 2024 peer-reviewed study.**
+The study should be referenced and cited for complete information and proper attribution.
+> Scheiber, L., Zomer, J., Wang, L., Cisneros, J., Gutierrez, R. R., & Lefebvre, A. (2024). Automated bedform identification—A meta-analysis of current methods and the heterogeneity of their outputs. JGR: Earth Surface. https://doi.org/10.1029/2023JF007607  
+
 ## Why intercomparison, not scoring
 
 There is no authoritative ground-truth delineation for this dataset.  Expert

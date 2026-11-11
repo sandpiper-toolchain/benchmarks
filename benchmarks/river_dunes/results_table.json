@@ -11,27 +11,27 @@
     "preferred_citation": "Cisneros, J., Best, J., van Dijk, T. et al. Dunes in the world's big rivers are characterized  by low-angle lee-side slopes and a complex shape (2020). Nature Geoscience 13,  156--162. https://doi.org/10.1038/s41561-019-0511-7\n",
     "date": "2020",
     "notes": null,
-    "n_bedforms": 5000,
+    "n_bedforms": 1807,
     "height_m": {
-      "mean": 0.5065,
-      "median": 0.232,
-      "std": 0.6043,
-      "p25": 0.117,
-      "p75": 0.6438
+      "mean": 0.4997,
+      "median": 0.225,
+      "std": 0.5972,
+      "p25": 0.1175,
+      "p75": 0.6465
     },
     "length_m": {
-      "mean": 24.6258,
+      "mean": 24.29,
       "median": 9.0,
-      "std": 30.5728,
+      "std": 29.578,
       "p25": 5.0,
-      "p75": 42.0
+      "p75": 43.0
     },
     "depth_m": {
-      "mean": -8.5128,
-      "median": -8.467,
-      "std": 0.9713,
+      "mean": -8.5186,
+      "median": -8.484,
+      "std": 0.9687,
       "p25": -9.086,
-      "p75": -7.767
+      "p75": -7.7845
     }
   },
   {
@@ -46,27 +46,27 @@
     "preferred_citation": "Lefebvre, A., Herrling, G., Becker, M., Zorndt, A., Kr\u00c3\u00a4mer, K., Winter, C. (2021).  Morphology of estuarine bedforms, Weser Estuary, Germany. Earth Surface Processes  and Landforms https://doi.org/10.1002/esp.5243\n",
     "date": "2022",
     "notes": null,
-    "n_bedforms": 5000,
+    "n_bedforms": 377,
     "height_m": {
-      "mean": 1.4524,
-      "median": 1.351,
-      "std": 0.4736,
-      "p25": 1.133,
-      "p75": 1.748
+      "mean": 1.4378,
+      "median": 1.323,
+      "std": 0.4695,
+      "p25": 1.13,
+      "p75": 1.731
     },
     "length_m": {
-      "mean": 66.4582,
+      "mean": 66.1698,
       "median": 58.0,
-      "std": 29.711,
+      "std": 28.726,
       "p25": 54.0,
       "p75": 64.0
     },
     "depth_m": {
-      "mean": -8.3792,
-      "median": -8.45,
-      "std": 0.5085,
-      "p25": -8.705,
-      "p75": -8.057
+      "mean": -8.384,
+      "median": -8.458,
+      "std": 0.5152,
+      "p25": -8.711,
+      "p75": -8.035
     }
   },
   {
@@ -81,27 +81,27 @@
     "preferred_citation": "Scheiber, L., Lojek, O., G\u00c3\u00b6tschenberg, A., Visscher, J., and Schlurmann, T. (2021)  Robust methods for the decomposition and interpretation of compound dunes applied to  a complex hydromorphological setting. Earth Surf. Process. Landforms, 46: 478--489.  https://doi.org/10.1002/esp.5040. \n",
     "date": "2021",
     "notes": null,
-    "n_bedforms": 5000,
+    "n_bedforms": 12187,
     "height_m": {
-      "mean": 0.3542,
-      "median": 0.191,
-      "std": 0.4378,
-      "p25": 0.129,
-      "p75": 0.325
+      "mean": 0.3534,
+      "median": 0.19,
+      "std": 0.4406,
+      "p25": 0.126,
+      "p75": 0.318
     },
     "length_m": {
-      "mean": 9.5166,
+      "mean": 9.6261,
       "median": 5.0,
-      "std": 12.9303,
+      "std": 13.3301,
       "p25": 3.0,
       "p75": 9.0
     },
     "depth_m": {
-      "mean": -8.1616,
-      "median": -8.238,
-      "std": 0.7708,
-      "p25": -8.681,
-      "p75": -7.6167
+      "mean": -8.1671,
+      "median": -8.246,
+      "std": 0.7719,
+      "p25": -8.685,
+      "p75": -7.614
     }
   },
   {
@@ -116,27 +116,27 @@
     "preferred_citation": "Wang, L., Yu, Q., Zhang, Y., Flemming, B. W., Wang, Y., and Gao, S. (2020) An automated  procedure to calculate the morphological parameters of superimposed rhythmic bedforms.  Earth Surf. Process. Landforms, 45: 3496--3509. https://doi.org/10.1002/esp.4983\n",
     "date": "2020",
     "notes": null,
-    "n_bedforms": 5000,
+    "n_bedforms": 653,
     "height_m": {
-      "mean": 1.6093,
-      "median": 1.645,
-      "std": 0.4859,
-      "p25": 1.245,
+      "mean": 1.6017,
+      "median": 1.644,
+      "std": 0.4846,
+      "p25": 1.243,
       "p75": 1.93
     },
     "length_m": {
-      "mean": 58.5305,
+      "mean": 58.8325,
       "median": 58.0,
-      "std": 15.0546,
+      "std": 15.8092,
       "p25": 52.001,
-      "p75": 68.002
+      "p75": 68.004
     },
     "depth_m": {
-      "mean": -7.7167,
+      "mean": -7.7078,
       "median": -7.617,
-      "std": 0.5708,
-      "p25": -8.191,
-      "p75": -7.343
+      "std": 0.5908,
+      "p25": -8.201,
+      "p75": -7.305
     }
   },
   {
@@ -151,27 +151,27 @@
     "preferred_citation": "Zomer, J. Y., Naqshband, S., Vermeulen, B., & Hoitink, A. J. F. (2021). Rapidly  migrating secondary bedforms can persist on the lee of slowly migrating primary  river dunes. Journal of Geophysical Research: Earth Surface, 126, e2020JF005918. https://doi.org/10.1029/2020JF005918\n",
     "date": "2022",
     "notes": null,
-    "n_bedforms": 5000,
+    "n_bedforms": 649,
     "height_m": {
-      "mean": 1.7582,
-      "median": 1.815,
-      "std": 0.4865,
-      "p25": 1.392,
-      "p75": 2.055
+      "mean": 1.7555,
+      "median": 1.816,
+      "std": 0.4892,
+      "p25": 1.394,
+      "p75": 2.053
     },
     "length_m": {
-      "mean": 59.7024,
+      "mean": 59.5994,
       "median": 58.0,
-      "std": 13.7386,
+      "std": 13.6935,
       "p25": 53.0,
-      "p75": 72.0
+      "p75": 71.0
     },
     "depth_m": {
-      "mean": -8.4001,
-      "median": -8.497,
-      "std": 0.5696,
+      "mean": -8.3942,
+      "median": -8.483,
+      "std": 0.5717,
       "p25": -8.926,
-      "p75": -7.894
+      "p75": -7.893
     }
   }
 ]
