@@ -407,7 +407,7 @@ async function addUploadedGeoJSON(file) {
 }
 
 async function loadResults(path) {
-  const response = await fetch(path);
+  const response = await fetch(path, { cache: "no-cache" });
   if (!response.ok) throw new Error(`${path} returned ${response.status}`);
   const data = await response.json();
   if (!Array.isArray(data)) throw new Error(`${path} must contain a JSON array`);
