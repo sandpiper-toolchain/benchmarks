@@ -9,12 +9,12 @@ This is a living document — open an issue to discuss any of these.
 ## Shared scoring infrastructure
 
 Many benchmarks reduce to one of a small number of output types.
-The scoring modules in `shoreline/scoring/` already cover polylines.
+The scoring modules in `benchmarks/shoreline/scoring/` already cover polylines.
 A shared library at the repo root could eventually serve all benchmarks:
 
 | Output type | Scoring approach | Status |
 |---|---|---|
-| Polyline GeoJSON | Mean distance error, pixel F1, roughness agreement | ✅ built (`shoreline/`) |
+| Polyline GeoJSON | Mean distance error, pixel F1 | ✅ built (`benchmarks/shoreline/`) |
 | Polygon GeoJSON | IoU, area error, shape metrics | planned |
 | Point GeoJSON | Mean distance error, detection F1 | planned |
 | CSV of measurements | MAE / RMSE per column | planned |
@@ -27,6 +27,7 @@ A shared library at the repo root could eventually serve all benchmarks:
 | Benchmark | Task | Input | Output | Scoring | Notes / Inspiration |
 |---|---|---|---|---|---|
 | **Shoreline mapping** *(done)* | Extract ocean/delta boundary from a binary mask | Binary land/water GeoTIFF | Polyline GeoJSON | Mean distance error, pixel F1, roughness agreement | Selenga River Delta; sandplover |
+| **Binary mask generation** | Generate a binary mask of water from an RGB image set of experimental imagery. | RGB GeoTIFF / PNG | Binary mask (raster) |  |  |
 | **Delta channel network extraction** | Extract the full distributary network as a graph | Binary land/water GeoTIFF | GeoJSON `MultiLineString` + node/edge CSV | Pixel F1 on rasterized network, graph edit distance | RivGraph; Colville River Delta (well-documented, complex bifurcations, published reference) |
 | **Distributary inlet width** | Measure width of each distributary mouth at the shoreline | Binary mask + reference shoreline | CSV of per-inlet widths (m) | MAE vs. hand-measured widths | RivGraph, sandplover |
 | **Delta lobe classification** | Identify active vs. abandoned lobes | Multi-temporal binary masks | Polygon GeoJSON with lobe class attribute | Per-class IoU | Literature (e.g. Bhattacharya & Giosan) |
@@ -81,7 +82,7 @@ A shared library at the repo root could eventually serve all benchmarks:
 | Benchmark | Task | Input | Output | Scoring | Notes |
 |---|---|---|---|---|---|
 | **Bedform crestline extraction** | Trace dune crestlines from multibeam bathymetry | Bathymetry GeoTIFF (gridded) | `MultiLineString` GeoJSON | Mean distance error, crest density ratio | Scoring code nearly identical to aeolian crestline; USGS Mississippi or Rhine open datasets |
-| **Bedform geometry statistics** | Height, wavelength, and asymmetry per bedform | Bathymetry cross-section CSV or grid | CSV of per-bedform statistics | MAE per statistic vs. manual picks | — |
+| **Bedform geometry statistics** *(done)* | Height, length per bedform | Bathymetry cross-section CSV or grid | CSV of per-bedform statistics | MAE per statistic vs. manual picks | — |
 | **Bedform migration** | Measure dune displacement between repeat surveys (bedload proxy) | Two bathymetry GeoTIFFs (t1, t2) | CSV of matched-dune displacements (m) | MAE vs. reference tracking | — |
 
 ---

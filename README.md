@@ -14,7 +14,24 @@ Each benchmark provides:
 
 | Benchmark | Task | Status |
 |-----------|------|--------|
-| [Selenga River Delta — Shoreline Mapping](shoreline/) | Extract delta shoreline from a binary land/water mask | Active |
+| [Selenga River Delta — Shoreline Mapping](benchmarks/shoreline/) | Extract delta shoreline from a binary land/water mask | Active |
+| [Paraná River — Bedform Geometry](benchmarks/river_dunes/) | Detect bedforms in 1-D bed profiles and extract height, wavelength, and asymmetry | Active |
+
+## Website and interactive dashboard
+
+The repository includes a responsive website for browsing the benchmarks, comparing results, and previewing shoreline GeoJSON. Its files live at the repository root:
+
+- [index.html](index.html) — dashboard page structure and content
+- [assets/benchmark-dashboard.css](assets/benchmark-dashboard.css) — theme and responsive layout
+- [assets/benchmark-dashboard.js](assets/benchmark-dashboard.js) — charts, results loading, and GeoJSON map preview
+
+The dashboard reads each benchmark's `results_table.json`. To preview it locally, start a web server from the repository root:
+
+```bash
+python -m http.server 8000
+```
+
+Then visit `http://localhost:8000`. Shoreline geometry can be loaded from a local GeoJSON file.
 
 ## Philosophy
 

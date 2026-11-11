@@ -3,7 +3,7 @@
 ## Adding a submission to an existing benchmark
 
 1. **Fork** this repository and create a branch.
-2. Inside the benchmark folder (e.g. `shoreline/`), create
+2. Inside the benchmark folder (e.g. `benchmarks/shoreline/`), create
    a subfolder under `submissions/` named after your method:
    ```
    submissions/your-method-name/
