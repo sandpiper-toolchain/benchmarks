@@ -3,7 +3,7 @@ name: Score submissions
 on:
   pull_request:
     paths:
-      - "*/submissions/**"
+      - "benchmarks/*/submissions/**"
 
 jobs:
   score:
@@ -32,7 +32,7 @@ jobs:
         run: |
           for f in ${{ steps.changed.outputs.files }}; do
             echo "=== Scoring $f ==="
-            benchmark_dir=$(echo "$f" | cut -d/ -f1)
+            benchmark_dir=$(echo "$f" | cut -d/ -f1-2)
             python "$benchmark_dir/scoring/score.py" "$f" \
               --output "${f%result.geojson}score_output.json"
           done
@@ -63,7 +63,7 @@ jobs:
       - name: Compile results tables
         run: |
           # Find every benchmark that has a compile_results.py script
-          benchmarks=$(find . -path '*/scoring/compile_results.py' \
+          benchmarks=$(find benchmarks -path '*/scoring/compile_results.py' \
             | sed 's|/scoring/compile_results.py||' \
             | sed 's|^./||')
           for bdir in $benchmarks; do
