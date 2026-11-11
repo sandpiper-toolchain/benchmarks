@@ -145,6 +145,95 @@ submissions/your-method-name/
 
 ---
 
+## Upland geomorphology
+
+Upland (hillslope and fluvial incision) benchmarks are a natural fit because several mature,
+well-documented open-source toolboxes solve overlapping tasks from different angles.
+Direct comparison between tools — and validation against published analytical or field results —
+is valuable to the community but rarely done systematically.
+
+**Key tools to compare / validate:**
+
+- **LSDTopoTools** (Mudd et al., Edinburgh; https://lsdtopotools.github.io) — Python + C++; χ-map,
+  channel steepness *k*sn, knickpoint detection, terrace extraction, hillslope length/curvature.
+  Many tutorials use the Coweeta or Mandrone basins; published data are often on OSF or GitHub.
+- **TopoToolbox** (Schwanghart & Scherler, Potsdam; https://topotoolbox.wordpress.com) — MATLAB
+  (and a newer Python port `ttlem`); drainage network analysis, stream-power index, longitudinal
+  profiles, divide asymmetry.  Several tutorial datasets are distributed with the toolbox.
+- **Landlab** (Hobley et al., CSDMS; https://landlab.readthedocs.io) — Python component framework;
+  `FlowAccumulator`, `FastscapeEroder`, `LinearDiffuser`, `ChiFinder`, `ChannelProfiler`, etc.
+  Published notebooks (e.g. Hobley et al. 2017 *ESurf*; Tucker et al. CSDMS clinic notebooks)
+  are natural reproducibility targets.
+- **pyGEONET / TauDEM / WhiteboxTools** — additional open-source tools covering overlapping tasks
+  (flow routing, watershed delineation); useful as additional reference implementations.
+
+**Candidate benchmark datasets (all open-access):**
+
+| Dataset | Coverage | Resolution | Source |
+|---|---|---|---|
+| SRTM / NASADEM | Global | 30 m | NASA Earthdata |
+| CoNED | Conterminous US | 1 m lidar | USGS |
+| OpenTopography | Worldwide point clouds | 1–3 m | opentopography.org |
+| Coweeta Hydrologic Lab lidar | Southern Appalachians | 1 m | OpenTopography OT.102014 |
+| Mendocino Triple Junction | N. California | 1 m | OpenTopography; LSDTopoTools tutorials |
+| Pozo catchment (Santa Cruz Is.) | California | 1 m | OpenTopography; Clubb et al. 2017 datasets |
+| Hérault watershed | Southern France | EU-DEM 25 m | TopoToolbox tutorial dataset |
+
+### Topographic analysis primitives
+
+| Benchmark | Task | Input | Output | Scoring | Notes / Inspiration |
+|---|---|---|---|---|---|
+| **Flow routing** | Compute D8 drainage-direction grid and flow-accumulation raster | Hydrologically conditioned DEM GeoTIFF | Flow-direction GeoTIFF + flow-accumulation GeoTIFF | Pixel-wise agreement vs. reference (TauDEM or ESRI reference); fraction of cells with correct drainage direction | Foundational step for all downstream tasks; compare LSDTopoTools, TopoToolbox, WhiteboxTools, TauDEM |
+| **Watershed delineation** | Delineate the contributing catchment above a pour point | DEM GeoTIFF + pour-point GeoJSON | Watershed polygon GeoJSON | IoU vs. reference; area error (%) | Pour points from published gauging stations (e.g. USGS NWIS); compare multiple tools |
+| **Hillslope metrics** | Compute slope, aspect, curvature, and topographic wetness index (TWI) | DEM GeoTIFF | Multi-band raster GeoTIFF or separate rasters per metric | RMSE vs. reference rasters; histogram similarity | Use an analytical synthetic surface (e.g. Gaussian hill) as the ground-truth tier |
+| **Channel head detection** | Map the locations where channels begin | DEM GeoTIFF | Point GeoJSON (one point per channel head) | Precision / recall vs. field-mapped or hand-picked reference heads; mean distance error | Clubb et al. (2014) *JGR* algorithm vs. curvature threshold vs. area-slope threshold |
+
+### Drainage network extraction
+
+| Benchmark | Task | Input | Output | Scoring | Notes / Inspiration |
+|---|---|---|---|---|---|
+| **Stream network extraction** | Extract the channel network above a drainage-area threshold | DEM GeoTIFF + area threshold (m²) | `MultiLineString` GeoJSON | Pixel F1 on rasterised network vs. NHD or hand-mapped reference; Horton ratios agreement | Compare LSDTopoTools `ChannelNet`, TopoToolbox `STREAMobj`, WhiteboxTools `ExtractStreams`; use USGS NHD as reference in US catchments |
+| **Strahler order classification** | Assign Strahler order to each network link | Stream network GeoJSON + DEM | Same GeoJSON with `strahler_order` attribute | Per-order F1; Horton bifurcation ratio error | TopoToolbox has a mature `streamorder` function; LSDTopoTools channel classification |
+| **Basin-scale drainage density** | Compute total channel length per unit area | Stream network GeoJSON + watershed polygon | Scalar (km km⁻²) | MAE vs. reference value from published study | Simple derived metric but sensitive to channel head algorithm; good cross-tool diagnostic |
+
+### Longitudinal profiles, χ-analysis, and knickpoints
+
+χ (chi) analysis linearises the relationship between elevation and contributing area along a stream and is widely used to infer divide migration and tectonic forcing.
+LSDTopoTools (`chi_mapping_tool`) and TopoToolbox (`chiplot`) both implement it; direct output comparison on the same DEM is an obvious benchmark.
+
+| Benchmark | Task | Input | Output | Scoring | Notes / Inspiration |
+|---|---|---|---|---|---|
+| **Longitudinal profile extraction** | Extract elevation vs. distance profiles for all channels in a network | DEM GeoTIFF + stream network GeoJSON | CSV of (stream_id, distance_m, elevation_m) per node | RMSE in elevation at matched nodes; smoothed-profile RMSE | Compare raw vs. smoothed profiles; LSDTopoTools, TopoToolbox, Landlab `ChannelProfiler` |
+| **Channel steepness (*k*sn) mapping** | Compute normalised channel steepness index along each reach | DEM GeoTIFF (+ optional uplift raster) | Polyline GeoJSON with `ksn` attribute per segment | MAE vs. reference *k*sn from published study; correlation with mapped rock-uplift rate | LSDTopoTools `chi_mapping_tool`; Mudd et al. (2014) *JGR*; Hack (1973) for a simple reference slope comparison |
+| **χ-map computation** | Compute the χ value at every channel pixel | DEM GeoTIFF + catchment polygon | Raster GeoTIFF of χ values | RMSE vs. reference χ raster; correct integral-of-area scaling | LSDTopoTools vs. TopoToolbox `chiplot`; analytical verification on a Hack-profile synthetic channel |
+| **Knickpoint detection** | Locate knickpoints (slope breaks) in longitudinal profiles | Longitudinal-profile CSV or DEM GeoTIFF | Point GeoJSON (one point per knickpoint) + optional attribute (type: slope-break vs. vertical-step) | Precision / recall vs. field-mapped or visually identified reference knickpoints; position error (m along stream) | Mudd et al. (2014); Neely et al. (2017); compare LSDTopoTools automated detection vs. TopoToolbox manual method |
+| **Divide asymmetry / migration direction** | Classify drainage divides as migrating toward or away from each adjacent basin | DEM GeoTIFF | Polyline GeoJSON (divide segments) with `asymmetry_direction` attribute | Accuracy vs. published divide-migration map; mean Gilbert metric error | Willett et al. (2014) *Science*; LSDTopoTools `divide_analysis` module; relevant for tectonically active landscapes |
+
+### Hillslope analysis and mass-wasting
+
+| Benchmark | Task | Input | Output | Scoring | Notes / Inspiration |
+|---|---|---|---|---|---|
+| **Hillslope length and gradient** | Extract mean hillslope length and gradient across the landscape | DEM GeoTIFF | CSV of hillslope statistics (mean, std per sub-basin) | MAE vs. published values from same landscape; correlation with erosion-rate proxies | Grieve et al. (2016) *ESurf*; LSDTopoTools `hillslope_analysis` |
+| **Hilltop curvature extraction** | Map curvature at hilltops as a proxy for erosion rate | DEM GeoTIFF | Raster GeoTIFF of hilltop curvature (m⁻¹) | RMSE vs. reference raster; correlation with *¹⁰Be* cosmogenic erosion rates where available | Hurst et al. (2012) *Science*; LSDTopoTools `hilltop_flow_routing` |
+
+### Landlab component reproducibility
+
+The goal here is to reproduce published model results using Landlab's standard components, confirming
+that specific component implementations remain stable across versions and match published figures.
+Each benchmark is essentially a regression test with a geomorphic interpretation.
+
+**Reference:** Hobley et al. (2017) *Earth Surf. Dynam.* 5, 379–397 — the Landlab v1 paper;
+all supplementary notebooks are on GitHub (https://github.com/landlab/landlab/tree/master/notebooks).
+
+| Benchmark | Task | Input | Output | Scoring | Notes / Inspiration |
+|---|---|---|---|---|---|
+| **Stream-power incision model** | Reproduce steady-state channel profile under uniform uplift using `FastscapeEroder` | Uplift rate, *K*, *m*, *n* parameters; initial flat-surface DEM | Steady-state elevation raster + longitudinal profiles CSV | RMSE vs. analytical steady-state Hack profile; *k*sn agreement | Hobley et al. (2017) Fig. 3; Flint (1974) analytical solution provides exact reference |
+| **Linear hillslope diffusion** | Reproduce parabolic hillslope form under `LinearDiffuser` | Diffusivity *D*, uplift rate, boundary conditions; initial flat surface | Elevation raster at steady state | RMSE vs. analytical parabola; hillslope-length / curvature agreement | Classic Culling (1960) result; Landlab tutorial notebook |
+| **Detachment-limited vs. transport-limited** | Compare steady-state topography between `FastscapeEroder` (detachment-limited) and `ErosionDeposition` (transport-limited) | Same uplift / erodibility parameters | Elevation raster + drainage density CSV | Agreement with published parameter-space diagrams (Whipple & Tucker 2002); drainage-density difference | Whipple & Tucker (2002) *JGR*; illustrates tool-choice sensitivity for submitters |
+| **Fluvial terrace formation** | Reproduce terrace record under oscillating base-level forcing using `FastscapeEroder` + `DepressionFinderAndRouter` | Uplift / base-level history CSV; DEM | Terrace-tread polygon GeoJSON + height-above-channel CSV | IoU and elevation MAE vs. reference terrace map from published Landlab simulation | Useful paired benchmark with LSDTopoTools terrace extraction on the same simulated landscape |
+
+---
+
 ## Cross-cutting ideas
 
 - **Multi-epoch change detection** — several domains (coasts, dunes, rivers) share the same two-epoch-mask structure; a single shared scoring module could handle all of them.
