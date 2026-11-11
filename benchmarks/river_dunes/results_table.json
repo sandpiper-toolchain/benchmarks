@@ -1,0 +1,177 @@
+[
+  {
+    "method_name": "BAMBI",
+    "method_description": "Spatial/geo-statistical method for river dune crestline detection using scale separation and dune shape analysis. Detects local extremes via resolution scale slope changes (local aspect changes). Reference: bib-0015.\n",
+    "method_type": "spatial/geo-statistical",
+    "tool_name": "Bedform Analysis Method for Bathymetric Information (BAMBI)",
+    "tool_version": "1.0.1.0",
+    "tool_url": "https://github.com/juliamorphology/bambi_0.1.0",
+    "author_name": "Cisneros et al.",
+    "author_orcid": null,
+    "preferred_citation": "Cisneros, J., Best, J., van Dijk, T. et al. Dunes in the world's big rivers are characterized  by low-angle lee-side slopes and a complex shape (2020). Nature Geoscience 13,  156--162. https://doi.org/10.1038/s41561-019-0511-7\n",
+    "date": "2020",
+    "notes": null,
+    "n_bedforms": 5000,
+    "height_m": {
+      "mean": 0.5065,
+      "median": 0.232,
+      "std": 0.6043,
+      "p25": 0.117,
+      "p75": 0.6438
+    },
+    "length_m": {
+      "mean": 24.6258,
+      "median": 9.0,
+      "std": 30.5728,
+      "p25": 5.0,
+      "p75": 42.0
+    },
+    "depth_m": {
+      "mean": -8.5128,
+      "median": -8.467,
+      "std": 0.9713,
+      "p25": -9.086,
+      "p75": -7.767
+    }
+  },
+  {
+    "method_name": "Weser Bedform Analysis",
+    "method_description": "Combined method for river dune crestline detection using dune shape analysis. Detects local extremes via minimum curvature and minimum elevation criteria.\n",
+    "method_type": "combined",
+    "tool_name": "Weser Bedform Analysis",
+    "tool_version": null,
+    "tool_url": "https://github.com/DrAliceLefebvre/Weser_Bedform_Analysis_Codes",
+    "author_name": "Lefebvre et al.",
+    "author_orcid": null,
+    "preferred_citation": "Lefebvre, A., Herrling, G., Becker, M., Zorndt, A., Kr\u00c3\u00a4mer, K., Winter, C. (2021).  Morphology of estuarine bedforms, Weser Estuary, Germany. Earth Surface Processes  and Landforms https://doi.org/10.1002/esp.5243\n",
+    "date": "2022",
+    "notes": null,
+    "n_bedforms": 5000,
+    "height_m": {
+      "mean": 1.4524,
+      "median": 1.351,
+      "std": 0.4736,
+      "p25": 1.133,
+      "p75": 1.748
+    },
+    "length_m": {
+      "mean": 66.4582,
+      "median": 58.0,
+      "std": 29.711,
+      "p25": 54.0,
+      "p75": 64.0
+    },
+    "depth_m": {
+      "mean": -8.3792,
+      "median": -8.45,
+      "std": 0.5085,
+      "p25": -8.705,
+      "p75": -8.057
+    }
+  },
+  {
+    "method_name": "Scheiber, Lojek, et al. (2021)",
+    "method_description": "Spatial/geo-statistical method for river dune crestline detection applied to compound dunes. Detects local extremes using the findpeaks.m algorithm.\n",
+    "method_type": "spatial/geo-statistical",
+    "tool_name": "findpeaks.m",
+    "tool_version": null,
+    "tool_url": null,
+    "author_name": "Scheiber, Lojek, et al.",
+    "author_orcid": null,
+    "preferred_citation": "Scheiber, L., Lojek, O., G\u00c3\u00b6tschenberg, A., Visscher, J., and Schlurmann, T. (2021)  Robust methods for the decomposition and interpretation of compound dunes applied to  a complex hydromorphological setting. Earth Surf. Process. Landforms, 46: 478--489.  https://doi.org/10.1002/esp.5040. \n",
+    "date": "2021",
+    "notes": null,
+    "n_bedforms": 5000,
+    "height_m": {
+      "mean": 0.3542,
+      "median": 0.191,
+      "std": 0.4378,
+      "p25": 0.129,
+      "p75": 0.325
+    },
+    "length_m": {
+      "mean": 9.5166,
+      "median": 5.0,
+      "std": 12.9303,
+      "p25": 3.0,
+      "p75": 9.0
+    },
+    "depth_m": {
+      "mean": -8.1616,
+      "median": -8.238,
+      "std": 0.7708,
+      "p25": -8.681,
+      "p75": -7.6167
+    }
+  },
+  {
+    "method_name": "Dune Parameters Analysis (DPA)",
+    "method_description": "Combined method for river dune crestline detection using scale separation for compound dunes. Identifies maxima between zero-crossings via spectral/wavelet analysis and filtering.\n",
+    "method_type": "combined",
+    "tool_name": "Dune Parameters Analysis (DPA)",
+    "tool_version": null,
+    "tool_url": "https://github.com/twilight5284/Bedform-analysis",
+    "author_name": "Wang et al.",
+    "author_orcid": null,
+    "preferred_citation": "Wang, L., Yu, Q., Zhang, Y., Flemming, B. W., Wang, Y., and Gao, S. (2020) An automated  procedure to calculate the morphological parameters of superimposed rhythmic bedforms.  Earth Surf. Process. Landforms, 45: 3496--3509. https://doi.org/10.1002/esp.4983\n",
+    "date": "2020",
+    "notes": null,
+    "n_bedforms": 5000,
+    "height_m": {
+      "mean": 1.6093,
+      "median": 1.645,
+      "std": 0.4859,
+      "p25": 1.245,
+      "p75": 1.93
+    },
+    "length_m": {
+      "mean": 58.5305,
+      "median": 58.0,
+      "std": 15.0546,
+      "p25": 52.001,
+      "p75": 68.002
+    },
+    "depth_m": {
+      "mean": -7.7167,
+      "median": -7.617,
+      "std": 0.5708,
+      "p25": -8.191,
+      "p75": -7.343
+    }
+  },
+  {
+    "method_name": "Bedform Separation - LOESS",
+    "method_description": "Combined method for river dune crestline detection using scale separation. Identifies maxima between zero-crossings after LOESS filtering. Reference: bib-0070.\n",
+    "method_type": "combined",
+    "tool_name": "Bedform Separation - LOESS",
+    "tool_version": 1.0,
+    "tool_url": "https://zenodo.org/records/4486605",
+    "author_name": "Zomer et al.",
+    "author_orcid": null,
+    "preferred_citation": "Zomer, J. Y., Naqshband, S., Vermeulen, B., & Hoitink, A. J. F. (2021). Rapidly  migrating secondary bedforms can persist on the lee of slowly migrating primary  river dunes. Journal of Geophysical Research: Earth Surface, 126, e2020JF005918. https://doi.org/10.1029/2020JF005918\n",
+    "date": "2022",
+    "notes": null,
+    "n_bedforms": 5000,
+    "height_m": {
+      "mean": 1.7582,
+      "median": 1.815,
+      "std": 0.4865,
+      "p25": 1.392,
+      "p75": 2.055
+    },
+    "length_m": {
+      "mean": 59.7024,
+      "median": 58.0,
+      "std": 13.7386,
+      "p25": 53.0,
+      "p75": 72.0
+    },
+    "depth_m": {
+      "mean": -8.4001,
+      "median": -8.497,
+      "std": 0.5696,
+      "p25": -8.926,
+      "p75": -7.894
+    }
+  }
+]

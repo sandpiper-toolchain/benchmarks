@@ -1,0 +1,27 @@
+# Submission metadata
+
+method_name: "Scheiber, Lojek, et al. (2021)"
+method_description: >
+  Spatial/geo-statistical method for river dune crestline detection applied to compound
+  dunes. Detects local extremes using the findpeaks.m algorithm.
+
+method_type: "spatial/geo-statistical"
+method_features:
+  - compound dunes
+  - local extremes (findpeaks.m)
+
+tool_name: "findpeaks.m"
+tool_version: null
+tool_url: null
+
+author_name: "Scheiber, Lojek, et al."
+author_orcid: null
+
+preferred_citation: >
+  Scheiber, L., Lojek, O., Götschenberg, A., Visscher, J., and Schlurmann, T. (2021) 
+  Robust methods for the decomposition and interpretation of compound dunes applied to 
+  a complex hydromorphological setting. Earth Surf. Process. Landforms, 46: 478--489. 
+  https://doi.org/10.1002/esp.5040. 
+
+date: "2021"
+notes: null
