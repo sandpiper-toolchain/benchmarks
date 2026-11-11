@@ -1,0 +1,21 @@
+method_name: "sandplover morphological closing"
+method_description: >
+  Morphological Planform Method (MPM) implemented in sandplover. 
+  Original method after Geleynse, N., et al. Characterization of 
+  river delta shorelines. Geophysical research letters 39.17 (2012). 
+
+tool_name: "sandplover morphological_closing_method"
+tool_version: 0.5.1
+tool_url: https://sandpiper-toolchain.org/sandplover/
+
+author_name: "sandpiper toolchain contributors"
+
+date: 2026-11-10
+notes: >
+  Tool run with default parameters. Shoreline extracted along 0.75 contour. 
+  Contour converted into line by sandplover `compute_shoreline_length` tool.
+  See software documentation for additional details.
+
+runtime_seconds: 1.56
+runtime_machine: "Dell, Intel i5-1345U, 15 GB RAM"
+runtime_notes: "single-thread, CPU"      # optional notes about how this runs, e.g., on GPU, CPU

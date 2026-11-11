@@ -9,7 +9,7 @@ Russia), extract the delta shoreline as a GeoJSON polyline.
 
 | File | Description |
 |------|-------------|
-| `data/selenga_clipped.tif` | Single-band binary GeoTIFF. Pixel value `1` = land, `0` = water. |
+| `data/selenga_clipped.tif` | Single-band binary GeoTIFF. Pixel value `1` = water, `0` = land. |
 | `data/references.yaml` / `data/ref_*.geojson` | Reference shoreline(s); see `references.yaml` for provenance. |
 
 The mask is derived from a Landsat scene. Reference shorelines are
@@ -32,8 +32,15 @@ Three metrics are reported, each computed against every reference in
 Run the scorer locally:
 
 ```bash
+# Score one submission:
 python scoring/score.py submissions/my-method/result.geojson
+
+# Score all GeoJSON files under submissions/ (excluding the example template):
+python scoring/score.py
 ```
+
+In all-submissions mode, a `score_output.json` is written next to each GeoJSON.
+The `--output` option is only available when scoring a single submission.
 
 ## How to submit
 

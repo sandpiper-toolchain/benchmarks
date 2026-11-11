@@ -14,3 +14,7 @@ author_orcid: null       # optional
 
 date: null               # ISO 8601, e.g. 2025-01-15
 notes: null
+
+runtime_seconds: null    # compute time for shoreline calculation (exclude pre- and post-processing)
+runtime_machine: null    # for example, "<manufacturer> <CPU name>, <num> GB RAM, <GPU info, if relevant>"
+runtime_notes: null      # optional notes about how this runs, e.g., on GPU, CPU

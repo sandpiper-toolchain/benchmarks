@@ -1,0 +1,22 @@
+method_name: "sandplover Opening Angle method"
+method_description: >
+  Opening Angle Method (OAM) implemented in sandplover. 
+  Original method after Shaw, John B., et al. An 
+  image-based method for shoreline mapping on complex 
+  coasts. Geophysical Research Letters 35.12 (2008).
+
+tool_name: "sandplover shaw_opening_angle_method"
+tool_version: 0.5.1
+tool_url: https://sandpiper-toolchain.org/sandplover/
+
+author_name: "sandpiper toolchain contributors"
+
+date: 2026-11-10
+notes: >
+  Tool run with default parameters. Shoreline extracted along 45 degree contour. 
+  Contour converted into line by sandplover `compute_shoreline_length` tool.
+  See software documentation for additional details.
+
+runtime_seconds: null
+runtime_machine: "Dell, Intel i5-1345U, 15 GB RAM"
+runtime_notes: "single-thread, CPU"      # optional notes about how this runs, e.g., on GPU, CPU
