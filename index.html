@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ee">
+  <meta name="description" content="An open, community-facing collection of geomorphology benchmarks and method intercomparisons.">
+  <title>Sandpiper Benchmarks — A field guide to geomorphology tools</title>
+  <link rel="stylesheet" href="assets/benchmark-dashboard.css?v=2">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#" aria-label="Sandpiper Benchmarks home">
+        <span class="brand-mark" aria-hidden="true">s</span>
+        <span>sandpiper <span style="color: var(--muted); font-weight: 500">/ benchmarks</span></span>
+      </a>
+      <nav class="topnav" aria-label="Main navigation">
+        <a href="#benchmarks">Benchmarks</a>
+        <a href="#results">Results</a>
+        <a href="CONTRIBUTING.md">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <p class="eyebrow">An open field guide · geomorphology</p>
+      <h1>Many methods.<br><em>Shared ground.</em></h1>
+      <p class="hero-copy">A community-built collection of problems for exploring how geomorphology tools perform, compare, and see the landscape differently.</p>
+      <div class="hero-links">
+        <a class="button" href="#benchmarks">Explore the benchmarks <span aria-hidden="true">&nbsp;↓</span></a>
+        <a class="button secondary" href="CONTRIBUTING.md">Add a method</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <section class="overview" aria-label="Project overview">
+      <div class="stat-card">
+        <span class="stat-label">Open benchmarks</span>
+        <strong class="stat-value" id="benchmark-count">2</strong>
+        <span class="stat-note">Benchmark geomorphology problems</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Methods in view</span>
+        <strong class="stat-value" id="method-count">—</strong>
+        <span class="stat-note">Across current benchmark results</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">A shared resource</span>
+        <strong class="stat-value">Not a competition</strong>
+        <span class="stat-note">Compare and validate approaches</span>
+      </div>
+    </section>
+
+    <section class="benchmark-section" id="benchmarks">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">The collection</p>
+          <h2>Benchmarks in the field</h2>
+        </div>
+        <p>Each benchmark pairs a common geomorphic problem with openly described data and a place for methods to be understood side by side.</p>
+      </div>
+      <nav class="benchmark-index" aria-label="Benchmark index">
+        <a class="index-link" href="#river-dunes">Paraná River · Bedform geometry</a>
+        <a class="index-link" href="#shoreline">Selenga Delta · Shoreline mapping</a>
+      </nav>
+
+    <section class="benchmark-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">How it works</p>
+          <h2>A place to compare, openly</h2>
+        </div>
+      </div>
+      <div class="principles">
+        <article class="principle">
+          <h3>Bring your own tools</h3>
+          <p>Contribute an output file and a little context. Any language, workflow, or software is welcome; the benchmarks are designed around results, not implementations.</p>
+        </article>
+        <article class="principle">
+          <h3>Keep the landscape in view</h3>
+          <p>Data with clear provenance ground each problem. The goal is to learn what different methods reveal—not to declare one universal winner.</p>
+        </article>
+        <article class="principle">
+          <h3>Different comparisons for different problems</h3>
+          <p>Some problems lack a known answer, so methods are evaluated purely against each other. Others have a ground truth, allowing methods to be benchmarked for accuracy. Depending on the test's purpose, benchmarks rely on real-world, laboratory, model, or synthetic "toy" data.</p>
+        </article>
+
+      </div>
+    </section>
+
+      <section class="benchmark-section" id="river-dunes" aria-labelledby="river-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">01 · River morphology</p>
+            <h2 id="river-title">Paraná River bedforms</h2>
+          </div>
+          <p>How do automated methods identify and measure dunes across 370 bathymetric profiles?</p>
+        </div>
+        <div class="results-layout" id="results">
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Bedform geometry</h3>
+                <p class="panel-subtitle">Quartile range and median across detected bedforms</p>
+              </div>
+              <div class="segmented" role="group" aria-label="Choose a bedform measurement">
+                <button type="button" data-river-metric="height_m" aria-pressed="true">Height</button>
+                <button type="button" data-river-metric="length_m" aria-pressed="false">Length</button>
+                <button type="button" data-river-metric="depth_m" aria-pressed="false">Depth</button>
+              </div>
+            </div>
+            <div class="chart-wrap" id="river-chart" aria-live="polite"></div>
+            <div class="chart-legend" aria-label="Chart legend">
+              <span class="legend-item"><span class="legend-range" aria-hidden="true"></span>25th–75th percentile</span>
+              <span class="legend-item"><span class="legend-median" aria-hidden="true"></span>Median</span>
+            </div>
+            <p class="chart-footnote">All detected bedforms pooled per method. Distribution summaries are descriptive, not an accuracy ranking.</p>
+          </article>
+          <aside class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Methods represented</h3>
+                <p class="panel-subtitle">Detected bedform counts in the compiled results</p>
+              </div>
+            </div>
+            <div class="method-list" id="river-methods" aria-live="polite">
+              <div class="chart-empty">Loading methods…</div>
+            </div>
+            <p style="margin: 15px 0 0"><a class="link-arrow" href="benchmarks/river_dunes/">Explore this benchmark →</a></p>
+          </aside>
+        </div>
+        <p class="benchmark-note"><strong>Intercomparison, not ranking.</strong> There is no single authoritative bedform delineation for this dataset. Comparing distributions helps reveal how method choices affect the measured geometry.</p>
+      </section>
+
+      <section class="benchmark-section" id="shoreline" aria-labelledby="shoreline-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">02 · Delta landscapes</p>
+            <h2 id="shoreline-title">Selenga Delta shoreline</h2>
+          </div>
+          <p>Trace the land-water boundary from a binary mask, then compare each shoreline with expert interpretations.</p>
+        </div>
+        <div class="shoreline-grid">
+          <article class="panel map-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Shoreline map</h3>
+                <p class="panel-subtitle">Land–water mask and submitted shoreline traces · Selenga River Delta, Lake Baikal</p>
+              </div>
+            </div>
+            <div class="map-stage" id="map-stage" role="img" aria-label="Binary land and water raster with shoreline traces">
+              <canvas id="map-canvas" aria-label="GeoTIFF raster and submitted shoreline traces"></canvas>
+              <div class="map-placeholder" id="map-placeholder">
+                <strong>Loading shoreline map…</strong>
+                <span>The benchmark raster and submitted shoreline traces will appear here.</span>
+              </div>
+            </div>
+            <div class="map-legend" id="map-legend" aria-label="Map legend"></div>
+            <div class="map-controls">
+              <p class="map-caption" id="map-caption">Loading benchmark raster and shoreline traces…</p>
+              <label class="upload-button">Open GeoJSON
+                <input id="geojson-input" type="file" accept=".geojson,.json,application/geo+json,application/json">
+              </label>
+            </div>
+            <p class="map-error" id="map-error" role="status"></p>
+          </article>
+          <article class="panel shoreline-results">
+            <div class="panel-header">
+              <div>
+                <h3>Shoreline scores</h3>
+                <p class="panel-subtitle">Reference scores and reported runtime</p>
+              </div>
+              <div class="segmented" role="group" aria-label="Choose a shoreline score">
+                <button type="button" data-shore-metric="mean_distance_error_m" aria-pressed="true">Distance</button>
+                <button type="button" data-shore-metric="pixel_f1_f1" aria-pressed="false">Pixel F1</button>
+                <button type="button" data-shore-metric="roughness_relative_difference_pct" aria-pressed="false">Roughness</button>
+                <button type="button" data-shore-metric="runtime_seconds" aria-pressed="false">Runtime</button>
+              </div>
+            </div>
+            <div class="chart-wrap" id="shoreline-chart" aria-live="polite">
+              <div class="chart-empty">Waiting for scored shoreline submissions. Results will appear here when available.</div>
+            </div>
+            <p class="chart-footnote">Scores show the mean across references when multiple references exist. Runtime is taken from submission metadata; methods without a reported runtime are omitted.</p>
+            <p style="margin: auto 0 0"><a class="link-arrow" href="benchmarks/shoreline/">Explore this benchmark →</a></p>
+          </article>
+        </div>
+        <p class="benchmark-note"><strong>References are interpretations, not absolute ground truth.</strong> Differences among expert shorelines are part of the uncertainty that this benchmark makes visible.</p>
+      </section>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p>Sandpiper Benchmarks · Open tools for geomorphology research</p>
+      <p class="data-status"><span class="status-dot" id="data-status-dot"></span><span id="data-status">Loading benchmark results…</span></p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/geotiff@2.1.3/dist-browser/geotiff.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/proj4@2.11.0/dist/proj4.js" defer></script>
+  <script src="assets/benchmark-dashboard.js?v=3" defer></script>
+</body>
+</html>
