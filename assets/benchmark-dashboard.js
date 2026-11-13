@@ -3,8 +3,10 @@
 const state = {
   river: [],
   shoreline: [],
+  compensation: [],
   riverMetric: "height_m",
   shorelineMetric: "mean_distance_error_m",
+  compensationDataset: "compensational_stacking",
   raster: null,
   shorelineLayers: []
 };
@@ -228,6 +230,156 @@ function renderShorelineChart() {
   </svg>`;
 }
 
+function renderCompensationChart() {
+  const target = document.getElementById("compensation-chart");
+  const tcTarget = document.getElementById("compensation-tc");
+  const footnoteTarget = document.getElementById("comp-footnote");
+  const dataset = state.compensationDataset;
+
+  const KAPPA_REFS = {
+    compensational_stacking: 1.0,
+    random_stacking: 0.50
+  };
+  const DATASET_LABELS = {
+    compensational_stacking: "compensational stacking",
+    random_stacking: "random stacking",
+    compensational_stacking_meanX: "compensational stacking (T_A = 15)",
+    compensational_stacking_mean2X: "compensational stacking (T_A = 30)"
+  };
+
+  const isTheoretical = dataset in KAPPA_REFS;
+  const kappaRef = KAPPA_REFS[dataset];
+  const datasetLabel = DATASET_LABELS[dataset] || dataset;
+
+  const records = state.compensation.filter(r => {
+    const d = r[dataset];
+    return d && Number.isFinite(Number(d.kappa_submitted));
+  });
+
+  if (!records.length) {
+    target.innerHTML = '<div class="chart-empty">No compensation results available yet. Results will appear here once a submission is scored.</div>';
+    if (tcTarget) tcTarget.innerHTML = "";
+    if (footnoteTarget) footnoteTarget.textContent = "";
+    return;
+  }
+
+  const width = 540;
+  const rowHeight = 54;
+  const top = 36;
+  const left = 164;
+  const right = 100;
+  const bottom = 36;
+  const height = top + records.length * rowHeight + bottom;
+  const plotWidth = width - left - right;
+
+  const xScale = val => left + (Number(val) / 1.0) * plotWidth;
+
+  const refEl = isTheoretical ? `
+    <line x1="${xScale(kappaRef)}" y1="${top - 20}" x2="${xScale(kappaRef)}" y2="${height - bottom}" class="kref-line"/>
+    <text x="${xScale(kappaRef)}" y="${top - 23}" text-anchor="middle" class="kref-label">κ ref = ${kappaRef}</text>` : "";
+
+  const ticks = [0, 0.25, 0.5, 0.75, 1.0].map(val => {
+    const tx = xScale(val);
+    return `<g>
+      <line x1="${tx}" y1="${top - 2}" x2="${tx}" y2="${height - bottom + 1}" class="grid-line"/>
+      <text x="${tx}" y="${height - bottom + 16}" text-anchor="middle" class="svg-tick">${val}</text>
+    </g>`;
+  }).join("");
+
+  const rows = records.map((record, index) => {
+    const data = record[dataset];
+    const y = top + index * rowHeight + (rowHeight - 22) / 2;
+    const kappa = Number(data.kappa_submitted);
+    const barWidth = Math.max(2, xScale(kappa) - left);
+    const errPct = Number(data.kappa_rel_error_pct);
+    const title = isTheoretical
+      ? `${xmlText(methodLabel(record))}: κ = ${kappa}, ${preciseFormat(errPct, 2)}% error vs. reference`
+      : `${xmlText(methodLabel(record))}: κ = ${kappa}`;
+    return `<g>
+      <text x="${left - 10}" y="${y + 15}" text-anchor="end" class="svg-label">${xmlText(methodLabel(record))}</text>
+      <rect x="${left}" y="${y}" width="${barWidth}" height="22" rx="3" class="kappa-bar">
+        <title>${title}</title>
+      </rect>
+      <text x="${width - right + 6}" y="${y + 15}" class="svg-value kappa-val">κ = ${preciseFormat(kappa, 4)}</text>
+    </g>`;
+  }).join("");
+
+  target.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="κ values by method for ${xmlText(datasetLabel)}">
+    <style>
+      .grid-line{stroke:#dce1db;stroke-width:1;stroke-dasharray:3 4}
+      .kref-line{stroke:#cb6040;stroke-width:2;stroke-dasharray:5 3}
+      .kref-label{fill:#cb6040;font:700 10.5px 'Segoe UI',Arial,sans-serif}
+      .kappa-bar{fill:#257180}
+      .svg-label{fill:#1d2929;font:600 11px 'Segoe UI',Arial,sans-serif}
+      .svg-value{fill:#647170;font:11px 'Segoe UI',Arial,sans-serif}
+      .kappa-val{fill:#1d2929;font:600 11px 'Segoe UI',Arial,sans-serif}
+      .svg-tick{fill:#647170;font:11px 'Segoe UI',Arial,sans-serif}
+    </style>
+    ${ticks}${refEl}${rows}
+  </svg>`;
+
+  const tcLabelEl = document.getElementById("comp-tc-label");
+  if (tcTarget) {
+    const tcRecords = records.map(record => ({
+      label: methodLabel(record),
+      Tc: Number(record[dataset].Tc_submitted)
+    })).filter(r => Number.isFinite(r.Tc));
+
+    if (!tcRecords.length) {
+      tcTarget.innerHTML = "";
+      if (tcLabelEl) tcLabelEl.hidden = true;
+    } else {
+      if (tcLabelEl) tcLabelEl.hidden = false;
+      const tcWidth = 540;
+      const tcRowHeight = 54;
+      const tcTop = 12;
+      const tcLeft = 164;
+      const tcRight = 80;
+      const tcBottom = 35;
+      const tcHeight = tcTop + tcRecords.length * tcRowHeight + tcBottom;
+      const tcPlotWidth = tcWidth - tcLeft - tcRight;
+      const tcMax = Math.max(...tcRecords.map(r => r.Tc));
+      const tcAxisMax = tcMax * 1.15;
+      const tcX = val => tcLeft + (val / tcAxisMax) * tcPlotWidth;
+      const tcTicks = Array.from({ length: 5 }, (_, i) => tcAxisMax * i / 4);
+      const tcGrid = tcTicks.map(val => {
+        const tx = tcX(val);
+        return `<g>
+          <line x1="${tx}" y1="${tcTop}" x2="${tx}" y2="${tcHeight - tcBottom + 1}" class="grid-line"/>
+          <text x="${tx}" y="${tcHeight - tcBottom + 16}" text-anchor="middle" class="svg-tick">${preciseFormat(val, 0)}</text>
+        </g>`;
+      }).join("");
+      const tcRows = tcRecords.map((r, i) => {
+        const y = tcTop + i * tcRowHeight + (tcRowHeight - 22) / 2;
+        const barW = Math.max(2, tcX(r.Tc) - tcLeft);
+        return `<g>
+          <text x="${tcLeft - 10}" y="${y + 15}" text-anchor="end" class="svg-label">${xmlText(r.label)}</text>
+          <rect x="${tcLeft}" y="${y}" width="${barW}" height="22" rx="3" class="kappa-bar">
+            <title>${xmlText(r.label)}: T_c = ${preciseFormat(r.Tc, 1)} events</title>
+          </rect>
+          <text x="${tcX(r.Tc) + 8}" y="${y + 15}" class="svg-value kappa-val">${preciseFormat(r.Tc, 1)}</text>
+        </g>`;
+      }).join("");
+      tcTarget.innerHTML = `<svg viewBox="0 0 ${tcWidth} ${tcHeight}" role="img" aria-label="T_c values by method">
+        <style>
+          .grid-line{stroke:#dce1db;stroke-width:1;stroke-dasharray:3 4}
+          .kappa-bar{fill:#257180}
+          .svg-label{fill:#1d2929;font:600 11px 'Segoe UI',Arial,sans-serif}
+          .svg-value{fill:#1d2929;font:600 11px 'Segoe UI',Arial,sans-serif}
+          .svg-tick{fill:#647170;font:11px 'Segoe UI',Arial,sans-serif}
+        </style>
+        ${tcGrid}${tcRows}
+      </svg>`;
+    }
+  }
+
+  if (footnoteTarget) {
+    footnoteTarget.textContent = isTheoretical
+      ? "Reference κ values from Straub et al. (2009): κ = 0.5 for random stacking, κ = 1.0 for compensational stacking."
+      : "No theoretical reference for this dataset (mean avulsion period > 1 event). κ and T_c are shown for cross-submission comparison.";
+  }
+}
+
 function lineCoordinates(geojson) {
   const lines = [];
   function addGeometry(geometry) {
@@ -415,9 +567,10 @@ async function loadResults(path) {
 }
 
 async function initialize() {
-  const [riverResult, shorelineResult] = await Promise.allSettled([
+  const [riverResult, shorelineResult, compensationResult] = await Promise.allSettled([
     loadResults("benchmarks/river_dunes/results_table.json"),
-    loadResults("benchmarks/shoreline/results_table.json")
+    loadResults("benchmarks/shoreline/results_table.json"),
+    loadResults("benchmarks/compensation/results_table.json")
   ]);
 
   if (riverResult.status === "fulfilled") state.river = riverResult.value;
@@ -426,10 +579,16 @@ async function initialize() {
   if (shorelineResult.status === "fulfilled") state.shoreline = shorelineResult.value;
   else console.info("No compiled shoreline results are available yet:", shorelineResult.reason);
 
+  if (compensationResult.status === "fulfilled") state.compensation = compensationResult.value;
+  else console.info("No compiled compensation results are available yet:", compensationResult.reason);
+
   renderRiverChart();
   renderRiverMethods();
   renderShorelineChart();
-  document.getElementById("method-count").textContent = numberFormat.format(state.river.length + state.shoreline.length);
+  renderCompensationChart();
+  document.getElementById("method-count").textContent = numberFormat.format(
+    state.river.length + state.shoreline.length + state.compensation.length
+  );
 
   const mapResults = await Promise.allSettled([
     loadRaster(),
@@ -441,9 +600,10 @@ async function initialize() {
   else mapErrors.push(mapResults[1].reason.message);
   document.getElementById("map-error").textContent = mapErrors.join(" ");
 
-  const anyLoaded = riverResult.status === "fulfilled" || shorelineResult.status === "fulfilled";
+  const anyLoaded = riverResult.status === "fulfilled" || shorelineResult.status === "fulfilled" || compensationResult.status === "fulfilled";
+  const totalMethods = state.river.length + state.shoreline.length + state.compensation.length;
   document.getElementById("data-status").textContent = anyLoaded
-    ? `Results loaded · ${state.river.length + state.shoreline.length} methods`
+    ? `Results loaded · ${totalMethods} methods`
     : "Results unavailable · serve this page from the repository root";
   if (anyLoaded) document.getElementById("data-status-dot").classList.add("loaded");
 }
@@ -497,4 +657,15 @@ mapStage.addEventListener("drop", async event => {
 });
 
 window.addEventListener("resize", renderMap);
+
+document.querySelectorAll("[data-comp-dataset]").forEach(button => {
+  button.addEventListener("click", () => {
+    state.compensationDataset = button.dataset.compDataset;
+    document.querySelectorAll("[data-comp-dataset]").forEach(item =>
+      item.setAttribute("aria-pressed", String(item === button))
+    );
+    renderCompensationChart();
+  });
+});
+
 initialize();
