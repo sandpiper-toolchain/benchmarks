@@ -1,0 +1,13 @@
+random_stacking:
+  kappa: 0.5173
+
+compensational_stacking:
+  kappa: 0.9024
+
+compensational_stacking_meanX:
+  kappa: 0.4718
+  Tc: 242.605
+
+compensational_stacking_mean2X:
+  kappa: 0.4165
+  Tc: 281.972

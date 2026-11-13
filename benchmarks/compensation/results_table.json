@@ -1,0 +1,32 @@
+[
+  {
+    "method_name": "sandplover",
+    "method_description": "Compute compensation statistic (sigma_ss). Additional post processing fits a  single line in log-log space of the change in the standard deviation of  stratigraphic thickness (sigma_ss) measured over increasing vertical thickness;  the slope of this line is kappa.\n",
+    "tool_name": "sandplover compute_compensation",
+    "tool_version": "0.5.1",
+    "tool_url": "https://sandpiper-toolchain.org/sandplover/_autosummary/sandplover.strat.compute_compensation.html#sandplover.strat.compute_compensation",
+    "author_name": "sandpiper toolchain contributors",
+    "date": "2026-11-12",
+    "notes": "",
+    "compensational_stacking": {
+      "kappa_reference": 1.0,
+      "kappa_submitted": 0.9024,
+      "kappa_abs_error": 0.0976,
+      "kappa_rel_error_pct": 9.76
+    },
+    "random_stacking": {
+      "kappa_reference": 0.5,
+      "kappa_submitted": 0.5173,
+      "kappa_abs_error": 0.0173,
+      "kappa_rel_error_pct": 3.46
+    },
+    "compensational_stacking_meanX": {
+      "kappa_submitted": 0.4718,
+      "Tc_submitted": 242.605
+    },
+    "compensational_stacking_mean2X": {
+      "kappa_submitted": 0.4165,
+      "Tc_submitted": 281.972
+    }
+  }
+]
