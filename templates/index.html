@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ee">
+  <meta name="description" content="An open, community-facing collection of geomorphology benchmarks and method intercomparisons.">
+  <title>Sandpiper Benchmarks — A field guide to geomorphology tools</title>
+  <link rel="stylesheet" href="assets/benchmark-dashboard.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#" aria-label="Sandpiper Benchmarks home">
+        <span class="brand-mark" aria-hidden="true">s</span>
+        <span>sandpiper <span style="color: var(--muted); font-weight: 500">/ benchmarks</span></span>
+      </a>
+      <nav class="topnav" aria-label="Main navigation">
+        <a href="#benchmarks">Benchmarks</a>
+        <a href="CONTRIBUTING.md">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <p class="eyebrow">An open field guide · geomorphology</p>
+      <h1>Many methods.<br><em>Common ground.</em></h1>
+      <p class="hero-copy">A community-built collection of problems for exploring how geomorphology tools perform, compare, and see the landscape differently.</p>
+      <div class="hero-links">
+        <a class="button" href="#benchmarks">Explore the benchmarks <span aria-hidden="true">&nbsp;↓</span></a>
+        <a class="button secondary" href="CONTRIBUTING.md">Add a method</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <section class="overview" aria-label="Project overview">
+      <div class="stat-card">
+        <span class="stat-label">Open benchmarks</span>
+        <strong class="stat-value">{{ benchmark_count }}</strong>
+        <span class="stat-note">Benchmark geomorphology problems</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Methods in view</span>
+        <strong class="stat-value">{{ method_count }}</strong>
+        <span class="stat-note">Across current benchmark results</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">A shared resource</span>
+        <strong class="stat-value">Not a competition</strong>
+        <span class="stat-note">Compare and validate approaches</span>
+      </div>
+    </section>
+
+    <section class="benchmark-section" id="benchmarks">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">The collection</p>
+          <h2>Benchmarks in the field</h2>
+        </div>
+        <p>Each benchmark pairs a common geomorphic problem with openly described data and a place for methods to be understood side by side.</p>
+      </div>
+      <div class="benchmark-cards">
+        {% for b in benchmarks %}
+        <a class="benchmark-card" href="benchmarks/{{ b.config.slug }}/">
+          <p class="card-kicker"><span class="domain-pill domain--{{ b.config.domain }}">{{ b.config.domain }}</span> · {{ b.config.reference_type }}</p>
+          <strong class="card-name">{{ b.config.name }}</strong>
+          <p class="card-tagline">{{ b.config.tagline }}</p>
+          <div class="card-footer-row">
+            <span class="tag tag--{{ b.config.data_type }}">{{ b.config.data_type }}</span>
+            <span class="card-count">{{ b.submission_count }} submission{{ 's' if b.submission_count != 1 else '' }}</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="benchmark-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">How it works</p>
+          <h2>A place to compare, openly</h2>
+        </div>
+      </div>
+      <div class="principles">
+        <article class="principle">
+          <h3>Bring your own tools</h3>
+          <p>Contribute an output file and a little context. Any language, workflow, or software is welcome; the benchmarks are designed around results, not implementations.</p>
+        </article>
+        <article class="principle">
+          <h3>Keep the landscape in view</h3>
+          <p>Data with clear provenance ground each problem. The goal is to learn what different methods reveal—not to declare one universal winner.</p>
+        </article>
+        <article class="principle">
+          <h3>Different comparisons for different problems</h3>
+          <p>Some problems lack a known answer, so methods are evaluated purely against each other. Others have a ground truth, allowing methods to be benchmarked for accuracy. Depending on the test's purpose, benchmarks rely on real-world, laboratory, model, or synthetic "toy" data.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p>Sandpiper Benchmarks · Open tools for geomorphology research</p>
+      <p><a href="CONTRIBUTING.md" style="color: inherit">Contribute a method</a></p>
+    </div>
+  </footer>
+</body>
+</html>

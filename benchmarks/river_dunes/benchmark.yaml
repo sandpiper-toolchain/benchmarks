@@ -1,0 +1,33 @@
+# ── Identity ───────────────────────────────────────────────────────────────────
+name:    "Paraná River Bedform Geometry"
+slug:    "river_dunes"
+tagline: "Identify and measure dunes across 370 bathymetric profiles"
+domain:  "fluvial"              # fluvial | coastal | stratigraphy | aeolian | lab | other
+status:  "active"               # active | draft | archived
+
+# ── Taxonomy ───────────────────────────────────────────────────────────────────
+reference_type: "intercomparison"
+data_type:      "identification"
+
+# ── Submission format ──────────────────────────────────────────────────────────
+submission:
+  file_pattern: "result.csv"
+  required_columns:
+    - name: height_m
+      type: float
+      unit: m
+    - name: length_m
+      type: float
+      unit: m
+    - name: depth_m
+      type: float
+      unit: m
+  optional_columns:
+    - name: profile_id
+      type: int
+
+# ── Scoring ────────────────────────────────────────────────────────────────────
+scoring:
+  mode:    "distribution_summary"  # computes stats per required column
+  columns: [height_m, length_m, depth_m]
+  stats:   [min, mean, median, std, p25, p75, max]

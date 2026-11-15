@@ -1,0 +1,28 @@
+# Submission metadata
+
+method_name: "Dune Parameters Analysis (DPA)"
+method_description: >
+  Combined method for river dune crestline detection using scale separation for compound
+  dunes. Identifies maxima between zero-crossings via spectral/wavelet analysis and
+  filtering.
+
+method_type: "combined"
+method_features:
+  - scale separation
+  - compound dunes
+  - max. between zero-crossing (spectral/wavelet analysis; filtering)
+
+tool_name: Dune Parameters Analysis (DPA)
+tool_version: null
+tool_url: https://github.com/twilight5284/Bedform-analysis
+
+author_name: "Wang et al."
+author_orcid: null
+
+preferred_citation: >
+  Wang, L., Yu, Q., Zhang, Y., Flemming, B. W., Wang, Y., and Gao, S. (2020) An automated 
+  procedure to calculate the morphological parameters of superimposed rhythmic bedforms. 
+  Earth Surf. Process. Landforms, 45: 3496--3509. https://doi.org/10.1002/esp.4983
+
+date: "2020"
+notes: null

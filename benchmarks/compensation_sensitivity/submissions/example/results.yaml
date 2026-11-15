@@ -1,0 +1,7 @@
+compensational_stacking_meanX:
+  kappa: <float>
+  Tc: <float>
+
+compensational_stacking_mean2X:
+  kappa: <float>
+  Tc: <float>

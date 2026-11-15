@@ -1,0 +1,38 @@
+# ── Identity ───────────────────────────────────────────────────────────────────
+name:    "Compensation Index — Sensitivity"
+slug:    "compensation_sensitivity"
+tagline: "Compare κ and T_c across methods for scaled avulsion periods"
+domain:  "stratigraphy"         # fluvial | coastal | stratigraphy | aeolian | lab | other
+status:  "active"               # active | draft | archived
+
+# ── Taxonomy ───────────────────────────────────────────────────────────────────
+reference_type: "intercomparison"
+data_type:      "value"
+
+# ── Submission format ──────────────────────────────────────────────────────────
+submission:
+  file_pattern: "results.yaml"
+  # Expected keys: compensational_stacking_meanX.{kappa, Tc}
+  #                compensational_stacking_mean2X.{kappa, Tc}
+
+# ── Datasets ───────────────────────────────────────────────────────────────────
+# Both datasets use the T_A > 1 synthetic sequences that have no universal
+# theoretical reference.  κ and T_c are reported as-is for cross-submission
+# comparison.  Input CSV files live in the sibling compensation/data/ directory.
+datasets:
+  compensational_stacking_meanX:
+    label:           "Compensational stacking, T_A = 15"
+    data_file:       "../compensation/data/compensational_stacking_meanX.csv"
+    reported_fields: [kappa, Tc]
+  compensational_stacking_mean2X:
+    label:           "Compensational stacking, T_A = 30"
+    data_file:       "../compensation/data/compensational_stacking_mean2X.csv"
+    reported_fields: [kappa, Tc]
+
+# ── Scoring ────────────────────────────────────────────────────────────────────
+scoring:
+  # No reference values — κ and T_c are reported as-is for cross-submission
+  # comparison.  data_dir points to the shared input CSVs in the sibling
+  # compensation benchmark.
+  data_dir:        "../compensation/data/"
+  reported_fields: [kappa, Tc]

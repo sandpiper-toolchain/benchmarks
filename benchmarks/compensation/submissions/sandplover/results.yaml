@@ -1,0 +1,5 @@
+compensational_stacking:
+  kappa: 0.9024
+
+random_stacking:
+  kappa: 0.5173

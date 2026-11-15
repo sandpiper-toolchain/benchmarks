@@ -1,0 +1,26 @@
+# Submission metadata
+
+method_name: "Weser Bedform Analysis"
+method_description: >
+  Combined method for river dune crestline detection using dune shape analysis. Detects
+  local extremes via minimum curvature and minimum elevation criteria.
+
+method_type: "combined"
+method_features:
+  - dune shape
+  - local extremes (min. curvature; min. elevation)
+
+tool_name: Weser Bedform Analysis
+tool_version: null
+tool_url: https://github.com/DrAliceLefebvre/Weser_Bedform_Analysis_Codes
+
+author_name: "Lefebvre et al."
+author_orcid: null
+
+preferred_citation: >
+  Lefebvre, A., Herrling, G., Becker, M., Zorndt, A., Krämer, K., Winter, C. (2021). 
+  Morphology of estuarine bedforms, Weser Estuary, Germany. Earth Surface Processes 
+  and Landforms https://doi.org/10.1002/esp.5243
+
+date: "2022"
+notes: null

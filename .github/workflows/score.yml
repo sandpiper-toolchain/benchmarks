@@ -1,0 +1,82 @@
+name: Score and compile
+
+on:
+  pull_request:
+    paths:
+      - "benchmarks/*/submissions/**"
+  push:
+    branches:
+      - main
+    paths:
+      - "benchmarks/*/submissions/**"
+      - "benchmarks/*/benchmark.yaml"
+      - "build_site.py"
+      - "templates/**"
+      - "assets/**"
+
+jobs:
+  score:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install geopandas rasterio scipy numpy shapely pyyaml jinja2
+
+      - name: Detect changed benchmarks and score
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          changed=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
+            | grep '^benchmarks/.*/submissions/' \
+            | cut -d/ -f2 | sort -u || true)
+          for slug in $changed; do
+            echo "=== Scoring $slug ==="
+            python run_all.py "$slug"
+          done
+
+      - name: Upload score artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: scores
+          path: "**/score_output.json"
+          if-no-files-found: ignore
+
+  compile:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install geopandas rasterio scipy numpy shapely pyyaml jinja2
+
+      - name: Compile results tables
+        run: python run_all.py
+
+      - name: Build site
+        run: python build_site.py
+
+      - name: Commit updated results and site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add '**/results_table.json' '**/index.html' 'index.html'
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+          else
+            git commit -m "chore: update results and site [skip ci]"
+            git push
+          fi

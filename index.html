@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ee">
+  <meta name="description" content="An open, community-facing collection of geomorphology benchmarks and method intercomparisons.">
+  <title>Sandpiper Benchmarks — A field guide to geomorphology tools</title>
+  <link rel="stylesheet" href="assets/benchmark-dashboard.css">
+</head>
+<body>
+  <header class="topbar">
+      <div class="wrap topbar-inner">
+        <div class="brand">
+          <a href="https://sandpiper-toolchain.org/" aria-label="Sandpiper Toolchain home" style="display: inline-flex; align-items: center; gap: inherit; text-decoration: none; color: inherit;">
+            <span class="brand-mark" aria-hidden="true">s</span>
+            <span>sandpiper-toolchain</span>
+          </a>
+          <span style="color: var(--muted); font-weight: 500" aria-hidden="true">/</span>
+          <a href="#" aria-label="Sandpiper Benchmarks home" style="color: var(--muted); font-weight: 500; text-decoration: none;">benchmarks</a>
+        </div>
+        <nav class="topnav" aria-label="Main navigation">
+          <a href="#benchmarks">Benchmarks</a>
+          <a href="CONTRIBUTING.md">Contribute</a>
+        </nav>
+      </div>
+    </header>
+
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <p class="eyebrow">Open benchmarks for geomorphology</p>
+      <h1>Many methods.<br><em>Common ground.</em></h1>
+      <p class="hero-copy">A community-built collection of problems for exploring how geomorphology tools perform, compare, and see the landscape differently.</p>
+      <div class="hero-links">
+        <a class="button" href="#benchmarks">Explore the benchmarks <span aria-hidden="true">&nbsp;↓</span></a>
+        <a class="button secondary" href="CONTRIBUTING.md">Add a method</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <section class="overview" aria-label="Project overview">
+      <div class="stat-card">
+        <span class="stat-label">Open benchmarks</span>
+        <strong class="stat-value">4</strong>
+        <span class="stat-note">Benchmark geomorphology problems</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Methods in view</span>
+        <strong class="stat-value">9</strong>
+        <span class="stat-note">Across current benchmark results</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">A shared resource</span>
+        <strong class="stat-value">Not a competition</strong>
+        <span class="stat-note">Compare and validate approaches</span>
+      </div>
+    </section>
+
+    <section class="benchmark-section" id="benchmarks">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">The collection</p>
+          <h2>View the benchmarks</h2>
+        </div>
+        <p>Each benchmark pairs a common geomorphic problem with openly described data and a place for methods to be understood side by side.</p>
+      </div>
+      <div class="benchmark-cards">
+        <a class="benchmark-card" href="benchmarks/compensation/">
+          <p class="card-kicker"><span class="domain-pill domain--stratigraphy">stratigraphy</span> · validation</p>
+          <strong class="card-name">Compensation Index — Validation</strong>
+          <p class="card-tagline">Compute κ for two synthetic sequences with known theoretical values</p>
+          <div class="card-footer-row">
+            <span class="tag tag--value">value</span>
+            <span class="card-count">1 submission</span>
+          </div>
+        </a>
+        <a class="benchmark-card" href="benchmarks/compensation_sensitivity/">
+          <p class="card-kicker"><span class="domain-pill domain--stratigraphy">stratigraphy</span> · intercomparison</p>
+          <strong class="card-name">Compensation Index — Sensitivity</strong>
+          <p class="card-tagline">Compare κ and T_c across methods for scaled avulsion periods</p>
+          <div class="card-footer-row">
+            <span class="tag tag--value">value</span>
+            <span class="card-count">1 submission</span>
+          </div>
+        </a>
+        <a class="benchmark-card" href="benchmarks/river_dunes/">
+          <p class="card-kicker"><span class="domain-pill domain--fluvial">fluvial</span> · intercomparison</p>
+          <strong class="card-name">Paraná River Bedform Geometry</strong>
+          <p class="card-tagline">Identify and measure dunes across 370 bathymetric profiles</p>
+          <div class="card-footer-row">
+            <span class="tag tag--identification">identification</span>
+            <span class="card-count">5 submissions</span>
+          </div>
+        </a>
+        <a class="benchmark-card" href="benchmarks/shoreline/">
+          <p class="card-kicker"><span class="domain-pill domain--delta">delta</span> · reference</p>
+          <strong class="card-name">Selenga Delta Shoreline</strong>
+          <p class="card-tagline">Trace the land-water boundary from a binary delta mask</p>
+          <div class="card-footer-row">
+            <span class="tag tag--map">map</span>
+            <span class="card-count">2 submissions</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="benchmark-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">How it works</p>
+          <h2>A place to compare, openly</h2>
+        </div>
+      </div>
+      <div class="principles">
+        <article class="principle">
+          <h3>Bring your own tools</h3>
+          <p>Contribute an output file and a little context. Any language, workflow, or software is welcome; the benchmarks are designed around results, not implementations.</p>
+        </article>
+        <article class="principle">
+          <h3>Keep the landscape in view</h3>
+          <p>Data with clear provenance ground each problem. The goal is to learn what different methods reveal—not to declare one universal winner.</p>
+        </article>
+        <article class="principle">
+          <h3>Different comparisons for different problems</h3>
+          <p>Some problems lack a known answer, so methods are evaluated purely against each other. Others have a ground truth, allowing methods to be benchmarked for accuracy. Depending on the test's purpose, benchmarks rely on real-world, laboratory, model, or synthetic "toy" data.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p><a href="https://sandpiper-toolchain.org/" style="color": inherit>sandpiper toolchain</a> · acquisition to analysis toolchain for geomorphology</p>
+      <p><a href="CONTRIBUTING.md" style="color: inherit">Contribute a method</a></p>
+    </div>
+  </footer>
+</body>
+</html>

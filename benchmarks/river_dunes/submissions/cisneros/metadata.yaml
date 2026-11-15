@@ -1,0 +1,28 @@
+# Submission metadata
+
+method_name: "BAMBI"
+method_description: >
+  Spatial/geo-statistical method for river dune crestline detection using scale separation
+  and dune shape analysis. Detects local extremes via resolution scale slope changes
+  (local aspect changes). Reference: bib-0015.
+
+method_type: "spatial/geo-statistical"
+method_features:
+  - scale separation
+  - dune shape
+  - local extremes
+
+tool_name: Bedform Analysis Method for Bathymetric Information (BAMBI) 
+tool_version: 1.0.1.0
+tool_url: https://github.com/juliamorphology/bambi_0.1.0
+
+author_name: "Cisneros et al."
+author_orcid: null
+
+preferred_citation: >
+  Cisneros, J., Best, J., van Dijk, T. et al. Dunes in the world's big rivers are characterized 
+  by low-angle lee-side slopes and a complex shape (2020). Nature Geoscience 13, 
+  156--162. https://doi.org/10.1038/s41561-019-0511-7
+
+date: "2020"
+notes: null

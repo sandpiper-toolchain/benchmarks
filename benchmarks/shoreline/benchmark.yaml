@@ -1,0 +1,48 @@
+# ── Identity ───────────────────────────────────────────────────────────────────
+name:    "Selenga Delta Shoreline"
+slug:    "shoreline"
+tagline: "Trace the land–water boundary from a binary delta mask"
+domain:  "delta"                # fluvial | coastal | stratigraphy | aeolian | lab | other
+status:  "active"               # active | draft | archived
+
+# ── Taxonomy ───────────────────────────────────────────────────────────────────
+reference_type: "reference"
+data_type:      "map"
+map_subtype:    "vector"        # vector | raster
+geometry_type:  "polyline"      # polyline | polygon | point
+
+# ── Submission format ──────────────────────────────────────────────────────────
+submission:
+  file_pattern: "*.geojson"
+
+# ── References ─────────────────────────────────────────────────────────────────
+references:
+  manifest: "data/references.yaml"   # existing file, unchanged
+
+# ── Scoring ────────────────────────────────────────────────────────────────────
+scoring:
+  raster_grid: "data/selenga_clipped.tif"  # gitignored; downloaded separately
+  metrics:
+    - name:        mean_distance_error_m
+      label:       "Mean distance error"
+      unit:        m
+      direction:   lower_better
+    - name:        pixel_f1
+      label:       "Pixel F1"
+      unit:        ""
+      direction:   higher_better
+      result_path: "pixel_f1.f1"            # scorer stores {precision, recall, f1}; display f1
+    - name:        roughness_relative_difference_pct
+      label:       "Roughness difference"
+      unit:        "%"
+      direction:   lower_better
+      result_path: "roughness_agreement.relative_difference_pct"
+
+# ── Website ────────────────────────────────────────────────────────────────────
+website:
+  map_panel:
+    raster:      "data/selenga_clipped.tif"
+    land_color:  "#e8dfc7"
+    water_color: "#c5dfe2"
+    crs:         "EPSG:32648"
+    crs_proj4:   "+proj=utm +zone=48 +datum=WGS84 +units=m +no_defs"

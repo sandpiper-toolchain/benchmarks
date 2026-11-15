@@ -1,0 +1,20 @@
+# Reference shorelines for the Selenga shoreline benchmark.
+# Each entry names a GeoJSON file in this same directory (data/)
+# plus provenance metadata.
+# Add entries here when contributing a new reference digitization.
+
+references:
+  - file: ref_selenga_moodie_2026.geojson
+    name: "Moodie 2026"
+    author: "Andrew Moodie"
+    date: "2026-11-10"
+    method: "Manual digitization in QGIS against the binary GeoTIFF."
+    notes: null
+
+  # - file: ref_selenga_dong_2026.geojson
+  #   name: "Dong 2026"
+  #   author: "Tian Dong"
+  #   date: "2026-11-10"
+  #   method: "Manual digitization in ArcGIS against the binary GeoTIFF."
+  #   notes: null
+

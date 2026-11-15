@@ -1,0 +1,58 @@
+[
+  {
+    "method_name": "sandplover morphological closing",
+    "tool_name": "sandplover morphological_closing_method",
+    "tool_version": "0.5.1",
+    "tool_url": "https://sandpiper-toolchain.org/sandplover/",
+    "author_name": "sandpiper toolchain contributors",
+    "date": "2026-11-10",
+    "runtime_seconds": 1.56,
+    "geojson_files": [
+      "submissions/sandplover_MPM/selenga_sandplover_MPM.geojson"
+    ],
+    "vs_references": {
+      "ref_selenga_moodie_2026": {
+        "mean_distance_error_m": 42.285,
+        "pixel_f1": {
+          "precision": 0.4459,
+          "recall": 0.4049,
+          "f1": 0.4244
+        },
+        "roughness_agreement": {
+          "roughness_reference": 6.2404,
+          "roughness_submitted": 5.8076,
+          "relative_difference_pct": 6.9359
+        }
+      }
+    },
+    "vs_references_summary": {}
+  },
+  {
+    "method_name": "sandplover Opening Angle method",
+    "tool_name": "sandplover shaw_opening_angle_method",
+    "tool_version": "0.5.1",
+    "tool_url": "https://sandpiper-toolchain.org/sandplover/",
+    "author_name": "sandpiper toolchain contributors",
+    "date": "2026-11-10",
+    "runtime_seconds": null,
+    "geojson_files": [
+      "submissions/sandplover_OAM/selenga_sandplover_OAM.geojson"
+    ],
+    "vs_references": {
+      "ref_selenga_moodie_2026": {
+        "mean_distance_error_m": 326.456,
+        "pixel_f1": {
+          "precision": 0.1014,
+          "recall": 0.0788,
+          "f1": 0.0887
+        },
+        "roughness_agreement": {
+          "roughness_reference": 6.2404,
+          "roughness_submitted": 4.9566,
+          "relative_difference_pct": 20.5721
+        }
+      }
+    },
+    "vs_references_summary": {}
+  }
+]

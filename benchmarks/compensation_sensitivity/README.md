@@ -1,0 +1,64 @@
+# Compensation Index — Sensitivity Benchmark
+
+## Overview
+
+This benchmark is a companion to the [`compensation`](../compensation/) benchmark.
+It uses the same synthetic stratigraphic model but with longer mean avulsion periods
+(T_A = 15 and T_A = 30 depositional events), where no universal theoretical reference
+value for κ exists.
+
+Because there is no ground truth, this is an **intercomparison** benchmark: submitted
+κ and T_c values are displayed side-by-side across methods to reveal how different
+tools respond as the avulsion period scales up.
+
+## Relationship to `compensation`
+
+| Benchmark | Datasets | Reference type | Scored against |
+|-----------|----------|----------------|----------------|
+| `compensation` | `compensational_stacking` (T_A = 1), `random_stacking` (T_A = 1) | validation | Theoretical κ reference values |
+| `compensation_sensitivity` | `compensational_stacking_meanX` (T_A = 15), `compensational_stacking_mean2X` (T_A = 30) | intercomparison | Each other (no ground truth) |
+
+## Input data
+
+Input CSV files are shared with the `compensation` benchmark and live at
+[`../compensation/data/`](../compensation/data/):
+
+| File | Avulsion period | Description |
+|------|----------------|-------------|
+| `compensational_stacking_meanX.csv` | T_A = 15 events | Compensational stacking, medium avulsion period |
+| `compensational_stacking_mean2X.csv` | T_A = 30 events | Compensational stacking, long avulsion period |
+
+See the [`compensation` README](../compensation/README.md) for full details on the
+CSV format and stacking model.
+
+## Submission format
+
+Create a YAML file named `results.yaml` with two top-level keys:
+
+```yaml
+compensational_stacking_meanX:
+  kappa: <float>
+  Tc: <float>
+
+compensational_stacking_mean2X:
+  kappa: <float>
+  Tc: <float>
+```
+
+- `kappa` is dimensionless.
+- `Tc` is in units of depositional events.
+
+## How to submit
+
+1. Fork this repository.
+2. Create a folder under `submissions/` named after your method:
+   ```
+   submissions/my-method/
+   ├── results.yaml    # your computed κ and Tc values
+   └── metadata.yaml  # tool name, version, author — copy from submissions/example/
+   ```
+3. Open a pull request. CI will post your submitted values as a build artifact.
+
+## Results
+
+No submissions yet.

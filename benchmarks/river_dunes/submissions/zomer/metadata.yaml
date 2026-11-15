@@ -1,0 +1,27 @@
+# Submission metadata
+
+method_name: "Bedform Separation - LOESS"
+method_description: >
+  Combined method for river dune crestline detection using scale separation. Identifies
+  maxima between zero-crossings after LOESS filtering. Reference: bib-0070.
+
+method_type: "combined"
+method_features:
+  - scale separation
+  - max. between zero-crossing (after LOESS filtering)
+
+tool_name: Bedform Separation - LOESS
+tool_version: 1.0
+tool_url: https://zenodo.org/records/4486605
+
+author_name: "Zomer et al."
+author_orcid: null
+
+preferred_citation: >
+  Zomer, J. Y., Naqshband, S., Vermeulen, B., & Hoitink, A. J. F. (2021). Rapidly 
+  migrating secondary bedforms can persist on the lee of slowly migrating primary 
+  river dunes. Journal of Geophysical Research: Earth Surface, 126, e2020JF005918.
+  https://doi.org/10.1029/2020JF005918
+
+date: "2022"
+notes: null
