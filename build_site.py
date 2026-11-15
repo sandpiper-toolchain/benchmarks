@@ -191,6 +191,7 @@ def main() -> None:
             config=cfg_dict,
             submission_count=submission_count,
             benchmark_config_json=benchmark_config_json,
+            root_path="../../",
         )
         out_path = entry["benchmark_dir"] / "index.html"
         out_path.write_text(html, encoding="utf-8")
@@ -212,6 +213,7 @@ def main() -> None:
             ],
             benchmark_count=benchmark_count,
             method_count=method_count,
+            root_path="./",
         )
         out_path = HERE / "index.html"
         out_path.write_text(index_html, encoding="utf-8")

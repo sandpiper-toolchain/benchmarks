@@ -25,7 +25,6 @@
       </nav>
     </div>
   </header>
-
   <section class="page-hero">
     <div class="wrap">
       <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -59,7 +58,6 @@
       <p><a href="../../CONTRIBUTING.md" style="color: inherit">Contribute a method</a></p>
     </div>
   </footer>
-
   <script>
   window.BENCHMARK_CONFIG = {"name": "Selenga Delta Shoreline", "slug": "shoreline", "tagline": "Trace the land\u2013water boundary from a binary delta mask", "domain": "delta", "status": "active", "reference_type": "reference", "data_type": "map", "submission_file_pattern": "*.geojson", "scoring": {"raster_grid": "data/selenga_clipped.tif", "metrics": [{"name": "mean_distance_error_m", "label": "Mean distance error", "unit": "m", "direction": "lower_better"}, {"name": "pixel_f1", "label": "Pixel F1", "unit": "", "direction": "higher_better", "result_path": "pixel_f1.f1"}, {"name": "roughness_relative_difference_pct", "label": "Roughness difference", "unit": "%", "direction": "lower_better", "result_path": "roughness_agreement.relative_difference_pct"}]}, "datasets": null, "website": {"map_panel": {"raster": "data/selenga_clipped.tif", "land_color": "#e8dfc7", "water_color": "#c5dfe2", "crs": "EPSG:32648", "crs_proj4": "+proj=utm +zone=48 +datum=WGS84 +units=m +no_defs"}}};
   </script>
