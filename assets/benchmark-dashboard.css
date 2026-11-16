@@ -59,16 +59,10 @@ button, input { font: inherit; }
 }
 
 .brand-mark {
-  display: grid;
-  width: 30px;
-  height: 30px;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--blue);
-  color: white;
-  font-family: var(--serif);
-  font-size: 19px;
-  line-height: 1;
+  display: block;
+  width: 36px;
+  height: 27px;
+  object-fit: contain;
 }
 
 .topnav {
@@ -96,13 +90,12 @@ button, input { font: inherit; }
 
 .hero::after {
   position: absolute;
-  top: -50px;
+  top: -20px;
   right: max(-40px, calc((100vw - var(--content)) / 2 - 100px));
-  width: 390px;
-  height: 390px;
-  border: 1px solid rgba(37, 113, 128, .15);
-  border-radius: 50%;
-  box-shadow: 0 0 0 32px rgba(37, 113, 128, .035), 0 0 0 66px rgba(37, 113, 128, .025);
+  width: 442px;
+  height: 323px;
+  background: url("symbol.svg") center / contain no-repeat;
+  opacity: .12;
   content: "";
   pointer-events: none;
 }
@@ -683,7 +676,7 @@ footer {
   .results-layout, .shoreline-grid, .compensation-grid { grid-template-columns: 1fr; }
   .results-layout { gap: 14px; }
   .principles { grid-template-columns: 1fr; }
-  .hero::after { right: -200px; opacity: .6; }
+  .hero::after { right: -200px; }
 }
 
 @media (max-width: 560px) {
@@ -692,7 +685,7 @@ footer {
   .topnav { gap: 14px; font-size: .76rem; }
   .topnav a:last-child { display: none; }
   .hero { padding: 59px 0 45px; }
-  .hero::after { top: 10px; right: -270px; width: 330px; height: 330px; }
+  .hero::after { top: 10px; right: -190px; width: 330px; height: 241px; }
   .hero-copy { font-size: .98rem; }
   main { padding-top: 28px; }
   .overview { grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 48px; }
