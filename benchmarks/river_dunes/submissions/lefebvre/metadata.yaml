@@ -5,7 +5,7 @@ method_description: >
   Combined method for river dune crestline detection using dune shape analysis. Detects
   local extremes via minimum curvature and minimum elevation criteria.
 
-method_type: "combined"
+method_type: "shape, curvature"
 method_features:
   - dune shape
   - local extremes (min. curvature; min. elevation)

@@ -4,7 +4,7 @@ method_name: "BAMBI"
 method_description: >
   Spatial/geo-statistical method for river dune crestline detection using scale separation
   and dune shape analysis. Detects local extremes via resolution scale slope changes
-  (local aspect changes). Reference: bib-0015.
+  (local aspect changes).
 
 method_type: "spatial/geo-statistical"
 method_features:
@@ -13,7 +13,7 @@ method_features:
   - local extremes
 
 tool_name: Bedform Analysis Method for Bathymetric Information (BAMBI) 
-tool_version: 1.0.1.0
+tool_version: 0.1.0
 tool_url: https://github.com/juliamorphology/bambi_0.1.0
 
 author_name: "Cisneros et al."

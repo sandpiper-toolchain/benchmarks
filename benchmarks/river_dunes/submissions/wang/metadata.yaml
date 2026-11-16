@@ -6,7 +6,7 @@ method_description: >
   dunes. Identifies maxima between zero-crossings via spectral/wavelet analysis and
   filtering.
 
-method_type: "combined"
+method_type: "wavelets, scales"
 method_features:
   - scale separation
   - compound dunes
