@@ -9,6 +9,7 @@ results_table.json
 
 # Generated website output — published from gh-pages
 index.html
+CONTRIBUTING.html
 benchmarks/*/index.html
 _site/
 
