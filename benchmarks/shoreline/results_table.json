@@ -1,12 +1,17 @@
 [
   {
     "method_name": "sandplover morphological closing",
+    "method_description": "Morphological Planform Method (MPM) implemented in sandplover.  Original method after Geleynse, N., et al. Characterization of  river delta shorelines. Geophysical research letters 39.17 (2012). \n",
+    "method_type": null,
     "tool_name": "sandplover morphological_closing_method",
     "tool_version": "0.5.1",
     "tool_url": "https://sandpiper-toolchain.org/sandplover/",
     "author_name": "sandpiper toolchain contributors",
-    "date": "2026-11-10",
-    "runtime_seconds": 1.56,
+    "author_orcid": null,
+    "preferred_citation": null,
+    "date": "2026-11-11",
+    "notes": "Tool run with default parameters. Shoreline extracted along 0.75 contour.  Contour converted into line by sandplover `compute_shoreline_length` tool. See software documentation for additional details.\n",
+    "runtime_seconds": 1.5,
     "geojson_files": [
       "submissions/sandplover_MPM/selenga_sandplover_MPM.geojson"
     ],
@@ -14,9 +19,9 @@
       "ref_selenga_moodie_2026": {
         "mean_distance_error_m": 42.285,
         "pixel_f1": {
-          "precision": 0.4459,
-          "recall": 0.4049,
-          "f1": 0.4244
+          "precision": 0.444,
+          "recall": 0.403,
+          "f1": 0.4225
         },
         "roughness_agreement": {
           "roughness_reference": 6.2404,
@@ -29,27 +34,32 @@
   },
   {
     "method_name": "sandplover Opening Angle method",
+    "method_description": "Opening Angle Method (OAM) implemented in sandplover.  Original method after Shaw, John B., et al. An  image-based method for shoreline mapping on complex  coasts. Geophysical Research Letters 35.12 (2008).\n",
+    "method_type": null,
     "tool_name": "sandplover shaw_opening_angle_method",
     "tool_version": "0.5.1",
     "tool_url": "https://sandpiper-toolchain.org/sandplover/",
     "author_name": "sandpiper toolchain contributors",
-    "date": "2026-11-10",
-    "runtime_seconds": null,
+    "author_orcid": null,
+    "preferred_citation": null,
+    "date": "2026-11-11",
+    "notes": "Tool run with default parameters. Shoreline extracted along 45 degree contour.  Contour converted into line by sandplover `compute_shoreline_length` tool. See software documentation for additional details.\n",
+    "runtime_seconds": 877.2,
     "geojson_files": [
       "submissions/sandplover_OAM/selenga_sandplover_OAM.geojson"
     ],
     "vs_references": {
       "ref_selenga_moodie_2026": {
-        "mean_distance_error_m": 326.456,
+        "mean_distance_error_m": 410.66,
         "pixel_f1": {
-          "precision": 0.1014,
-          "recall": 0.0788,
-          "f1": 0.0887
+          "precision": 0.3179,
+          "recall": 0.2685,
+          "f1": 0.2911
         },
         "roughness_agreement": {
           "roughness_reference": 6.2404,
-          "roughness_submitted": 4.9566,
-          "relative_difference_pct": 20.5721
+          "roughness_submitted": 5.6077,
+          "relative_difference_pct": 10.1394
         }
       }
     },

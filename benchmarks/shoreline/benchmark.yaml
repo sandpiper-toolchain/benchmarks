@@ -1,6 +1,6 @@
 # ── Identity ───────────────────────────────────────────────────────────────────
 name:    "Selenga Delta Shoreline"
-slug:    "shoreline"
+slug:    "selenga-shoreline"
 tagline: "Trace the land–water boundary from a binary delta mask"
 domain:  "delta"                # fluvial | coastal | stratigraphy | aeolian | lab | other
 status:  "active"               # active | draft | archived
@@ -42,7 +42,10 @@ scoring:
 website:
   map_panel:
     raster:      "data/selenga_clipped.tif"
-    land_color:  "#e8dfc7"
+    reference:
+      path: "data/ref_selenga_moodie_2026.geojson"
+      name: "reference (manual)"
+    land_color:  "#CCBF9D"
     water_color: "#c5dfe2"
     crs:         "EPSG:32648"
     crs_proj4:   "+proj=utm +zone=48 +datum=WGS84 +units=m +no_defs"

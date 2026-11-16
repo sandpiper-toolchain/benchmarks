@@ -17,6 +17,6 @@ notes: >
   Contour converted into line by sandplover `compute_shoreline_length` tool.
   See software documentation for additional details.
 
-runtime_seconds: 877.208
+runtime_seconds: 877.2
 runtime_machine: "ASUS, Intel i7-10700, 64 GB RAM"
 runtime_notes: "single-thread, CPU"      # optional notes about how this runs, e.g., on GPU, CPU
