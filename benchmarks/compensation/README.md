@@ -18,7 +18,7 @@ of thickness increments, σ_ss(T), scales with the time elapsed (T) between
 depositional surfaces. On a log-log plot of σ vs. T, two power-law regimes are 
 distinguished:
 
-- **Short timescales (T ≪ T_c):** σ ∝ T^0.5 — the system is influenced by autogenics.
+- **Short timescales (T ≪ T_c):** σ ∝ T^κ — the system is influenced by autogenics.
 - **Long timescales (T ≫ T_c):** σ ∝ T^κ — the system is influenced only by allogenics.
 
 **κ** is the slope of the best-fit line through either timescale regime in
@@ -64,7 +64,7 @@ description in Wang et al., 2011:
 > We model basin filling with discrete triangular elements that are meant to represent channel or lobe deposits. During each time step one element is deposited in the basin while the subsidence is set to balance mean basin aggradation. An approximation of the avulsion process is modeled by placing channel elements with the following rules. At every nth time step during basin filling, the active channel relocates to the absolute topographic low in the model domain. For all other time steps deposition follows a random walk with elements moving one channel width left or right of the previous element.
 
 | File | Avulsion strategy | Avulsion period | Description |
-|------|------------------|-------------|
+|------|------------------|------------------|-------------|
 | `data/compensational_stacking.csv` | `'low'` — avulse to topographic minimum | 1 timestep | Compensational sequence |
 | `data/random_stacking.csv` | `'random'` — avulse to a random position | 1 timestep | Random stacking sequence |
 | `../compensation_sensitivity/data/compensational_stacking_meanX.csv` | `'low'` — avulse to topographic minimum | 15 timesteps | Compensational sequence |
@@ -135,11 +135,8 @@ A `score_output.json` is written next to each `results.yaml`.
 ## How to submit
 
 1. Fork this repository.
-2. Create a folder under `submissions/` named after your method:
-   ```
-   submissions/my-method/
-   ├── results.yaml    # your computed κ and Tc values
-   └── metadata.yaml  # tool name, version, author — copy from submissions/sandplover/
-   ```
+2. Create a folder under `submissions/` named after your method, containing
+   `results.yaml` and `metadata.yaml` (copy the metadata template from
+   `submissions/sandplover/`).
 3. Open a pull request.  CI will automatically score your submission against the
    reference values and post the results as a build artifact.

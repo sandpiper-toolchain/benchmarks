@@ -11,6 +11,9 @@ Because there is no ground truth, this is an **intercomparison** benchmark: subm
 κ and T_c values are displayed side-by-side across methods to reveal how different
 tools respond as the avulsion period scales up.
 
+Submissions compare the best-fit κ for the sub-compensation timescale, and the compensation timescale T_c. In addition to required files and complete metadata, submissions may optionally include the script used for fitting. 
+
+
 ## Relationship to `compensation`
 
 | Benchmark | Datasets | Reference type | Scored against |
@@ -53,10 +56,7 @@ compensational_stacking_mean2X:
 ## How to submit
 
 1. Fork this repository.
-2. Create a folder under `submissions/` named after your method:
-   ```
-   submissions/my-method/
-   ├── results.yaml    # your computed κ and Tc values
-   └── metadata.yaml  # tool name, version, author — copy from submissions/example/
-   ```
+2. Create a folder under `submissions/` named after your method, containing
+   `results.yaml` and `metadata.yaml` (copy the metadata template from
+   `submissions/example/`).
 3. Open a pull request. CI will post your submitted values as a build artifact.

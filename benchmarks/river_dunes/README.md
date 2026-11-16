@@ -116,12 +116,9 @@ The compiled table reports, for each submission:
 ## How to submit
 
 1. Fork this repository.
-2. Create a folder under `submissions/` named after your method:
-   ```
-   submissions/my-method/
-   ├── result.csv      # your per-bedform geometry table
-   └── metadata.yaml  # tool name, version, author — copy from an existing submission
-   ```
+2. Create a folder under `submissions/` named after your method, containing
+   `result.csv` and `metadata.yaml` (copy the metadata template from an
+   existing submission).
 3. Open a pull request. CI regenerates `results_table.json` and publishes it
    with the website on `gh-pages`; generated result files are not committed to
    `main`.

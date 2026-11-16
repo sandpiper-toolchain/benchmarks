@@ -45,12 +45,9 @@ The `--output` option is only available when scoring a single submission.
 ## How to submit
 
 1. Fork this repository.
-2. Create a folder under `submissions/` named after your method:
-   ```
-   submissions/my-method/
-   ├── result.geojson    # your extracted shoreline (polyline, any projected CRS)
-   └── metadata.yaml     # tool name, version, author — copy from submissions/example/
-   ```
+2. Create a folder under `submissions/` named after your method, containing
+   `result.geojson` and `metadata.yaml` (copy the metadata template from
+   `submissions/example/`).
 3. Open a pull request. CI will automatically score your submission against
    all reference digitizations in `data/references.yaml` and post the results
    as a build artifact.

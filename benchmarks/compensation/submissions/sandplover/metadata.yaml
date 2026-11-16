@@ -3,10 +3,8 @@
 method_name: "sandplover"
 
 method_description: >
-  Compute compensation statistic (sigma_ss). Additional post processing fits a 
-  single line in log-log space of the change in the standard deviation of 
-  stratigraphic thickness (sigma_ss) measured over increasing vertical thickness; 
-  the slope of this line is kappa.
+  Compute compensation statistic (sigma_ss) for all time windows. Bin sigma_ss
+  values into log-spaced bins. Fit a line in log-log space.
 
 tool_name: "sandplover compute_compensation"
 tool_version: "0.5.1"
@@ -18,3 +16,4 @@ date: "2026-11-12"
 
 # Any additional notes about the submission, preprocessing, or caveats.
 notes: >
+
