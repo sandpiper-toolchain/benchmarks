@@ -60,6 +60,11 @@ def test_build_site_uses_configured_slug_for_page_path(tmp_path, monkeypatch):
         '  file_pattern: results.yaml\n',
         encoding="utf-8",
     )
+    (benchmark_dir / "README.md").write_text(
+        "# Benchmark details\n\nThis **benchmark** has a table:\n\n"
+        "| Field |\n| --- |\n| Value |\n",
+        encoding="utf-8",
+    )
     output_dir = tmp_path / "site"
 
     monkeypatch.setattr(build_site, "discover_benchmarks", lambda: [benchmark_dir])
@@ -73,5 +78,13 @@ def test_build_site_uses_configured_slug_for_page_path(tmp_path, monkeypatch):
 
     assert (output_dir / "benchmarks" / "public-route" / "index.html").is_file()
     assert not (output_dir / "benchmarks" / "source-directory" / "index.html").exists()
+    benchmark_page = (
+        output_dir / "benchmarks" / "public-route" / "index.html"
+    ).read_text(encoding="utf-8")
+    assert "<strong>benchmark</strong>" in benchmark_page
+    assert "<table>" in benchmark_page
+    assert benchmark_page.index('<div id="benchmark-root">') < benchmark_page.index(
+        '<section class="benchmark-readme"'
+    )
     index = (output_dir / "index.html").read_text(encoding="utf-8")
     assert 'href="benchmarks/public-route/"' in index

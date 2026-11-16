@@ -126,22 +126,6 @@ The compiled table reports, for each submission:
    with the website on `gh-pages`; generated result files are not committed to
    `main`.
 
-## Results
-
-The website's results table is generated automatically from `results_table.json`.
-Statistics are computed across **all** detected bedforms pooled from all profiles.
-
-| Method | *n* bedforms | *H* mean (m) | *L* mean (m) | *d* mean (m) | Date |
-|--------|-------------|-------------|-------------|-------------|------|
-| Cisneros et al. — BAMBI | 5001 | — | — | — | 2020 |
-| Scheiber, Lojek et al. | — | — | — | — | 2021 |
-| Wang et al. — DPA | — | — | — | — | 2020 |
-| Lefebvre et al. | — | — | — | — | 2021 |
-| Zomer et al. | — | — | — | — | 2021 |
-
-> **Note:** Run `python benchmarks/river_dunes/scoring/compile_results.py benchmarks/river_dunes/` to regenerate
-> this table from the current submissions.
-
 ## References
 
 Automated bedform detection and the broader context of method intercomparison

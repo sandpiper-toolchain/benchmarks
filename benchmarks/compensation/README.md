@@ -143,9 +143,3 @@ A `score_output.json` is written next to each `results.yaml`.
    ```
 3. Open a pull request.  CI will automatically score your submission against the
    reference values and post the results as a build artifact.
-
-## Results
-
-| Method | κ comp. err (%) | κ rand. err (%) | T_c comp. err (%) | T_c rand. err (%) | Date |
-|--------|-----------------|-----------------|-------------------|-------------------|------|
-| *(none yet)* | — | — | — | — | — |

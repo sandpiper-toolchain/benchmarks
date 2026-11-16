@@ -60,7 +60,3 @@ compensational_stacking_mean2X:
    └── metadata.yaml  # tool name, version, author — copy from submissions/example/
    ```
 3. Open a pull request. CI will post your submitted values as a build artifact.
-
-## Results
-
-No submissions yet.

@@ -28,11 +28,12 @@ sys.path.insert(0, str(HERE))
 try:
     import jinja2
     from jinja2 import Environment, FileSystemLoader, select_autoescape
+    import markdown
     import markupsafe
 except ImportError:
     print(
-        "ERROR: jinja2 is not installed.\n"
-        "  Install it with:  pip install jinja2",
+        "ERROR: a required site-building dependency is not installed.\n"
+        "  Install them with:  pip install jinja2 markdown",
         file=sys.stderr,
     )
     sys.exit(1)
@@ -104,6 +105,13 @@ def load_results(benchmark_dir: Path) -> list:
     except Exception as exc:
         print(f"  WARNING: could not read {results_path}: {exc}", file=sys.stderr)
         return []
+
+
+def load_readme_html(benchmark_dir: Path) -> str:
+    """Render the benchmark README as HTML for its generated page."""
+    readme_path = benchmark_dir / "README.md"
+    readme = readme_path.read_text(encoding="utf-8")
+    return markdown.markdown(readme, extensions=["fenced_code", "tables"])
 
 
 def display_image_for(benchmark_dir: Path, data_type: str) -> str | None:
@@ -269,6 +277,7 @@ def main() -> None:
         display_image_path = display_image_for(
             entry["benchmark_dir"], cfg_dict["data_type"]
         )
+        readme_html = load_readme_html(entry["benchmark_dir"])
 
         html = page_tmpl.render(
             config=cfg_dict,
@@ -276,6 +285,7 @@ def main() -> None:
             benchmark_config_json=benchmark_config_json,
             has_display_image=display_image_path is not None,
             display_image_path=display_image_path,
+            readme_html=readme_html,
             root_path="../../",
         )
         out_benchmark_dir = output_root / "benchmarks" / cfg_dict["slug"]

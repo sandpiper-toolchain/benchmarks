@@ -10,6 +10,7 @@ on:
     paths:
       - "benchmarks/*/submissions/**"
       - "benchmarks/*/benchmark.yaml"
+      - "benchmarks/*/README.md"
       - "benchmarks/*/data/**"
       - "benchmarks/*/display.png"
       - "benchmarks/*/scoring/**"
@@ -37,7 +38,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install geopandas rasterio scipy numpy shapely pyyaml jinja2
+        run: pip install geopandas rasterio scipy numpy shapely pyyaml jinja2 markdown
 
       - name: Detect changed benchmarks and score
         run: |
@@ -73,7 +74,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install geopandas rasterio scipy numpy shapely pyyaml jinja2
+        run: pip install geopandas rasterio scipy numpy shapely pyyaml jinja2 markdown
 
       - name: Compile results tables
         run: python run_all.py

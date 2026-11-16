@@ -59,14 +59,3 @@ The `--output` option is only available when scoring a single submission.
 > exist, as a mean ± std across them.  References are human-produced
 > expert interpretations — inter-reference spread reflects natural
 > digitization uncertainty, not scoring noise.
-
-## Results
-
-> Reference shorelines not yet committed — results table will be populated
-> once `data/ref_*.geojson` files are available.
-
-| Method | MDE vs. refs (m) | Pixel F1 vs. refs | Roughness diff (%) | Date |
-|--------|------------------|-------------------|--------------------|------|
-| *(none yet)* | — | — | — | — |
-
-*±  values indicate mean ± std across multiple references.*
