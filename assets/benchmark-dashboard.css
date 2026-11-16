@@ -320,33 +320,6 @@ main { padding: 44px 0 76px; }
   color: white;
 }
 
-.chart-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin: 8px 0 0 6px;
-  color: var(--muted);
-  font-size: .75rem;
-}
-
-.legend-item { display: inline-flex; align-items: center; gap: 7px; }
-
-.legend-range {
-  width: 20px;
-  height: 6px;
-  border-radius: 5px;
-  background: var(--orange);
-}
-
-.legend-median {
-  width: 9px;
-  height: 9px;
-  border: 2px solid white;
-  border-radius: 50%;
-  background: var(--blue);
-  box-shadow: 0 0 0 1px var(--blue);
-}
-
 .chart-wrap { width: 100%; overflow-x: auto; }
 .chart-wrap svg { display: block; width: 100%; height: auto; overflow: visible; }
 
