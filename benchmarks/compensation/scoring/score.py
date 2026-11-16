@@ -30,8 +30,6 @@ import json
 import sys
 from pathlib import Path
 
-import yaml
-
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[2]
 sys.path.insert(0, str(REPO_ROOT))
@@ -40,9 +38,9 @@ BENCHMARK_DIR = HERE.parent
 SUBMISSIONS_DIR = BENCHMARK_DIR / "submissions"
 
 from scoring.benchmark import load_config
-from scoring.metadata import read_metadata
+from scoring.compile import compile_results_table, discover_submissions, load_yaml
 from scoring.metrics.value_metrics import abs_error, rel_error_pct
-from scoring.output import write_score_output, write_results_table
+from scoring.output import write_score_output
 
 
 def parse_args():
@@ -58,11 +56,6 @@ def parse_args():
         help="Where to write the JSON result (default: score_output.json next to submission).",
     )
     return p.parse_args()
-
-
-def load_yaml(path: Path) -> dict:
-    with open(path) as fh:
-        return yaml.safe_load(fh)
 
 
 def validate_submission(data: dict, path: Path, datasets: dict) -> None:
@@ -112,6 +105,12 @@ def score_submission(submission_data: dict, datasets: dict) -> dict:
     return theoretical
 
 
+def _build_compensation_record(score_data: dict, _: Path) -> dict:
+    """Extract per-dataset theoretical scores from a score_output.json dict."""
+    theoretical = score_data.get("vs_references", {}).get("theoretical", {})
+    return {ds: theoretical.get(ds) for ds in theoretical} if theoretical else {}
+
+
 def main():
     args = parse_args()
     config = load_config(BENCHMARK_DIR)
@@ -125,18 +124,7 @@ def main():
             )
             sys.exit(2)
 
-        if not SUBMISSIONS_DIR.is_dir():
-            print(
-                f"ERROR: submissions directory not found: {SUBMISSIONS_DIR}",
-                file=sys.stderr,
-            )
-            sys.exit(1)
-
-        submissions = sorted(
-            path.resolve()
-            for path in SUBMISSIONS_DIR.rglob("results.yaml")
-            if path.relative_to(SUBMISSIONS_DIR).parts[0] != "example"
-        )
+        submissions = discover_submissions(SUBMISSIONS_DIR, "results.yaml")
 
         if not submissions:
             print(
@@ -187,23 +175,10 @@ def main():
 
     # Compile results_table.json when running in all-submissions mode.
     if args.submission is None:
-        records = []
-        for submission_path in submissions:
-            score_path = submission_path.parent / "score_output.json"
-            meta = read_metadata(submission_path.parent / "metadata.yaml")
-            record = dict(meta)
-            if score_path.exists():
-                with open(score_path) as fh:
-                    score_data = json.load(fh)
-                theoretical = score_data.get("vs_references", {}).get("theoretical", {})
-                for ds_name in datasets:
-                    record[ds_name] = theoretical.get(ds_name)
-            else:
-                for ds_name in datasets:
-                    record[ds_name] = None
-            records.append(record)
-        write_results_table(records, BENCHMARK_DIR)
-        print(f"Compiled {len(records)} submission(s) → {BENCHMARK_DIR / 'results_table.json'}")
+        tbl_path = compile_results_table(
+            submissions, BENCHMARK_DIR, _build_compensation_record
+        )
+        print(f"Compiled {len(submissions)} submission(s) → {tbl_path}")
 
     output = all_results if args.submission is None else all_results[0]
     print(json.dumps(output, indent=2))

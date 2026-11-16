@@ -35,13 +35,14 @@ HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-DATA_DIR = HERE.parent / "data"
+BENCHMARK_DIR = HERE.parent
+DATA_DIR = BENCHMARK_DIR / "data"
 MASK_PATH = DATA_DIR / "selenga_clipped.tif"
 REFERENCES_YAML = DATA_DIR / "references.yaml"
 
-from scoring.metadata import read_metadata
+from scoring.compile import compile_results_table, discover_submissions
 from scoring.metrics.map_metrics import mean_distance_error, pixel_f1, roughness_agreement
-from scoring.output import write_score_output, write_results_table
+from scoring.output import write_score_output
 
 
 def parse_args():
@@ -188,36 +189,17 @@ def score_one(submission: Path, refs: list[dict], out_path: Path | None = None) 
     return results
 
 
-def compile_results_table(submissions: list[Path], benchmark_dir: Path) -> Path:
-    """
-    Compile results_table.json from per-submission score_output.json files.
-
-    Does not require the raster — reads already-scored output files only.
-    Returns the path of the written results_table.json.
-    """
-    records = []
-    for submission in submissions:
-        score_path = submission.parent / "score_output.json"
-        meta = read_metadata(submission.parent / "metadata.yaml")
-        record = dict(meta)
-        # Store a relative path so the results table is portable.
-        try:
-            rel_path = submission.relative_to(benchmark_dir).as_posix()
-        except ValueError:
-            rel_path = str(submission)
-        record["geojson_files"] = [rel_path]
-        if score_path.exists():
-            with open(score_path) as fh:
-                score_data = json.load(fh)
-            record["vs_references"] = score_data.get("vs_references", {})
-            record["vs_references_summary"] = score_data.get("vs_references_summary", {})
-        else:
-            record["vs_references"] = {}
-            record["vs_references_summary"] = {}
-        records.append(record)
-
-    tbl_path = write_results_table(records, benchmark_dir)
-    return tbl_path
+def _build_shoreline_record(score_data: dict, submission_path: Path) -> dict:
+    """Extract shoreline-specific fields from a score_output.json dict."""
+    try:
+        rel_path = submission_path.relative_to(BENCHMARK_DIR).as_posix()
+    except ValueError:
+        rel_path = str(submission_path)
+    return {
+        "geojson_files": [rel_path],
+        "vs_references": score_data.get("vs_references", {}),
+        "vs_references_summary": score_data.get("vs_references_summary", {}),
+    }
 
 
 def main():
@@ -232,18 +214,8 @@ def main():
             )
             sys.exit(2)
 
-        submissions_dir = HERE.parent / "submissions"
-        if not submissions_dir.is_dir():
-            print(
-                f"ERROR: submissions directory not found: {submissions_dir}",
-                file=sys.stderr,
-            )
-            sys.exit(1)
-        submissions = sorted(
-            path.resolve()
-            for path in submissions_dir.rglob("*.geojson")
-            if path.relative_to(submissions_dir).parts[0] != "example"
-        )
+        submissions_dir = BENCHMARK_DIR / "submissions"
+        submissions = discover_submissions(submissions_dir, "*.geojson")
         if not submissions:
             print(
                 f"ERROR: no submission GeoJSON files found in {submissions_dir}",
@@ -267,8 +239,8 @@ def main():
                 results = score_one(submission, refs)
                 all_results.append(results)
 
-        benchmark_dir = HERE.parent
-        tbl_path = compile_results_table(submissions, benchmark_dir)
+        benchmark_dir = BENCHMARK_DIR
+        tbl_path = compile_results_table(submissions, benchmark_dir, _build_shoreline_record)
         print(f"\nCompiled {len(submissions)} submission(s) → {tbl_path}")
 
         print()
