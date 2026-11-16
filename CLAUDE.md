@@ -63,7 +63,7 @@ All scoring scripts, compile scripts, and website templates read from it.
 ```yaml
 # ── Identity ───────────────────────────────────────────────────────
 name:    "Human-readable benchmark name"
-slug:    "directory_name"      # must match the directory name exactly
+slug:    "public-route"        # URL path segment; may differ from the directory name
 tagline: "One-sentence description for benchmark cards"
 domain:  "fluvial"             # fluvial | coastal | stratigraphy | aeolian | lab | other
 status:  "active"              # active | draft | archived

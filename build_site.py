@@ -222,20 +222,6 @@ def main() -> None:
         print("ERROR: no benchmarks/*/benchmark.yaml files found.", file=sys.stderr)
         sys.exit(1)
 
-    # Determine which benchmarks to (re)build pages for.
-    if args.slug is not None:
-        target_dirs = [d for d in all_benchmark_dirs if d.name == args.slug]
-        if not target_dirs:
-            available = [d.name for d in all_benchmark_dirs]
-            print(
-                f"ERROR: no benchmark found for slug '{args.slug}'.\n"
-                f"  Available: {available}",
-                file=sys.stderr,
-            )
-            sys.exit(1)
-    else:
-        target_dirs = all_benchmark_dirs
-
     # Load config + results for every benchmark (needed for the index even when
     # only one slug is targeted for page rebuild).
     all_benchmarks: list[dict] = []
@@ -253,6 +239,24 @@ def main() -> None:
             "results": results,
             "_cfg": cfg,  # keep original for page rendering
         })
+
+    # Accept the public slug and the source directory name for targeted builds.
+    if args.slug is not None:
+        target_dirs = [
+            entry["benchmark_dir"]
+            for entry in all_benchmarks
+            if args.slug in (entry["config"]["slug"], entry["benchmark_dir"].name)
+        ]
+        if not target_dirs:
+            available = [entry["config"]["slug"] for entry in all_benchmarks]
+            print(
+                f"ERROR: no benchmark found for slug '{args.slug}'.\n"
+                f"  Available slugs: {available}",
+                file=sys.stderr,
+            )
+            sys.exit(1)
+    else:
+        target_dirs = all_benchmark_dirs
 
     # Render per-benchmark pages.
     page_tmpl = env.get_template("benchmark_page.html")
@@ -274,7 +278,7 @@ def main() -> None:
             display_image_path=display_image_path,
             root_path="../../",
         )
-        out_benchmark_dir = output_root / "benchmarks" / entry["benchmark_dir"].name
+        out_benchmark_dir = output_root / "benchmarks" / cfg_dict["slug"]
         out_benchmark_dir.mkdir(parents=True, exist_ok=True)
         if args.output_dir:
             export_site_assets(
