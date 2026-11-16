@@ -1,0 +1,18 @@
+# Submission metadata — fill this in when contributing a new result.
+
+method_name: "Example Submission"
+method_description: >
+  A placeholder submission showing the expected file layout.
+  Replace results.csv with your own output.
+
+method_version: null       # e.g. "0.5.0"
+method_url: null           # link to tool repo, paper, or Zenodo archive
+
+author_name: null
+author_orcid: null         # optional
+
+preferred_citation: null   # optional full citation for the paper describing the method
+
+date: null                 # ISO 8601, e.g. 2025-01-15
+
+notes: null                # any caveats, preprocessing steps, or parameter choices

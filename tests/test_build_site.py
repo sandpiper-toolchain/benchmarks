@@ -71,7 +71,8 @@ def test_build_site_uses_configured_slug_for_page_path(tmp_path, monkeypatch):
                 {
                     "method_name": "Example method",
                     "method_description": "A <careful> approach",
-                    "method_type": "automated",
+                    "method_version": "1.0",
+                    "method_url": "https://example.com/tool",
                     "runtime_seconds": 2.5,
                     "datasets": {"sample": {"kappa": 0.5}},
                 }
@@ -94,7 +95,9 @@ def test_build_site_uses_configured_slug_for_page_path(tmp_path, monkeypatch):
     contributing_page = (output_dir / "CONTRIBUTING.html").read_text(encoding="utf-8")
     assert "<h1>Contributing to sandpiper</h1>" in contributing_page
     assert "<strong>Fork</strong>" in contributing_page
-    assert "<pre><code>" in contributing_page
+    # metadata.yaml fields table is present (added to CONTRIBUTING.md)
+    assert "<td><code>method_name</code></td>" in contributing_page
+    assert "<td><code>method_version</code></td>" in contributing_page
     assert 'href="./CONTRIBUTING.html"' in contributing_page
     assert not (output_dir / "benchmarks" / "source-directory" / "index.html").exists()
     benchmark_page = (

@@ -1,20 +1,16 @@
 # Submission metadata — fill this in when contributing a new result.
 
-# ── Required fields ────────────────────────────────────────────────────────────
-
 method_name: "Example Submission"
-
 method_description: >
   A placeholder submission showing the expected file layout.
   Replace results.yaml with your own output.
 
-tool_name: null          # e.g. "sandplover", "custom script"
-tool_version: null       # e.g. "0.5.0"
-tool_url: null           # link to tool repo or paper
+method_version: null       # e.g. "0.5.0"
+method_url: null           # link to tool repo, paper, or Zenodo archive
 
 author_name: null
-author_orcid: null       # optional
+author_orcid: null         # optional
 
-date: null               # ISO 8601, e.g. 2025-01-15
+date: null                 # ISO 8601, e.g. 2025-01-15
 
-notes: null              # any caveats, preprocessing steps, or parameter choices
+notes: null                # any caveats, preprocessing steps, or parameter choices

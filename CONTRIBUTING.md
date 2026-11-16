@@ -14,9 +14,30 @@
    `MultiLineString` with a defined CRS (any projected CRS is fine —
    the scorer will reproject automatically).
 4. Fill in `metadata.yaml` — at minimum provide `method_name`,
-   `tool_name`, `tool_version`, and `date`.
+   `method_version`, and `date`.  See the table below for all allowed
+   fields.
 5. Open a pull request. CI will automatically score your submission and
    upload a `score_output.json` artifact with the results.
+
+### `metadata.yaml` fields
+
+Every submission folder must contain a `metadata.yaml` file.
+The table below defines all recognised fields; unknown fields are ignored.
+
+| Field | Required | Description |
+|---|---|---|
+| `method_name` | **yes** | Short name of the method or tool (e.g. `"BAMBI"`, `"sandplover OAM"`) |
+| `method_description` | **yes** | One-paragraph plain-English description of the approach |
+| `method_version` | recommended | Version string of the tool or script (e.g. `"0.5.1"`, `"1.0"`) |
+| `method_url` | recommended | URL for the tool's repository, documentation, or Zenodo archive |
+| `author_name` | **yes** | Name(s) of the person(s) submitting the result (e.g. `"Smith et al."`) |
+| `author_orcid` | optional | ORCID iD of the submitting author (e.g. `"0000-0000-0000-0000"`) |
+| `preferred_citation` | optional | Full citation for the paper describing the method |
+| `date` | **yes** | ISO 8601 date the result was produced (e.g. `"2025-01-15"`) |
+| `notes` | optional | Caveats, preprocessing steps, parameter choices, or other remarks |
+| `runtime_seconds` | optional | Wall-clock compute time in seconds (exclude pre/post-processing) |
+| `runtime_machine` | optional | Hardware description (e.g. `"Intel i7-10700, 64 GB RAM"`) |
+| `runtime_notes` | optional | Free-text notes on the runtime environment (e.g. `"single-thread, CPU"`) |
 
 > **How the website updates:** once your PR is merged to `main`, CI
 > recompiles the results tables, builds the site with `build_site.py`, and

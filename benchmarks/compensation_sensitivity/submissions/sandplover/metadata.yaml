@@ -1,21 +1,16 @@
-# ── Required fields ───────────────────────────────────────────────────────────
-
-method_name: "sandplover"
-
+method_name: "sandplover compute_compensation"
 method_description: >
   Compute compensation statistic (sigma_ss) for all time windows. Bin sigma_ss
   values into log-spaced bins. Find the breakpoint between sigma_ss following a
-  line in log-log space with slope of negative 1 and different slope for shorter 
+  line in log-log space with slope of negative 1 and different slope for shorter
   time windows. Fit a line in log-log space to sigma_ss values from shorter time
   windows.
 
-tool_name: "sandplover compute_compensation"
-tool_version: "0.5.1"
-tool_url: "https://sandpiper-toolchain.org/sandplover/_autosummary/sandplover.strat.compute_compensation.html#sandplover.strat.compute_compensation"
+method_version: "0.5.1"
+method_url: "https://sandpiper-toolchain.org/sandplover/_autosummary/sandplover.strat.compute_compensation.html#sandplover.strat.compute_compensation"
 
 author_name: "sandpiper toolchain contributors"
 
 date: "2026-11-12"
 
-# Any additional notes about the submission, preprocessing, or caveats.
-notes: >
+notes: null

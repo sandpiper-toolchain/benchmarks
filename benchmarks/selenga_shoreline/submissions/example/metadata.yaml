@@ -5,16 +5,15 @@ method_description: >
   A placeholder submission showing the expected file layout.
   Replace results.geojson with your own output.
 
-tool_name: null          # e.g. "sandplover", "pyGEOS", "custom script"
-tool_version: null       # e.g. "0.5.0"
-tool_url: null           # link to tool repo or paper
+method_version: null       # e.g. "0.5.0"
+method_url: null           # link to tool repo, paper, or Zenodo archive
 
 author_name: null
-author_orcid: null       # optional
+author_orcid: null         # optional
 
-date: null               # ISO 8601, e.g. 2025-01-15
+date: null                 # ISO 8601, e.g. 2025-01-15
 notes: null
 
-runtime_seconds: null    # compute time for shoreline calculation (exclude pre- and post-processing)
-runtime_machine: null    # for example, "<manufacturer> <CPU name>, <num> GB RAM, <GPU info, if relevant>"
-runtime_notes: null      # optional notes about how this runs, e.g., on GPU, CPU
+runtime_seconds: null      # compute time for shoreline calculation (exclude pre- and post-processing)
+runtime_machine: null      # e.g. "<manufacturer> <CPU name>, <num> GB RAM, <GPU info, if relevant>"
+runtime_notes: null        # optional notes about how this runs, e.g., on GPU, CPU

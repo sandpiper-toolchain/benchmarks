@@ -18,16 +18,16 @@ import yaml
 METADATA_FIELDS: tuple[str, ...] = (
     "method_name",
     "method_description",
-    "method_type",
-    "tool_name",
-    "tool_version",
-    "tool_url",
+    "method_version",
+    "method_url",
     "author_name",
     "author_orcid",
     "preferred_citation",
     "date",
     "notes",
     "runtime_seconds",
+    "runtime_machine",
+    "runtime_notes",
 )
 
 
