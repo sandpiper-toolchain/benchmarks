@@ -48,6 +48,38 @@
     <section class="benchmark-readme" aria-label="Benchmark documentation">
       {{ readme_html | safe }}
     </section>
+    <section class="submission-details" aria-labelledby="submission-details-title">
+      <h2 id="submission-details-title">Submission details</h2>
+      {% if results %}
+      <div class="submission-records">
+        {% for record in results %}
+        <article class="submission-record">
+          <h3>{{ record.get('method_name') or 'Submission ' ~ loop.index }}</h3>
+          <table>
+            <tbody>
+              {% for field, value in record.items() %}
+              <tr>
+                <th scope="row">{{ field }}</th>
+                <td>
+                  {% if value is mapping or (value is sequence and value is not string) %}
+                  <pre>{{ value | tojson(indent=2) }}</pre>
+                  {% elif value is none %}
+                  —
+                  {% else %}
+                  {{ value }}
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="submission-details-empty">No submission details are available yet.</p>
+      {% endif %}
+    </section>
   </main>
 
   {% include "partials/footer.html" %}

@@ -389,6 +389,14 @@ main { padding: 44px 0 76px; }
   font-weight: 750;
 }
 
+.method-description {
+  display: block;
+  margin: 3px 0 5px;
+  color: var(--muted);
+  font-size: .76rem;
+  line-height: 1.45;
+}
+
 .method-meta {
   display: block;
   color: var(--muted);
@@ -863,6 +871,66 @@ footer {
   margin-top: 48px;
   padding-top: 32px;
   border-top: 1px solid var(--line);
+}
+
+.submission-details {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.submission-details > h2 {
+  margin: 0 0 20px;
+  font: 500 clamp(1.7rem, 3vw, 2.4rem)/1.2 var(--serif);
+}
+
+.submission-records {
+  display: grid;
+  gap: 20px;
+}
+
+.submission-record {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface);
+}
+
+.submission-record h3 {
+  margin-bottom: 12px;
+  font: 500 1.3rem/1.2 var(--serif);
+}
+
+.submission-record table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.submission-record th,
+.submission-record td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.submission-record th {
+  width: 1%;
+  background: var(--soft-blue);
+  white-space: nowrap;
+}
+
+.submission-record pre {
+  margin: 0;
+  overflow-x: auto;
+  font: .78rem/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.submission-details-empty {
+  color: var(--muted);
 }
 
 .benchmark-readme h1,

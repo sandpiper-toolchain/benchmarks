@@ -133,11 +133,15 @@
       var link = r.tool_url && /^https?:\/\//i.test(r.tool_url)
         ? '<a class="method-name" href="' + xmlText(r.tool_url) + '" target="_blank" rel="noopener noreferrer">' + xmlText(label) + " ↗</a>"
         : '<span class="method-name">' + xmlText(label) + "</span>";
+      var description = r.method_description
+        ? '<span class="method-description">' + xmlText(r.method_description) + "</span>"
+        : "";
       var countInfo = getCount ? getCount(r) : null;
       var countHtml = countInfo
         ? '<span class="method-count">' + xmlText(countInfo.value) + "<small>" + xmlText(countInfo.label) + "</small></span>"
         : "";
       return '<div class="method-row"><div>' + link
+        + description
         + '<span class="method-meta">' + xmlText(meta || "") + "</span></div>"
         + countHtml + "</div>";
     }).join("");

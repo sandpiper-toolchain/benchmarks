@@ -65,6 +65,20 @@ def test_build_site_uses_configured_slug_for_page_path(tmp_path, monkeypatch):
         "| Field |\n| --- |\n| Value |\n",
         encoding="utf-8",
     )
+    (benchmark_dir / "results_table.json").write_text(
+        json.dumps(
+            [
+                {
+                    "method_name": "Example method",
+                    "method_description": "A <careful> approach",
+                    "method_type": "automated",
+                    "runtime_seconds": 2.5,
+                    "datasets": {"sample": {"kappa": 0.5}},
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
     output_dir = tmp_path / "site"
 
     monkeypatch.setattr(build_site, "discover_benchmarks", lambda: [benchmark_dir])
@@ -83,8 +97,15 @@ def test_build_site_uses_configured_slug_for_page_path(tmp_path, monkeypatch):
     ).read_text(encoding="utf-8")
     assert "<strong>benchmark</strong>" in benchmark_page
     assert "<table>" in benchmark_page
+    assert "Submission details" in benchmark_page
+    assert "Example method" in benchmark_page
+    assert "A &lt;careful&gt; approach" in benchmark_page
+    assert '"kappa": 0.5' in benchmark_page
     assert benchmark_page.index('<div id="benchmark-root">') < benchmark_page.index(
         '<section class="benchmark-readme"'
     )
+    assert benchmark_page.index("</section>", benchmark_page.index(
+        '<section class="benchmark-readme"'
+    )) < benchmark_page.index('<section class="submission-details"')
     index = (output_dir / "index.html").read_text(encoding="utf-8")
     assert 'href="benchmarks/public-route/"' in index

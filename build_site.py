@@ -286,6 +286,7 @@ def main() -> None:
             has_display_image=display_image_path is not None,
             display_image_path=display_image_path,
             readme_html=readme_html,
+            results=entry["results"],
             root_path="../../",
         )
         out_benchmark_dir = output_root / "benchmarks" / cfg_dict["slug"]
