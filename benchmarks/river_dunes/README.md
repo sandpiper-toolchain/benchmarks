@@ -63,7 +63,7 @@ Each `ParanaBFP-<N>.txt` file contains a single profile in NT2D format:
 
 ## Submission format
 
-A single CSV file named `result.csv` with one row per detected bedform:
+A single CSV file named `results.csv` with one row per detected bedform:
 
 | Column | Type | Required | Description |
 |--------|------|----------|-------------|
@@ -96,7 +96,7 @@ height_m,length_m,depth_m
 
 ## Intercomparison summary
 
-The compile script reads every `result.csv` in `submissions/`, computes
+The compile script reads every `results.csv` in `submissions/`, computes
 distribution-level summary statistics for each geometry column, and writes
 `results_table.json`.  Run it locally with:
 
@@ -117,7 +117,7 @@ The compiled table reports, for each submission:
 
 1. Fork this repository.
 2. Create a folder under `submissions/` named after your method, containing
-   `result.csv` and `metadata.yaml` (copy the metadata template from an
+   `results.csv` and `metadata.yaml` (copy the metadata template from an
    existing submission).
 3. Open a pull request. CI regenerates `results_table.json` and publishes it
    with the website on `gh-pages`; generated result files are not committed to

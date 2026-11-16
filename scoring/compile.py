@@ -76,7 +76,7 @@ def compile_results_table(
     Parameters
     ----------
     submissions:
-        Resolved paths to submission files (e.g. ``results.yaml`` or ``result.geojson``).
+        Resolved paths to submission files (e.g. ``results.yaml`` or ``results.geojson``).
         Each file's parent directory should contain ``metadata.yaml`` and optionally
         ``score_output.json``.
     benchmark_dir:

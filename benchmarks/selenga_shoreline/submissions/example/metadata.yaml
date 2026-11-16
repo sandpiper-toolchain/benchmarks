@@ -3,7 +3,7 @@
 method_name: "Example Submission"
 method_description: >
   A placeholder submission showing the expected file layout.
-  Replace result.geojson with your own output.
+  Replace results.geojson with your own output.
 
 tool_name: null          # e.g. "sandplover", "pyGEOS", "custom script"
 tool_version: null       # e.g. "0.5.0"

@@ -13,7 +13,7 @@ geometry_type:  "polyline"      # polyline | polygon | point
 
 # ── Submission format ──────────────────────────────────────────────────────────
 submission:
-  file_pattern: "*.geojson"
+  file_pattern: "results.geojson"
 
 # ── References ─────────────────────────────────────────────────────────────────
 references:

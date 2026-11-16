@@ -215,7 +215,7 @@ def main():
             sys.exit(2)
 
         submissions_dir = BENCHMARK_DIR / "submissions"
-        submissions = discover_submissions(submissions_dir, "*.geojson")
+        submissions = discover_submissions(submissions_dir, "results.geojson")
         if not submissions:
             print(
                 f"ERROR: no submission GeoJSON files found in {submissions_dir}",

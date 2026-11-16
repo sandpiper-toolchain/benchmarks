@@ -33,7 +33,7 @@ Run the scorer locally:
 
 ```bash
 # Score one submission:
-python scoring/score.py submissions/my-method/result.geojson
+python scoring/score.py submissions/my-method/results.geojson
 
 # Score all GeoJSON files under submissions/ (excluding the example template):
 python scoring/score.py
@@ -46,7 +46,7 @@ The `--output` option is only available when scoring a single submission.
 
 1. Fork this repository.
 2. Create a folder under `submissions/` named after your method, containing
-   `result.geojson` and `metadata.yaml` (copy the metadata template from
+   `results.geojson` and `metadata.yaml` (copy the metadata template from
    `submissions/example/`).
 3. Open a pull request. CI will automatically score your submission against
    all reference digitizations in `data/references.yaml` and post the results

@@ -7,10 +7,10 @@
    a subfolder under `submissions/` named after your method:
    ```
    submissions/your-method-name/
-   ├── result.geojson   # your output shoreline (GeoJSON polyline)
+   ├── results.geojson   # your output shoreline (GeoJSON polyline)
    └── metadata.yaml    # see submissions/example/metadata.yaml
    ```
-3. Your `result.geojson` must be a valid GeoJSON `LineString` or
+3. Your `results.geojson` must be a valid GeoJSON `LineString` or
    `MultiLineString` with a defined CRS (any projected CRS is fine —
    the scorer will reproject automatically).
 4. Fill in `metadata.yaml` — at minimum provide `method_name`,

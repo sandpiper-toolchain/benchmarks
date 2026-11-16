@@ -205,7 +205,7 @@ Common metric patterns across benchmarks:
 ## CI workflow
 
 **`score` job** — triggered on pull requests that touch `benchmarks/*/submissions/**`:
-- Detects changed `result.geojson` files via `git diff`
+- Detects changed `results.*` files via `git diff`
 - Runs `score.py` for each changed submission under `benchmarks/`
 - Uploads `score_output.json` as a build artifact
 

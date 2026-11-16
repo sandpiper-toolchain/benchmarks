@@ -3,7 +3,7 @@
 Score all submissions for the Paraná River Bedform Geometry benchmark.
 
 This is an intercomparison/identification benchmark — there is no ground-truth
-reference.  The script reads each submission's result.csv, computes
+reference.  The script reads each submission's results.csv, computes
 distribution-level summary statistics for the three geometry columns, merges
 those with the submission's metadata.yaml, and writes the aggregated table.
 
@@ -50,7 +50,7 @@ SUBMISSIONS_DIR = BENCHMARK_DIR / "submissions"
 
 def summarise_csv(csv_path: Path, columns: list[str]) -> dict | None:
     """
-    Load a result.csv and compute per-column distribution statistics.
+    Load a results.csv and compute per-column distribution statistics.
 
     Returns None on error.
     """
@@ -75,10 +75,10 @@ def summarise_csv(csv_path: Path, columns: list[str]) -> dict | None:
 
 
 def collect_records(submissions_dir: Path, columns: list[str]) -> list[dict]:
-    """Walk submissions_dir, build one record per result.csv found."""
+    """Walk submissions_dir, build one record per results.csv found."""
     records = []
 
-    for csv_path in sorted(submissions_dir.rglob("result.csv")):
+    for csv_path in sorted(submissions_dir.rglob("results.csv")):
         if csv_path.relative_to(submissions_dir).parts[0] == "example":
             continue
 
