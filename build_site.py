@@ -114,6 +114,12 @@ def load_readme_html(benchmark_dir: Path) -> str:
     return markdown.markdown(readme, extensions=["fenced_code", "tables"])
 
 
+def load_contributing_html() -> str:
+    """Render the repository contribution guide as HTML for the website."""
+    contributing = (HERE / "CONTRIBUTING.md").read_text(encoding="utf-8")
+    return markdown.markdown(contributing, extensions=["fenced_code", "tables"])
+
+
 def display_image_for(benchmark_dir: Path, data_type: str) -> str | None:
     """Return the benchmark-relative preview image path for non-map benchmarks."""
     if data_type != "map" and (benchmark_dir / "display.png").is_file():
@@ -265,6 +271,16 @@ def main() -> None:
             sys.exit(1)
     else:
         target_dirs = all_benchmark_dirs
+
+    output_root.mkdir(parents=True, exist_ok=True)
+    contributing_tmpl = env.get_template("contributing.html")
+    contributing_html = contributing_tmpl.render(
+        content=load_contributing_html(),
+        root_path="./",
+    )
+    contributing_path = output_root / "CONTRIBUTING.html"
+    contributing_path.write_text(contributing_html, encoding="utf-8")
+    print(f"  wrote {contributing_path.relative_to(output_root)}")
 
     # Render per-benchmark pages.
     page_tmpl = env.get_template("benchmark_page.html")

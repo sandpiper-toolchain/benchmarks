@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ee">
+  <meta name="description" content="How to contribute submissions, reference solutions, and benchmark ideas to sandpiper benchmarks.">
+  <title>Contributing — Sandpiper Benchmarks</title>
+  <link rel="icon" type="image/png" href="{{ root_path }}assets/favicon.png">
+  <link rel="stylesheet" href="{{ root_path }}assets/benchmark-dashboard.css">
+</head>
+<body>
+  {% include "partials/header.html" %}
+
+  <main class="wrap" style="padding: 44px 0 76px">
+    <section class="benchmark-readme" aria-label="Contribution guide" style="margin-top: 0; padding-top: 0; border-top: 0">
+      {{ content | safe }}
+    </section>
+  </main>
+
+  {% include "partials/footer.html" %}
+</body>
+</html>

@@ -91,6 +91,11 @@ def test_build_site_uses_configured_slug_for_page_path(tmp_path, monkeypatch):
     build_site.main()
 
     assert (output_dir / "benchmarks" / "public-route" / "index.html").is_file()
+    contributing_page = (output_dir / "CONTRIBUTING.html").read_text(encoding="utf-8")
+    assert "<h1>Contributing to sandpiper</h1>" in contributing_page
+    assert "<strong>Fork</strong>" in contributing_page
+    assert "<pre><code>" in contributing_page
+    assert 'href="./CONTRIBUTING.html"' in contributing_page
     assert not (output_dir / "benchmarks" / "source-directory" / "index.html").exists()
     benchmark_page = (
         output_dir / "benchmarks" / "public-route" / "index.html"
@@ -109,3 +114,4 @@ def test_build_site_uses_configured_slug_for_page_path(tmp_path, monkeypatch):
     )) < benchmark_page.index('<section class="submission-details"')
     index = (output_dir / "index.html").read_text(encoding="utf-8")
     assert 'href="benchmarks/public-route/"' in index
+    assert 'href="CONTRIBUTING.html"' in index
