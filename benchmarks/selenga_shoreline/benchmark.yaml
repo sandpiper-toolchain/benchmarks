@@ -1,6 +1,6 @@
 # ── Identity ───────────────────────────────────────────────────────────────────
 name:    "Selenga Delta Shoreline"
-slug:    "selenga-shoreline"
+slug:    "selenga_shoreline"
 tagline: "Trace the land–water boundary from a binary delta mask"
 domain:  "delta"                # fluvial | coastal | stratigraphy | aeolian | lab | other
 status:  "active"               # active | draft | archived
