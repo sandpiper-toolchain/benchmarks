@@ -296,7 +296,7 @@
     return chart;
   }
 
-  /* ── Map: canvas rendering ────────────────────────────────────── */
+  /* ── Map: Leaflet rendering ───────────────────────────────────── */
 
   var lineColors = ["#cb6040", "#5b55a5", "#24734f", "#b44878", "#805b32", "#257180"];
 
@@ -318,54 +318,50 @@
     }).filter(function (l) { return l.length > 1; });
   }
 
-  function projectLines(lines, crsCode) {
-    if (!crsCode || crsCode.toUpperCase() === "EPSG:4326" || typeof window.proj4 !== "function") return lines;
+  function toMapCoords(lines, mapState, crsCode) {
+    var raster = mapState.raster;
     return lines.map(function (line) {
       return line.map(function (pt) {
         var x = +pt[0], y = +pt[1];
-        // If coords look like lon/lat, reproject to target CRS.
-        if (Math.abs(x) <= 180 && Math.abs(y) <= 90) {
-          return window.proj4("EPSG:4326", crsCode, [x, y]);
+        if (crsCode && (Math.abs(x) <= 180 && Math.abs(y) <= 90)
+            && crsCode.toUpperCase() !== "EPSG:4326" && typeof window.proj4 === "function") {
+          var projected = window.proj4("EPSG:4326", crsCode, [x, y]);
+          x = projected[0];
+          y = projected[1];
         }
-        return [x, y];
+        var pixelX = (x - raster.bounds[0]) / (raster.bounds[2] - raster.bounds[0]) * raster.width;
+        var pixelY = (raster.bounds[3] - y) / (raster.bounds[3] - raster.bounds[1]) * raster.height;
+        return [raster.height - pixelY, pixelX];
       });
     });
   }
 
-  function paintMap(mapWrap, mapState) {
-    var stage = mapWrap.querySelector("#map-stage");
-    var canvas = mapWrap.querySelector("#map-canvas");
-    if (!stage || !canvas) return;
-    var ctx = canvas.getContext("2d");
-    var W = stage.clientWidth, H = stage.clientHeight;
-    if (!W || !H) return;
-    var dpr = window.devicePixelRatio || 1;
-    canvas.width = Math.round(W * dpr);
-    canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, W, H);
+  function paintMap(mapWrap, mapState, crsCode) {
     if (!mapState.raster) return;
-
-    var bounds = mapState.raster.bounds;  // [minX, minY, maxX, maxY]
-    var bw = bounds[2] - bounds[0], bh = bounds[3] - bounds[1];
-    var scale = Math.min(W / bw, H / bh);
-    var dw = bw * scale, dh = bh * scale;
-    var ox = (W - dw) / 2, oy = (H - dh) / 2;
-    function proj(pt) {
-      return [ox + (+pt[0] - bounds[0]) * scale, oy + (bounds[3] - +pt[1]) * scale];
-    }
-    ctx.drawImage(mapState.raster.canvas, ox, oy, dw, dh);
-    mapState.layers.forEach(function (layer, i) {
-      ctx.beginPath();
-      layer.lines.forEach(function (line) {
-        line.forEach(function (pt, j) {
-          var p = proj(pt);
-          j === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]);
-        });
+    mapState.lineGroup.clearLayers();
+    mapState.references.forEach(function (layer) {
+      toMapCoords(layer.lines, mapState, crsCode).forEach(function (line) {
+        L.polyline(line, { color: "#fffefa", weight: 5, lineJoin: "round", lineCap: "round" })
+          .addTo(mapState.lineGroup);
+        L.polyline(line, {
+          color: "#222222",
+          weight: 3,
+          lineJoin: "round",
+          lineCap: "round",
+        }).addTo(mapState.lineGroup);
       });
-      ctx.strokeStyle = "#fffefa"; ctx.lineWidth = 5;
-      ctx.lineJoin = ctx.lineCap = "round"; ctx.stroke();
-      ctx.strokeStyle = lineColors[i % lineColors.length]; ctx.lineWidth = 3; ctx.stroke();
+    });
+    mapState.layers.forEach(function (layer, i) {
+      toMapCoords(layer.lines, mapState, crsCode).forEach(function (line) {
+        L.polyline(line, { color: "#fffefa", weight: 5, lineJoin: "round", lineCap: "round" })
+          .addTo(mapState.lineGroup);
+        L.polyline(line, {
+          color: lineColors[i % lineColors.length],
+          weight: 3,
+          lineJoin: "round",
+          lineCap: "round",
+        }).addTo(mapState.lineGroup);
+      });
     });
 
     var ph = mapWrap.querySelector("#map-placeholder");
@@ -373,17 +369,18 @@
 
     var cap = mapWrap.querySelector("#map-caption");
     if (cap) {
-      var lineCount = mapState.layers.reduce(function (n, l) { return n + l.lines.length; }, 0);
-      cap.textContent = mapState.layers.length + " submission(s) · " + lineCount + " shoreline line(s)";
+      var lineCount = mapState.references.concat(mapState.layers)
+        .reduce(function (n, l) { return n + l.lines.length; }, 0);
+      cap.textContent = mapState.references.length + " reference(s) · "
+        + mapState.layers.length + " submission(s) · " + lineCount + " shoreline line(s)";
     }
 
-    // Legend
     var legendEl = mapWrap.querySelector("#map-legend");
     if (legendEl) {
       var mp = (CFG.website || {}).map_panel || {};
-      var items = [[mp.land_color || "#e8dfc7", "Land"], [mp.water_color || "#c5dfe2", "Water"]].concat(
-        mapState.layers.map(function (l, i) { return [lineColors[i % lineColors.length], l.name]; })
-      );
+      var items = [[mp.land_color || "#e8dfc7", "Land"], [mp.water_color || "#c5dfe2", "Water"]]
+        .concat(mapState.references.map(function (l) { return ["#222222", l.name]; }))
+        .concat(mapState.layers.map(function (l, i) { return [lineColors[i % lineColors.length], l.name]; }));
       legendEl.innerHTML = items.map(function (item, i) {
         return '<span class="map-legend-item">'
           + '<span class="map-swatch' + (i > 1 ? " line" : "") + '" style="background:' + xmlText(item[0]) + '" aria-hidden="true"></span>'
@@ -421,12 +418,22 @@
       id.data[p] = color[0]; id.data[p + 1] = color[1]; id.data[p + 2] = color[2]; id.data[p + 3] = 255;
     }
     cx.putImageData(id, 0, 0);
-    mapState.raster = { canvas: c, bounds: img.getBoundingBox() };
-    paintMap(mapWrap, mapState);
+    mapState.raster = { image: c.toDataURL(), bounds: img.getBoundingBox(), width: W, height: H };
+    var bounds = [[0, 0], [H, W]];
+    mapState.rasterLayer = L.imageOverlay(mapState.raster.image, bounds).addTo(mapState.map);
+    mapState.map.fitBounds(bounds);
+    paintMap(mapWrap, mapState, mapState.crsCode);
   }
 
   async function loadLayers(records, mapWrap, mapState, crsCode) {
-    var entries = records.flatMap(function (r) {
+    var entries = mapState.referenceConfig && mapState.referenceConfig.path
+      ? [{
+          name: mapState.referenceConfig.name || "Reference",
+          path: mapState.referenceConfig.path,
+          isReference: true,
+        }]
+      : [];
+    entries = entries.concat(records.flatMap(function (r) {
       var paths = Array.isArray(r.geojson_files) ? r.geojson_files : [];
       return paths.map(function (p) {
         return {
@@ -434,21 +441,23 @@
           path: p,
         };
       });
-    });
+    }));
     var errors = [];
     var loaded = await Promise.all(entries.map(async function (entry) {
       try {
         var resp = await fetch(entry.path);
         if (!resp.ok) throw new Error("HTTP " + resp.status);
         var gj = await resp.json();
-        return { name: entry.name, lines: projectLines(lineCoords(gj), crsCode) };
+        return { name: entry.name, lines: lineCoords(gj), isReference: entry.isReference };
       } catch (e) {
         errors.push(entry.name + ": " + e.message);
         return null;
       }
     }));
-    mapState.layers = loaded.filter(Boolean);
-    paintMap(mapWrap, mapState);
+    var successful = loaded.filter(Boolean);
+    mapState.references = successful.filter(function (layer) { return layer.isReference; });
+    mapState.layers = successful.filter(function (layer) { return !layer.isReference; });
+    paintMap(mapWrap, mapState, crsCode);
     return errors;
   }
 
@@ -528,7 +537,7 @@
     drawBoxplot();
   }
 
-  /* ── Renderer: map (shoreline) ────────────────────────────────── */
+  /* ── Renderer: map ────────────────────────────────────────────── */
 
   function renderMap(root, cfg, records) {
     var mp = (cfg.website || {}).map_panel || {};
@@ -544,7 +553,7 @@
       '      <p class="panel-subtitle">Drag-and-drop or upload a GeoJSON to preview on the map</p></div>',
       '    </div>',
       '    <div id="map-stage" class="map-stage">',
-      '      <canvas id="map-canvas"></canvas>',
+      '      <div id="leaflet-map" aria-label="Interactive benchmark map"></div>',
       '      <div id="map-placeholder" class="map-placeholder">',
       '        <strong>Map loading…</strong>',
       '        <span>Submissions appear as coloured lines once the raster loads.</span>',
@@ -634,9 +643,31 @@
       window.proj4.defs(crsCode, mp.crs_proj4);
     }
 
-    var mapState = { raster: null, layers: [] };
     var mapWrap = root.querySelector("#map-panel-wrap");
     var errEl = root.querySelector("#map-error");
+    if (!window.L) {
+      errEl.textContent = "Leaflet did not load — check your connection and reload.";
+      return;
+    }
+
+    var map = L.map("leaflet-map", {
+      crs: L.CRS.Simple,
+      minZoom: -10,
+      maxZoom: 8,
+      zoomSnap: 0.25,
+      zoomDelta: 0.5,
+      attributionControl: false,
+    });
+    var mapState = {
+      map: map,
+      crsCode: crsCode,
+      raster: null,
+      rasterLayer: null,
+      lineGroup: L.layerGroup().addTo(map),
+      referenceConfig: mp.reference || null,
+      references: [],
+      layers: [],
+    };
 
     // File-upload handler.
     root.querySelector("#geojson-input").addEventListener("change", async function (ev) {
@@ -644,8 +675,8 @@
       if (!file) return;
       try {
         var gj = JSON.parse(await file.text());
-        mapState.layers.push({ name: file.name, lines: projectLines(lineCoords(gj), crsCode) });
-        paintMap(mapWrap, mapState);
+        mapState.layers.push({ name: file.name, lines: lineCoords(gj) });
+        paintMap(mapWrap, mapState, crsCode);
         errEl.textContent = "";
       } catch (e) {
         errEl.textContent = "Could not preview GeoJSON: " + e.message;
@@ -668,27 +699,20 @@
       if (!file) return;
       try {
         var gj = JSON.parse(await file.text());
-        mapState.layers.push({ name: file.name, lines: projectLines(lineCoords(gj), crsCode) });
-        paintMap(mapWrap, mapState);
+        mapState.layers.push({ name: file.name, lines: lineCoords(gj) });
+        paintMap(mapWrap, mapState, crsCode);
         errEl.textContent = "";
       } catch (err) {
         errEl.textContent = "Could not preview GeoJSON: " + err.message;
       }
     });
 
-    window.addEventListener("resize", function () { paintMap(mapWrap, mapState); });
+    window.addEventListener("resize", function () { map.invalidateSize(); });
 
-    // Load raster + existing submission layers asynchronously.
-    Promise.allSettled([
-      loadRaster(mapWrap, mapState),
-      loadLayers(records, mapWrap, mapState, crsCode),
-    ]).then(function (results) {
-      var errs = [];
-      if (results[0].status === "rejected") errs.push(results[0].reason.message);
-      if (results[1].status === "fulfilled") errs.push.apply(errs, results[1].value);
-      else errs.push(results[1].reason.message);
-      errEl.textContent = errs.join(" · ");
-    });
+    loadRaster(mapWrap, mapState)
+      .then(function () { return loadLayers(records, mapWrap, mapState, crsCode); })
+      .then(function (errs) { errEl.textContent = errs.join(" · "); })
+      .catch(function (err) { errEl.textContent = err.message; });
   }
 
   /* ── Renderer: validation × value (compensation) ─────────────── */

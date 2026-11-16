@@ -7,6 +7,9 @@
   <meta name="description" content="{{ config.tagline }}">
   <title>{{ config.name }} — Sandpiper Benchmarks</title>
   <link rel="stylesheet" href="{{ root_path }}assets/benchmark-dashboard.css">
+  {% if config.data_type == 'map' %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  {% endif %}
 </head>
 <body>
   {% include "partials/header.html" %}
@@ -30,6 +33,11 @@
   </section>
 
   <main class="wrap" style="padding: 44px 0 76px">
+    {% if has_display_image %}
+    <figure class="benchmark-display">
+      <img src="{{ display_image_path }}" alt="Visual preview for {{ config.name }}" loading="lazy">
+    </figure>
+    {% endif %}
     <div id="benchmark-root">
       <!-- Phase 6 (benchmark-page.js) will render charts here based on window.BENCHMARK_CONFIG -->
       <div class="chart-empty" style="min-height: 300px">
@@ -58,7 +66,8 @@
   {% endif %}
 
   {% if config.data_type == 'map' %}
-  <!-- GeoTIFF reader + proj4 reprojection: map benchmarks only -->
+  <!-- Interactive map dependencies: map benchmarks only -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/geotiff@2.1.3/dist-browser/geotiff.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.0/proj4.js" defer></script>
   {% endif %}

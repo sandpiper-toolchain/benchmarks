@@ -447,7 +447,7 @@ main { padding: 44px 0 76px; }
   background-color: #e9f1ed;
 }
 
-#map-canvas {
+#leaflet-map {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -830,6 +830,21 @@ footer {
   margin-bottom: 16px;
   color: var(--muted);
   font-size: 1rem;
+}
+
+.benchmark-display {
+  margin: 0 0 28px;
+  text-align: center;
+}
+
+.benchmark-display img {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface);
 }
 
 .meta-tags {

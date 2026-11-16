@@ -104,6 +104,13 @@ def load_results(benchmark_dir: Path) -> list:
         return []
 
 
+def display_image_for(benchmark_dir: Path, data_type: str) -> str | None:
+    """Return the benchmark-relative preview image path for non-map benchmarks."""
+    if data_type != "map" and (benchmark_dir / "display.png").is_file():
+        return "display.png"
+    return None
+
+
 def discover_benchmarks() -> list[Path]:
     """Return sorted list of benchmark directories that have a benchmark.yaml."""
     return sorted(
@@ -186,11 +193,16 @@ def main() -> None:
         cfg_dict = entry["config"]
         submission_count = entry["submission_count"]
         benchmark_config_json = json.dumps(cfg_dict).replace("</", "<\\/")
+        display_image_path = display_image_for(
+            entry["benchmark_dir"], cfg_dict["data_type"]
+        )
 
         html = page_tmpl.render(
             config=cfg_dict,
             submission_count=submission_count,
             benchmark_config_json=benchmark_config_json,
+            has_display_image=display_image_path is not None,
+            display_image_path=display_image_path,
             root_path="../../",
         )
         out_path = entry["benchmark_dir"] / "index.html"
