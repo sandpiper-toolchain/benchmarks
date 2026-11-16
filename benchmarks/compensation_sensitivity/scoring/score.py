@@ -22,7 +22,7 @@ result is written next to its results.yaml.
 
 Expected directory layout (relative to this script):
     ../submissions/<method>/results.yaml
-    ../../compensation/data/<dataset>.csv  -- shared input data
+    ../data/<dataset>.csv  -- benchmark input data
 """
 
 from __future__ import annotations
@@ -117,11 +117,11 @@ def main():
     config = load_config(BENCHMARK_DIR)
     datasets = config.datasets  # dict of dataset_name → {label, reported_fields, ...}
 
-    # Verify shared data directory is accessible (informational only).
+    # Verify the input data directory is accessible (informational only).
     data_dir = (BENCHMARK_DIR / config.scoring["data_dir"]).resolve()
     if not data_dir.is_dir():
         print(
-            f"WARNING: shared data directory not found: {data_dir}\n"
+            f"WARNING: input data directory not found: {data_dir}\n"
             f"  Expected at: {data_dir}\n"
             f"  Submission values will still be recorded.",
             file=sys.stderr,

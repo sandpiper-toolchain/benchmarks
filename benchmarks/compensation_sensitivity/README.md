@@ -20,16 +20,18 @@ tools respond as the avulsion period scales up.
 
 ## Input data
 
-Input CSV files are shared with the `compensation` benchmark and live at
-[`../compensation/data/`](../compensation/data/):
+The input CSV datasets are derived from the
+[DeltaRCM Triangle Stacking Model](https://github.com/DeltaRCM/triangle_stacking_model/tree/main).
+The CSV data and benchmark images are retained in this repository. These CSV
+files live in this benchmark's [`data/`](data/) directory:
 
 | File | Avulsion period | Description |
 |------|----------------|-------------|
-| `compensational_stacking_meanX.csv` | T_A = 15 events | Compensational stacking, medium avulsion period |
-| `compensational_stacking_mean2X.csv` | T_A = 30 events | Compensational stacking, long avulsion period |
+| `data/compensational_stacking_meanX.csv` | T_A = 15 events | Compensational stacking, medium avulsion period |
+| `data/compensational_stacking_mean2X.csv` | T_A = 30 events | Compensational stacking, long avulsion period |
 
-See the [`compensation` README](../compensation/README.md) for full details on the
-CSV format and stacking model.
+See the [`compensation` README](../compensation/README.md) for details on the
+CSV format and model description.
 
 ## Submission format
 
