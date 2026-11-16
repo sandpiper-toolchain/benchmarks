@@ -19,16 +19,21 @@ Each benchmark provides:
 
 ## Website and interactive dashboard
 
-The repository includes a responsive website for browsing the benchmarks, comparing results, and previewing shoreline GeoJSON. Its files live at the repository root:
+The repository includes a responsive website for browsing the benchmarks, comparing results, and previewing shoreline GeoJSON. The source templates and assets are maintained in this repository; CI generates the results tables, builds the complete site, and publishes it to the `gh-pages` branch. Generated HTML and results tables are not committed to `main`.
 
-- [index.html](index.html) — dashboard page structure and content
+GitHub Pages should be configured to serve the root of the `gh-pages` branch.
+
+- [templates/index.html](templates/index.html) — dashboard page template
+- [templates/benchmark_page.html](templates/benchmark_page.html) — benchmark page template
 - [assets/benchmark-dashboard.css](assets/benchmark-dashboard.css) — theme and responsive layout
 - [assets/benchmark-dashboard.js](assets/benchmark-dashboard.js) — charts, results loading, and GeoJSON map preview
 
-The dashboard reads each benchmark's `results_table.json`. To preview it locally, start a web server from the repository root:
+To build and preview the deployable site locally:
 
 ```bash
-python -m http.server 8000
+python run_all.py
+python build_site.py --output-dir _site
+python -m http.server 8000 --directory _site
 ```
 
 Then visit `http://localhost:8000`. Shoreline geometry can be loaded from a local GeoJSON file.

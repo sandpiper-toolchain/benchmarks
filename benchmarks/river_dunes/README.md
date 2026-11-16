@@ -122,12 +122,13 @@ The compiled table reports, for each submission:
    ├── result.csv      # your per-bedform geometry table
    └── metadata.yaml  # tool name, version, author — copy from an existing submission
    ```
-3. Open a pull request.  CI will run `compile_results.py` to regenerate
-   `results_table.json` and commit the updated table to `main`.
+3. Open a pull request. CI regenerates `results_table.json` and publishes it
+   with the website on `gh-pages`; generated result files are not committed to
+   `main`.
 
 ## Results
 
-The table below is generated automatically from `results_table.json`.
+The website's results table is generated automatically from `results_table.json`.
 Statistics are computed across **all** detected bedforms pooled from all profiles.
 
 | Method | *n* bedforms | *H* mean (m) | *L* mean (m) | *d* mean (m) | Date |

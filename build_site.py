@@ -11,12 +11,14 @@ Usage
     python build_site.py               # rebuild all benchmark pages + root index.html
     python build_site.py shoreline     # rebuild one benchmark page + root index.html
     python build_site.py --no-index    # rebuild benchmark pages without touching index.html
+    python build_site.py --output-dir _site  # build a self-contained deployable site
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import sys
 from pathlib import Path
 
@@ -138,7 +140,72 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Skip regenerating the root index.html.",
     )
+    p.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Write a deployable site tree here instead of the source tree.",
+    )
     return p.parse_args()
+
+
+def copy_site_asset(
+    benchmark_dir: Path,
+    output_benchmark_dir: Path,
+    relative_path: str,
+    *,
+    optional: bool = False,
+) -> None:
+    """Copy a benchmark-relative file needed by the published site."""
+    relative = Path(relative_path)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ValueError(f"site asset path must stay within its benchmark: {relative_path}")
+
+    source = benchmark_dir / relative
+    if not source.is_file():
+        if optional:
+            print(f"  WARNING: optional site asset not found: {source}", file=sys.stderr)
+            return
+        raise FileNotFoundError(f"site asset not found: {source}")
+
+    destination = output_benchmark_dir / relative
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, destination)
+
+
+def export_site_assets(
+    benchmark_dir: Path,
+    output_benchmark_dir: Path,
+    results: list,
+    website: dict,
+) -> None:
+    """Copy the data files referenced by a generated benchmark page."""
+    output_benchmark_dir.mkdir(parents=True, exist_ok=True)
+    (output_benchmark_dir / "results_table.json").write_text(
+        json.dumps(results, indent=2) + "\n", encoding="utf-8"
+    )
+
+    if (benchmark_dir / "display.png").is_file():
+        copy_site_asset(benchmark_dir, output_benchmark_dir, "display.png")
+
+    for result in results:
+        paths = result.get("geojson_files") or []
+        if not isinstance(paths, list):
+            raise TypeError("geojson_files in results_table.json must be a list")
+        for path in paths:
+            copy_site_asset(benchmark_dir, output_benchmark_dir, path)
+
+    map_panel = website.get("map_panel", {})
+    reference = map_panel.get("reference", {})
+    if reference.get("path"):
+        copy_site_asset(benchmark_dir, output_benchmark_dir, reference["path"])
+    if map_panel.get("raster"):
+        copy_site_asset(
+            benchmark_dir,
+            output_benchmark_dir,
+            map_panel["raster"],
+            optional=True,
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -148,6 +215,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     env = make_env()
+    output_root = args.output_dir.resolve() if args.output_dir else HERE
 
     all_benchmark_dirs = discover_benchmarks()
     if not all_benchmark_dirs:
@@ -182,6 +250,7 @@ def main() -> None:
             "config": config_to_dict(cfg),
             "submission_count": len(results),
             "benchmark_dir": bdir,
+            "results": results,
             "_cfg": cfg,  # keep original for page rendering
         })
 
@@ -205,9 +274,23 @@ def main() -> None:
             display_image_path=display_image_path,
             root_path="../../",
         )
-        out_path = entry["benchmark_dir"] / "index.html"
+        out_benchmark_dir = output_root / "benchmarks" / entry["benchmark_dir"].name
+        out_benchmark_dir.mkdir(parents=True, exist_ok=True)
+        if args.output_dir:
+            export_site_assets(
+                entry["benchmark_dir"],
+                out_benchmark_dir,
+                entry["results"],
+                cfg_dict["website"],
+            )
+        out_path = out_benchmark_dir / "index.html"
         out_path.write_text(html, encoding="utf-8")
-        print(f"  wrote {out_path.relative_to(HERE)}")
+        print(f"  wrote {out_path.relative_to(output_root)}")
+
+    if args.output_dir:
+        output_root.mkdir(parents=True, exist_ok=True)
+        shutil.copytree(HERE / "assets", output_root / "assets", dirs_exist_ok=True)
+        shutil.copy2(HERE / "CONTRIBUTING.md", output_root / "CONTRIBUTING.md")
 
     # Render root index.html.
     if not args.no_index:
@@ -227,9 +310,10 @@ def main() -> None:
             method_count=method_count,
             root_path="./",
         )
-        out_path = HERE / "index.html"
+        output_root.mkdir(parents=True, exist_ok=True)
+        out_path = output_root / "index.html"
         out_path.write_text(index_html, encoding="utf-8")
-        print(f"  wrote index.html")
+        print(f"  wrote {out_path.relative_to(output_root)}")
 
     print("Done.")
 

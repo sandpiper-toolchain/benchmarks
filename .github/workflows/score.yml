@@ -1,4 +1,4 @@
-name: Score and compile
+name: Score, compile, and publish
 
 on:
   pull_request:
@@ -10,9 +10,19 @@ on:
     paths:
       - "benchmarks/*/submissions/**"
       - "benchmarks/*/benchmark.yaml"
+      - "benchmarks/*/data/**"
+      - "benchmarks/*/display.png"
+      - "benchmarks/*/scoring/**"
+      - "scoring/**"
+      - "run_all.py"
       - "build_site.py"
       - "templates/**"
       - "assets/**"
+      - "CONTRIBUTING.md"
+      - ".github/workflows/score.yml"
+
+permissions:
+  contents: read
 
 jobs:
   score:
@@ -50,6 +60,8 @@ jobs:
   compile:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -67,16 +79,12 @@ jobs:
         run: python run_all.py
 
       - name: Build site
-        run: python build_site.py
+        run: python build_site.py --output-dir _site
 
-      - name: Commit updated results and site
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add '**/results_table.json' '**/index.html' 'index.html'
-          if git diff --cached --quiet; then
-            echo "Nothing changed."
-          else
-            git commit -m "chore: update results and site [skip ci]"
-            git push
-          fi
+      - name: Publish site to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./_site
+          force_orphan: true

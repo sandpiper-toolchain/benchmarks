@@ -18,12 +18,12 @@
 5. Open a pull request. CI will automatically score your submission and
    upload a `score_output.json` artifact with the results.
 
-> **How the website updates:** once your PR is merged to `main`, the
-> compile job re-runs scoring to update `results_table.json` and then
-> rebuilds every benchmark page via `build_site.py`. Your submission will
-> appear on the live site after that step finishes (usually within a few
-> minutes of merge). You do not need to run any build or scoring scripts
-> yourself.
+> **How the website updates:** once your PR is merged to `main`, CI
+> recompiles the results tables, builds the site with `build_site.py`, and
+> publishes it to the `gh-pages` branch. Your submission will appear on the
+> live site after that step finishes (usually within a few minutes of merge).
+> Generated HTML is not committed to `main`; you do not need to run any
+> build or scoring scripts yourself.
 
 ## Adding a reference solution
 
