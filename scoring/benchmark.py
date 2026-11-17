@@ -19,22 +19,64 @@ VALID_DATA_TYPES = {"identification", "map", "value"}
 
 
 @dataclass
+class ReferenceEntry:
+    """One entry in the ``references:`` block of a ``benchmark.yaml``.
+
+    Fields are optional and vary by benchmark type:
+
+    * Value benchmarks supply ``data_file`` and ``fields``.
+    * Map benchmarks supply ``file``.
+    * Identification benchmarks have no comparison target and therefore no
+      ``ReferenceEntry`` objects at all.
+
+    ``fields`` encoding:
+
+    * **Validation** — a ``dict`` mapping field name to its known truth value,
+      e.g. ``{"kappa": 1.0}``.  The runner scores submitted values against these.
+    * **Intercomparison** — a plain ``list`` of field names, e.g. ``["kappa", "Tc"]``.
+      The runner collects and reports submitted values as-is.
+    """
+
+    label: str
+    data_file: str | None = None   # relative path; value benchmarks only
+    fields: dict | list | None = None  # dict → validation; list → intercomparison
+    file: str | None = None        # relative path; map benchmarks only
+
+
+@dataclass
 class BenchmarkConfig:
     """Parsed and validated contents of a benchmark's ``benchmark.yaml``."""
 
     name: str
     slug: str
-    tagline: str                  # one-sentence description for benchmark cards
-    domain: str                   # fluvial | coastal | stratigraphy | aeolian | lab | other
-    status: str                   # active | draft | archived
-    reference_type: str           # validation | reference | intercomparison
-    data_type: str                # identification | map | value
+    tagline: str                   # one-sentence description for benchmark cards
+    domain: str                    # fluvial | coastal | stratigraphy | aeolian | lab | other
+    status: str                    # active | draft | archived
+    reference_type: str            # validation | reference | intercomparison
+    data_type: str                 # identification | map | value
     submission_file_pattern: str
     scoring: dict
-    datasets: dict | None         # populated for value benchmarks; None otherwise
-    references_manifest: Path | None  # resolved absolute path, or None
-    website: dict                 # may be empty dict
-    benchmark_dir: Path           # absolute path to the benchmark directory
+    references: dict[str, ReferenceEntry] | None  # None for identification benchmarks
+    website: dict                  # may be empty dict
+    benchmark_dir: Path            # absolute path to the benchmark directory
+
+    @property
+    def runner_key(self) -> tuple[str, str]:
+        """Return ``(reference_type, data_type)`` — the dispatch key for runner lookup."""
+        return (self.reference_type, self.data_type)
+
+
+def _parse_references(raw_refs: dict) -> dict[str, ReferenceEntry]:
+    """Convert the ``references:`` YAML block into a dict of :class:`ReferenceEntry`."""
+    result: dict[str, ReferenceEntry] = {}
+    for key, entry in raw_refs.items():
+        result[key] = ReferenceEntry(
+            label=entry.get("label", key),
+            data_file=entry.get("data_file"),
+            fields=entry.get("fields"),
+            file=entry.get("file"),
+        )
+    return result
 
 
 def load_config(benchmark_dir: Path) -> BenchmarkConfig:
@@ -83,11 +125,12 @@ def load_config(benchmark_dir: Path) -> BenchmarkConfig:
             f"  Allowed values: {sorted(VALID_DATA_TYPES)}"
         )
 
-    # Resolve references manifest path relative to benchmark_dir.
-    refs_rel = raw.get("references", {}).get("manifest")
-    references_manifest: Path | None = None
-    if refs_rel:
-        references_manifest = (benchmark_dir / refs_rel).resolve()
+    # Parse unified references block.  Each entry is a named key → ReferenceEntry.
+    # Identification benchmarks have no references key; references is None for them.
+    raw_refs = raw.get("references") or {}
+    references: dict[str, ReferenceEntry] | None = (
+        _parse_references(raw_refs) if raw_refs else None
+    )
 
     return BenchmarkConfig(
         name=raw["name"],
@@ -99,8 +142,7 @@ def load_config(benchmark_dir: Path) -> BenchmarkConfig:
         data_type=data_type,
         submission_file_pattern=raw["submission"]["file_pattern"],
         scoring=raw.get("scoring", {}),
-        datasets=raw.get("datasets"),
-        references_manifest=references_manifest,
+        references=references,
         website=raw.get("website", {}),
         benchmark_dir=benchmark_dir,
     )

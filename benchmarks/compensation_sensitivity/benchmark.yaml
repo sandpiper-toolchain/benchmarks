@@ -15,23 +15,22 @@ submission:
   # Expected keys: compensational_stacking_meanX.{kappa, Tc}
   #                compensational_stacking_mean2X.{kappa, Tc}
 
-# ── Datasets ───────────────────────────────────────────────────────────────────
+# ── References ─────────────────────────────────────────────────────────────────
 # Both datasets use the T_A > 1 synthetic sequences that have no universal
 # theoretical reference.  κ and T_c are reported as-is for cross-submission
 # comparison.
-datasets:
+references:
   compensational_stacking_meanX:
-    label:           "Compensational stacking, T_A = 15"
-    data_file:       "data/compensational_stacking_meanX.csv"
-    reported_fields: [kappa, Tc]
+    label:     "Compensational stacking, T_A = 15"
+    data_file: "data/compensational_stacking_meanX.csv"
+    fields:    [kappa, Tc]         # list → intercomparison; values reported as-is
   compensational_stacking_mean2X:
-    label:           "Compensational stacking, T_A = 30"
-    data_file:       "data/compensational_stacking_mean2X.csv"
-    reported_fields: [kappa, Tc]
+    label:     "Compensational stacking, T_A = 30"
+    data_file: "data/compensational_stacking_mean2X.csv"
+    fields:    [kappa, Tc]
 
 # ── Scoring ────────────────────────────────────────────────────────────────────
 scoring:
   # No reference values — κ and T_c are reported as-is for cross-submission
   # comparison.
-  data_dir:        "data/"
-  reported_fields: [kappa, Tc]
+  data_dir: "data/"

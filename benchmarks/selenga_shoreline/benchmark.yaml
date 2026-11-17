@@ -16,8 +16,13 @@ submission:
   file_pattern: "results.geojson"
 
 # ── References ─────────────────────────────────────────────────────────────────
+# Inline entries replace the former `manifest:` pointer.  Provenance metadata
+# (author, date, method) stays in data/references.yaml; the scorer reads paths
+# directly from config.references[key].file.
 references:
-  manifest: "data/references.yaml"   # existing file, unchanged
+  moodie_2026:
+    label: "Moodie 2026"
+    file:  "data/ref_selenga_moodie_2026.geojson"
 
 # ── Scoring ────────────────────────────────────────────────────────────────────
 scoring:
