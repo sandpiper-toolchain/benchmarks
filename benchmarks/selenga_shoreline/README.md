@@ -20,14 +20,13 @@ placement.
 
 ## Scoring
 
-Three metrics are reported, each computed against every reference in
+Two metrics are reported, each computed against every reference in
 `data/references.yaml`:
 
 | Metric | Description |
 |--------|-------------|
 | **Mean distance error (m)** | Average nearest-neighbour distance between submitted and reference polyline point sets. Lower is better. |
 | **Pixel F1** | F1 score after rasterizing both polylines onto the benchmark grid. Closer to 1.0 is better. |
-| **Roughness agreement (%)** | Relative % difference in area-normalised roughness `R = L / sqrt(A_land)`. Lower is better. |
 
 Run the scorer locally:
 

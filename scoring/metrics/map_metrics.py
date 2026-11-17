@@ -1,14 +1,12 @@
 """
 Shared map metrics for sandpiper benchmarks.
 
-Three metrics are computed:
+Two metrics are computed:
 
     1. mean_distance_error  -- average nearest-neighbour distance (metres)
                                between submitted and reference polylines
     2. pixel_f1             -- F1 score after rasterizing both polylines onto
                                the benchmark grid
-    3. roughness_agreement  -- relative % difference in the area-normalised
-                               shoreline roughness  R = L / sqrt(A_land)
 """
 
 from __future__ import annotations
@@ -170,61 +168,3 @@ def pixel_f1(
                  if (precision + recall) > 0 else 0.0)
 
     return {"precision": precision, "recall": recall, "f1": f1}
-
-
-def roughness_agreement(
-    submitted_path: str | Path,
-    reference_path: str | Path,
-    mask_path: str | Path,
-) -> dict[str, float]:
-    """
-    Compute area-normalised shoreline roughness  R = L / sqrt(A_land)  for
-    both the submitted and reference shorelines, then report the relative
-    percentage difference.
-
-    Land area is taken from the benchmark binary mask (pixel value == 1).
-    Shoreline length is the total polyline length in CRS units.
-
-    Parameters
-    ----------
-    submitted_path:
-        Path to the submitted result GeoJSON (polyline).
-    reference_path:
-        Path to the reference shoreline GeoJSON (polyline).
-    mask_path:
-        Path to the benchmark input GeoTIFF (binary land/water mask).
-
-    Returns
-    -------
-    dict with keys ``roughness_reference``, ``roughness_submitted``,
-    ``relative_difference_pct``.
-    """
-    with rasterio.open(mask_path) as src:
-        data = src.read(1)
-        transform = src.transform
-        crs = src.crs
-        pixel_area_m2 = abs(transform.a * transform.e)
-
-    land_pixels = int(np.sum(data == 1))
-    area_land_m2 = land_pixels * pixel_area_m2
-
-    ref = _load_line(reference_path)
-    sub = _load_line(submitted_path)
-    sub = _reproject_to_match(sub, crs)
-
-    def _total_length(gdf):
-        return float(sum(geom.length for geom in gdf.geometry))
-
-    L_ref = _total_length(ref)
-    L_sub = _total_length(sub)
-
-    R_ref = L_ref / math.sqrt(area_land_m2)
-    R_sub = L_sub / math.sqrt(area_land_m2)
-
-    rel_diff_pct = abs(R_sub - R_ref) / R_ref * 100.0 if R_ref > 0 else float("nan")
-
-    return {
-        "roughness_reference": R_ref,
-        "roughness_submitted": R_sub,
-        "relative_difference_pct": rel_diff_pct,
-    }

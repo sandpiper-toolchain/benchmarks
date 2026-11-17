@@ -41,7 +41,7 @@ MASK_PATH = DATA_DIR / "selenga_clipped.tif"
 REFERENCES_YAML = DATA_DIR / "references.yaml"
 
 from scoring.compile import compile_results_table, discover_submissions
-from scoring.metrics.map_metrics import mean_distance_error, pixel_f1, roughness_agreement
+from scoring.metrics.map_metrics import mean_distance_error, pixel_f1
 from scoring.output import write_score_output
 
 
@@ -97,7 +97,7 @@ def load_references() -> list[dict]:
 
 def score_against_reference(submission: Path, ref_entry: dict) -> dict:
     """
-    Run all three metrics for one reference and return a results dict.
+    Run all metrics for one reference and return a results dict.
 
     Parameters
     ----------
@@ -108,18 +108,16 @@ def score_against_reference(submission: Path, ref_entry: dict) -> dict:
 
     Returns
     -------
-    dict with keys mean_distance_error_m, pixel_f1, roughness_agreement.
+    dict with keys mean_distance_error_m, pixel_f1.
     """
     ref_path = ref_entry["path"]
 
-    mde   = mean_distance_error(submission, ref_path)
-    f1    = pixel_f1(submission, ref_path, MASK_PATH)
-    rough = roughness_agreement(submission, ref_path, MASK_PATH)
+    mde = mean_distance_error(submission, ref_path)
+    f1  = pixel_f1(submission, ref_path, MASK_PATH)
 
     return {
         "mean_distance_error_m": round(mde, 3),
         "pixel_f1": {k: round(v, 4) for k, v in f1.items()},
-        "roughness_agreement": {k: round(v, 4) for k, v in rough.items()},
     }
 
 
@@ -127,10 +125,9 @@ def compute_summary(per_ref: dict[str, dict]) -> dict:
     """
     Compute mean and std across references for each scalar metric.
 
-    Only called when there are ≥2 references.  Operates on three scalars:
+    Only called when there are ≥2 references.  Operates on two scalars:
       - mean_distance_error_m
       - pixel_f1 → f1 sub-key
-      - roughness_agreement → relative_difference_pct sub-key
 
     Parameters
     ----------
@@ -141,9 +138,8 @@ def compute_summary(per_ref: dict[str, dict]) -> dict:
     -------
     dict with aggregated mean/std entries.
     """
-    mde_vals    = [v["mean_distance_error_m"]                        for v in per_ref.values()]
-    f1_vals     = [v["pixel_f1"]["f1"]                               for v in per_ref.values()]
-    rough_vals  = [v["roughness_agreement"]["relative_difference_pct"] for v in per_ref.values()]
+    mde_vals = [v["mean_distance_error_m"]  for v in per_ref.values()]
+    f1_vals  = [v["pixel_f1"]["f1"]         for v in per_ref.values()]
 
     def _agg(vals: list[float]) -> dict:
         arr = np.array(vals, dtype=float)
@@ -151,9 +147,8 @@ def compute_summary(per_ref: dict[str, dict]) -> dict:
                 "std":  round(float(np.std(arr, ddof=0)), 4)}
 
     return {
-        "mean_distance_error_m":           _agg(mde_vals),
-        "pixel_f1_f1":                     _agg(f1_vals),
-        "roughness_relative_difference_pct": _agg(rough_vals),
+        "mean_distance_error_m": _agg(mde_vals),
+        "pixel_f1_f1":           _agg(f1_vals),
     }
 
 

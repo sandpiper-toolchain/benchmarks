@@ -117,7 +117,6 @@ import scoring.metrics.map_metrics as map_metrics_mod
 
 
 def test_map_metrics_public_api():
-    """Confirm the three public metric functions are importable."""
+    """Confirm the two public metric functions are importable."""
     assert callable(map_metrics_mod.mean_distance_error)
     assert callable(map_metrics_mod.pixel_f1)
-    assert callable(map_metrics_mod.roughness_agreement)

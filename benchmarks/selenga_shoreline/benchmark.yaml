@@ -32,11 +32,6 @@ scoring:
       unit:        ""
       direction:   higher_better
       result_path: "pixel_f1.f1"            # scorer stores {precision, recall, f1}; display f1
-    - name:        roughness_relative_difference_pct
-      label:       "Roughness difference"
-      unit:        "%"
-      direction:   lower_better
-      result_path: "roughness_agreement.relative_difference_pct"
 
 # ── Website ────────────────────────────────────────────────────────────────────
 website:
