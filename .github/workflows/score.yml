@@ -13,9 +13,8 @@ on:
       - "benchmarks/*/README.md"
       - "benchmarks/*/data/**"
       - "benchmarks/*/display.png"
-      - "benchmarks/*/scoring/**"
       - "scoring/**"
-      - "run_all.py"
+      - "score.py"
       - "build_site.py"
       - "templates/**"
       - "assets/**"
@@ -40,15 +39,18 @@ jobs:
       - name: Install dependencies
         run: pip install geopandas rasterio scipy numpy shapely pyyaml jinja2 markdown
 
-      - name: Detect changed benchmarks and score
+      - name: Detect changed submissions and score
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1
           changed=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
             | grep '^benchmarks/.*/submissions/' \
-            | cut -d/ -f2 | sort -u || true)
-          for slug in $changed; do
-            echo "=== Scoring $slug ==="
-            python run_all.py "$slug"
+            | grep -v '/metadata\.yaml$' \
+            | grep -v '/score_output\.json$' \
+            || true)
+          for subpath in $changed; do
+            slug=$(echo "$subpath" | cut -d/ -f2)
+            echo "=== Scoring $subpath ==="
+            python score.py "$slug" "$subpath"
           done
 
       - name: Upload score artifacts
@@ -77,7 +79,10 @@ jobs:
         run: pip install geopandas rasterio scipy numpy shapely pyyaml jinja2 markdown
 
       - name: Compile results tables
-        run: python run_all.py
+        run: |
+          for bench in benchmarks/*/; do
+            python score.py "$bench" --compile
+          done
 
       - name: Build site
         run: python build_site.py --output-dir _site
