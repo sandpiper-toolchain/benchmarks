@@ -19,6 +19,11 @@
 5. Open a pull request. CI will automatically score your submission and
    upload a `score_output.json` artifact with the results.
 
+   To test locally before opening a PR, run from the **repository root**:
+   ```bash
+   python score.py <benchmark_slug> submissions/your-method-name/<result-file>
+   ```
+
 ### `metadata.yaml` fields
 
 Every submission folder must contain a `metadata.yaml` file.
@@ -80,6 +85,8 @@ README about the data source and licence.
 
 ## Code style
 
-Scoring scripts are plain Python with minimal dependencies:
-`geopandas`, `rasterio`, `scipy`, `numpy`, `shapely`, `pyyaml`.
-Avoid adding heavy ML frameworks to the scoring layer.
+Scoring is handled by a shared Python library under `scoring/` at the repository
+root.  Metric functions live in `scoring/metrics/`; the dispatch logic lives in
+`scoring/runners.py`; `score.py` at the repository root is the CLI entry point.
+Dependencies are minimal: `geopandas`, `rasterio`, `scipy`, `numpy`, `shapely`,
+`pyyaml`.  Avoid adding heavy ML frameworks to the scoring layer.
