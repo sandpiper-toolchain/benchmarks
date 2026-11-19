@@ -120,14 +120,14 @@ Two metrics are reported per submission:
 | **Absolute error** | \|κ_submitted − κ_reference\| for each dataset |
 | **Relative error (%)** | \|κ_submitted − κ_reference\| / κ_reference × 100 for each dataset |
 
-Run the scorer locally:
+Run the scorer locally (from the **repository root**):
 
 ```bash
 # Score one submission:
-python scoring/score.py submissions/my-method/results.yaml
+python score.py compensation submissions/my-method/results.yaml
 
-# Score all submissions under submissions/:
-python scoring/score.py
+# Compile all submissions → results_table.json:
+python score.py compensation --compile
 ```
 
 A `score_output.json` is written next to each `results.yaml`.

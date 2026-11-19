@@ -28,18 +28,24 @@ Two metrics are reported, each computed against every reference in
 | **Mean distance error (m)** | Average nearest-neighbour distance between submitted and reference polyline point sets. Lower is better. |
 | **Pixel F1** | F1 score after rasterizing both polylines onto the benchmark grid. Closer to 1.0 is better. |
 
-Run the scorer locally:
+Run the scorer locally (from the **repository root**):
 
 ```bash
 # Score one submission:
-python scoring/score.py submissions/my-method/results.geojson
+python score.py selenga_shoreline submissions/my-method/results.geojson
 
-# Score all GeoJSON files under submissions/ (excluding the example template):
-python scoring/score.py
+# Compile all submissions → results_table.json:
+python score.py selenga_shoreline --compile
 ```
 
-In all-submissions mode, a `score_output.json` is written next to each GeoJSON.
-The `--output` option is only available when scoring a single submission.
+A `score_output.json` is written next to each submission GeoJSON.
+The `--output` option overrides the destination when scoring a single submission.
+
+> **Note:** scoring requires `data/selenga_clipped.tif`, which is not committed
+> to git (it is too large).  Obtain it as described in the **Input data** section
+> above.  Compile mode skips scoring and aggregates any existing
+> `score_output.json` files, so `results_table.json` can be regenerated without
+> the raster.
 
 ## How to submit
 
