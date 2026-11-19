@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ee">
+  <meta name="description" content="Compare κ and T_c across methods for scaled avulsion periods">
+  <title>Compensation Index — Sensitivity — Sandpiper Benchmarks</title>
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="stylesheet" href="../../assets/benchmark-dashboard.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <a href="https://sandpiper-toolchain.org/" aria-label="Sandpiper Toolchain home" style="display: inline-flex; align-items: center; gap: inherit; text-decoration: none; color: inherit;">
+          <img class="brand-mark" src="../../assets/symbol.svg" alt="" aria-hidden="true">
+          <span>sandpiper-toolchain</span>
+        </a>
+        <span style="color: var(--muted); font-weight: 500" aria-hidden="true">/</span>
+        <a href="../../" aria-label="Sandpiper Benchmarks home" style="color: var(--muted); font-weight: 500; text-decoration: none;">benchmarks</a>
+      </div>
+      <nav class="topnav" aria-label="Main navigation">
+        <a href="../../#benchmarks">Benchmarks</a>
+        <a href="../../CONTRIBUTING.html">Contribute</a>
+      </nav>
+    </div>
+  </header>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../">sandpiper benchmarks</a>
+        <span aria-hidden="true">/</span>
+        <span>Compensation Index — Sensitivity</span>
+      </nav>
+      <p class="eyebrow"><span class="domain-pill domain--stratigraphy">stratigraphy</span> · intercomparison</p>
+      <h1 class="page-title">Compensation Index — Sensitivity</h1>
+      <p class="page-tagline">Compare κ and T_c across methods for scaled avulsion periods</p>
+      <div class="meta-tags">
+        <span class="meta-tag">intercomparison</span>
+        <span class="meta-tag">value</span>
+        <span class="meta-tag">1 submission</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap" style="padding: 44px 0 76px">
+    <figure class="benchmark-display">
+      <img src="display.png" alt="Visual preview for Compensation Index — Sensitivity" loading="lazy">
+    </figure>
+    <div id="benchmark-root">
+      <!-- Phase 6 (benchmark-page.js) will render charts here based on window.BENCHMARK_CONFIG -->
+      <div class="chart-empty" style="min-height: 300px">
+        Charts loading… (requires benchmark-page.js — coming in Phase 6)
+      </div>
+    </div>
+    <section class="benchmark-readme" aria-label="Benchmark documentation">
+      <h1>Compensation Index — Sensitivity Benchmark</h1>
+<h2>Overview</h2>
+<p>This benchmark is a companion to the <a href="../compensation/"><code>compensation</code></a> benchmark.
+It uses the same synthetic stratigraphic model but with longer mean avulsion periods
+(T_A = 15 and T_A = 30 depositional events), where no universal theoretical reference
+value for κ exists.</p>
+<p>Because there is no ground truth, this is an <strong>intercomparison</strong> benchmark: submitted
+κ and T_c values are displayed side-by-side across methods to reveal how different
+tools respond as the avulsion period scales up.</p>
+<p>Submissions compare the best-fit κ for the sub-compensation timescale, and the compensation timescale T_c. In addition to required files and complete metadata, submissions may optionally include the script used for fitting. </p>
+<h2>Relationship to <code>compensation</code></h2>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th>Datasets</th>
+<th>Reference type</th>
+<th>Scored against</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>compensation</code></td>
+<td><code>compensational_stacking</code> (T_A = 1), <code>random_stacking</code> (T_A = 1)</td>
+<td>validation</td>
+<td>Theoretical κ reference values</td>
+</tr>
+<tr>
+<td><code>compensation_sensitivity</code></td>
+<td><code>compensational_stacking_meanX</code> (T_A = 15), <code>compensational_stacking_mean2X</code> (T_A = 30)</td>
+<td>intercomparison</td>
+<td>Each other (no ground truth)</td>
+</tr>
+</tbody>
+</table>
+<h2>Input data</h2>
+<p>The input CSV datasets are derived from the
+<a href="https://github.com/DeltaRCM/triangle_stacking_model/tree/main">DeltaRCM Triangle Stacking Model</a>.
+The CSV data and benchmark images are retained in this repository. These CSV
+files live in this benchmark's <a href="data/"><code>data/</code></a> directory:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Avulsion period</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data/compensational_stacking_meanX.csv</code></td>
+<td>T_A = 15 events</td>
+<td>Compensational stacking, medium avulsion period</td>
+</tr>
+<tr>
+<td><code>data/compensational_stacking_mean2X.csv</code></td>
+<td>T_A = 30 events</td>
+<td>Compensational stacking, long avulsion period</td>
+</tr>
+</tbody>
+</table>
+<p>See the <a href="../compensation/README.md"><code>compensation</code> README</a> for details on the
+CSV format and model description.</p>
+<h2>Submission format</h2>
+<p>Create a YAML file named <code>results.yaml</code> with two top-level keys:</p>
+<pre><code class="language-yaml">compensational_stacking_meanX:
+  kappa: &lt;float&gt;
+  Tc: &lt;float&gt;
+
+compensational_stacking_mean2X:
+  kappa: &lt;float&gt;
+  Tc: &lt;float&gt;
+</code></pre>
+<ul>
+<li><code>kappa</code> is dimensionless.</li>
+<li><code>Tc</code> is in units of depositional events.</li>
+</ul>
+<h2>How to submit</h2>
+<ol>
+<li>Fork this repository.</li>
+<li>Create a folder under <code>submissions/</code> named after your method, containing
+   <code>results.yaml</code> and <code>metadata.yaml</code> (copy the metadata template from
+   <code>submissions/example/</code>).</li>
+<li>To test locally before opening a PR, run from the <strong>repository root</strong>:
+   <code>bash
+   python score.py compensation_sensitivity submissions/your-method/results.yaml</code></li>
+<li>Open a pull request. CI will post your submitted values as a build artifact.</li>
+</ol>
+    </section>
+    <section class="submission-details" aria-labelledby="submission-details-title">
+      <h2 id="submission-details-title">Submission details</h2>
+      <div class="submission-records">
+        <article class="submission-record">
+          <h3>sandplover compute_compensation</h3>
+          <table>
+            <tbody>
+              <tr>
+                <th scope="row">method_name</th>
+                <td>
+                  sandplover compute_compensation
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_description</th>
+                <td>
+                  Compute compensation statistic (sigma_ss) for all time windows. Bin sigma_ss values into log-spaced bins. Find the breakpoint between sigma_ss following a line in log-log space with slope of negative 1 and different slope for shorter time windows. Fit a line in log-log space to sigma_ss values from shorter time windows.
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_version</th>
+                <td>
+                  0.5.1
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_url</th>
+                <td>
+                  https://sandpiper-toolchain.org/sandplover/_autosummary/sandplover.strat.compute_compensation.html#sandplover.strat.compute_compensation
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_name</th>
+                <td>
+                  sandpiper toolchain contributors
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_orcid</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">preferred_citation</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">date</th>
+                <td>
+                  2026-11-12
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_seconds</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_machine</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">reported</th>
+                <td>
+                  <pre>{
+  "compensational_stacking_meanX": {
+    "kappa": 0.4718,
+    "Tc": 242.605
+  },
+  "compensational_stacking_mean2X": {
+    "kappa": 0.4165,
+    "Tc": 281.972
+  }
+}</pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p><a href="https://sandpiper-toolchain.org/" style="color: inherit">sandpiper toolchain</a> · acquisition to analysis toolchain for geomorphology</p>
+      <p><a href="../../CONTRIBUTING.html" style="color: inherit">Contribute a method</a></p>
+    </div>
+  </footer>
+  <script>
+  window.BENCHMARK_CONFIG = {"name": "Compensation Index \u2014 Sensitivity", "slug": "compensation_sensitivity", "tagline": "Compare \u03ba and T_c across methods for scaled avulsion periods", "domain": "stratigraphy", "status": "active", "reference_type": "intercomparison", "data_type": "value", "submission_file_pattern": "results.yaml", "scoring": {"data_dir": "data/"}, "website": {}};
+  </script>
+
+  <!-- Chart.js core (all benchmark pages) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+
+
+
+
+  <script src="../../assets/benchmark-page.js" defer></script>
+</body>
+</html>

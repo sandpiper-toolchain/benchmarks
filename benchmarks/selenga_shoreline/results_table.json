@@ -1,0 +1,58 @@
+[
+  {
+    "method_name": "sandplover morphological closing",
+    "method_description": "Morphological Planform Method (MPM) implemented in sandplover. Original method after Geleynse, N., et al. Characterization of river delta shorelines. Geophysical research letters 39.17 (2012).\n",
+    "method_version": "0.5.1",
+    "method_url": "https://sandpiper-toolchain.org/sandplover/",
+    "author_name": "sandpiper toolchain contributors",
+    "author_orcid": null,
+    "preferred_citation": null,
+    "date": "2026-11-11",
+    "notes": "Tool run with default parameters. Shoreline extracted along 0.75 contour. Contour converted into line by sandplover `compute_shoreline_length` tool. See software documentation for additional details.\n",
+    "runtime_seconds": 1.5,
+    "runtime_machine": "ASUS, Intel i7-10700, 64 GB RAM",
+    "runtime_notes": "single-thread, CPU",
+    "vs_references": {
+      "moodie_2026": {
+        "mean_distance_error_m": 42.28548900411107,
+        "pixel_f1": {
+          "precision": 0.4437434279705573,
+          "recall": 0.402623732856291,
+          "f1": 0.4221847058087913
+        }
+      }
+    },
+    "vs_references_summary": {},
+    "geojson_files": [
+      "submissions/sandplover_MPM/results.geojson"
+    ]
+  },
+  {
+    "method_name": "sandplover Opening Angle method",
+    "method_description": "Opening Angle Method (OAM) implemented in sandplover. Original method after Shaw, John B., et al. An image-based method for shoreline mapping on complex coasts. Geophysical Research Letters 35.12 (2008).\n",
+    "method_version": "0.5.1",
+    "method_url": "https://sandpiper-toolchain.org/sandplover/",
+    "author_name": "sandpiper toolchain contributors",
+    "author_orcid": null,
+    "preferred_citation": null,
+    "date": "2026-11-11",
+    "notes": "Tool run with default parameters. Shoreline extracted along 45 degree contour. Contour converted into line by sandplover `compute_shoreline_length` tool. See software documentation for additional details.\n",
+    "runtime_seconds": 877.2,
+    "runtime_machine": "ASUS, Intel i7-10700, 64 GB RAM",
+    "runtime_notes": "single-thread, CPU",
+    "vs_references": {
+      "moodie_2026": {
+        "mean_distance_error_m": 410.6597951699003,
+        "pixel_f1": {
+          "precision": 0.3171420502682858,
+          "recall": 0.2678592725104353,
+          "f1": 0.29042477532811795
+        }
+      }
+    },
+    "vs_references_summary": {},
+    "geojson_files": [
+      "submissions/sandplover_OAM/results.geojson"
+    ]
+  }
+]

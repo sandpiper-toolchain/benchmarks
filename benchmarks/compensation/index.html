@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ee">
+  <meta name="description" content="Compute κ for two synthetic sequences with known theoretical values">
+  <title>Compensation Index — Validation — Sandpiper Benchmarks</title>
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="stylesheet" href="../../assets/benchmark-dashboard.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <a href="https://sandpiper-toolchain.org/" aria-label="Sandpiper Toolchain home" style="display: inline-flex; align-items: center; gap: inherit; text-decoration: none; color: inherit;">
+          <img class="brand-mark" src="../../assets/symbol.svg" alt="" aria-hidden="true">
+          <span>sandpiper-toolchain</span>
+        </a>
+        <span style="color: var(--muted); font-weight: 500" aria-hidden="true">/</span>
+        <a href="../../" aria-label="Sandpiper Benchmarks home" style="color: var(--muted); font-weight: 500; text-decoration: none;">benchmarks</a>
+      </div>
+      <nav class="topnav" aria-label="Main navigation">
+        <a href="../../#benchmarks">Benchmarks</a>
+        <a href="../../CONTRIBUTING.html">Contribute</a>
+      </nav>
+    </div>
+  </header>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../">sandpiper benchmarks</a>
+        <span aria-hidden="true">/</span>
+        <span>Compensation Index — Validation</span>
+      </nav>
+      <p class="eyebrow"><span class="domain-pill domain--stratigraphy">stratigraphy</span> · validation</p>
+      <h1 class="page-title">Compensation Index — Validation</h1>
+      <p class="page-tagline">Compute κ for two synthetic sequences with known theoretical values</p>
+      <div class="meta-tags">
+        <span class="meta-tag">validation</span>
+        <span class="meta-tag">value</span>
+        <span class="meta-tag">1 submission</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap" style="padding: 44px 0 76px">
+    <figure class="benchmark-display">
+      <img src="display.png" alt="Visual preview for Compensation Index — Validation" loading="lazy">
+    </figure>
+    <div id="benchmark-root">
+      <!-- Phase 6 (benchmark-page.js) will render charts here based on window.BENCHMARK_CONFIG -->
+      <div class="chart-empty" style="min-height: 300px">
+        Charts loading… (requires benchmark-page.js — coming in Phase 6)
+      </div>
+    </div>
+    <section class="benchmark-readme" aria-label="Benchmark documentation">
+      <h1>Compensation Index Benchmark — Synthetic Stratigraphic Sequences</h1>
+<h2>Problem</h2>
+<p>Given a time series of surface elevation profiles across a synthetic sedimentary basin,
+compute the <strong>compensation index κ</strong> and <strong>compensation timescale T_c</strong>.</p>
+<h2>Background</h2>
+<p>Compensational stacking describes the tendency of depositional systems to fill
+topographic lows over time, producing more uniform stratigraphic architecture
+than would result from purely random channel placement.  The compensation
+index κ and compensation timescale T_c quantify this behavior from a
+stratigraphic record.</p>
+<p>The standard approach (Straub et al., 2009) is to track how the standard deviation
+of thickness increments, σ_ss(T), scales with the time elapsed (T) between 
+depositional surfaces. On a log-log plot of σ vs. T, two power-law regimes are 
+distinguished:</p>
+<ul>
+<li><strong>Short timescales (T ≪ T_c):</strong> σ ∝ T^κ — the system is influenced by autogenics.</li>
+<li><strong>Long timescales (T ≫ T_c):</strong> σ ∝ T^κ — the system is influenced only by allogenics.</li>
+</ul>
+<p><strong>κ</strong> is the slope of the best-fit line through either timescale regime in
+log-log space. It is interpreted as follows:</p>
+<table>
+<thead>
+<tr>
+<th>κ value</th>
+<th>Stacking behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>κ = 0.5</td>
+<td>Random (Poissonian) stacking</td>
+</tr>
+<tr>
+<td>0.5 &lt; κ &lt; 1</td>
+<td>Compensational stacking (κ ≈ 0.75 is typical)</td>
+</tr>
+<tr>
+<td>κ &lt; 0.5</td>
+<td>Anticompensational stacking</td>
+</tr>
+</tbody>
+</table>
+<p><strong>T_c</strong> (units: number of depositional events) is the compensation timescale —
+the transition point between the two regimes, found at the intersection of the
+two fitted lines in log-log space.  Small T_c indicates that compensation
+establishes itself quickly; large T_c indicates a weak or slow compensational
+tendency.</p>
+<p><strong>Key references:</strong></p>
+<ul>
+<li>Straub, K. M., Paola, C., Mohrig, D., Wolinsky, M. A., &amp; George, T. (2009).
+  Compensational stacking of channelized sedimentary deposits.
+  <em>Journal of Sedimentary Research</em>, 79(9), 673–688.
+  <a href="https://doi.org/10.2110/jsr.2009.070">https://doi.org/10.2110/jsr.2009.070</a></li>
+<li>Wang, Y., Straub, K. M., &amp; Hajek, E. A. (2011). Scale-dependent compensational
+  stacking: An estimate of autogenic time scales in channelized sedimentary
+  deposits. <em>Geology</em>, 39(9), 811–814.
+  <a href="https://doi.org/10.1130/G32068.1">https://doi.org/10.1130/G32068.1</a></li>
+<li>Straub, K. M., and Y. Wang (2013), Influence of water and sediment supply on the
+  long-term evolution of alluvial fans and deltas: Statistical characterization of
+  basin-filling sedimentation patterns, J. Geophys. Res. Earth Surf., 118, 
+  1602–1616, doi:10.1002/jgrf.20095.</li>
+</ul>
+<h2>Input data</h2>
+<p>The input CSV datasets are derived from the
+<a href="https://github.com/DeltaRCM/triangle_stacking_model/tree/main">DeltaRCM Triangle Stacking Model</a>.
+The CSV data and benchmark images are included in this repository; the model
+script is not. The datasets use the same model parameters and differ in
+avulsion strategy and mean avulsion period. The stacking model is based on the
+description in Wang et al., 2011:</p>
+<blockquote>
+<p>We model basin filling with discrete triangular elements that are meant to represent channel or lobe deposits. During each time step one element is deposited in the basin while the subsidence is set to balance mean basin aggradation. An approximation of the avulsion process is modeled by placing channel elements with the following rules. At every nth time step during basin filling, the active channel relocates to the absolute topographic low in the model domain. For all other time steps deposition follows a random walk with elements moving one channel width left or right of the previous element.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Avulsion strategy</th>
+<th>Avulsion period</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data/compensational_stacking.csv</code></td>
+<td><code>'low'</code> — avulse to topographic minimum</td>
+<td>1 timestep</td>
+<td>Compensational sequence</td>
+</tr>
+<tr>
+<td><code>data/random_stacking.csv</code></td>
+<td><code>'random'</code> — avulse to a random position</td>
+<td>1 timestep</td>
+<td>Random stacking sequence</td>
+</tr>
+<tr>
+<td><code>../compensation_sensitivity/data/compensational_stacking_meanX.csv</code></td>
+<td><code>'low'</code> — avulse to topographic minimum</td>
+<td>15 timesteps</td>
+<td>Compensational sequence</td>
+</tr>
+<tr>
+<td><code>../compensation_sensitivity/data/compensational_stacking_mean2X.csv</code></td>
+<td><code>'low'</code> — avulse to topographic minimum</td>
+<td>30 timesteps</td>
+<td>Compensational sequence</td>
+</tr>
+</tbody>
+</table>
+<p>This benchmark validates the two T_A = 1 datasets. The T_A = 15 and T_A = 30
+datasets are used by the companion
+<a href="../compensation_sensitivity/"><code>compensation_sensitivity</code></a> benchmark.</p>
+<h3>CSV format</h3>
+<p>Each file has <strong>2001 rows</strong> (timesteps) and <strong>41 columns</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>timestep</code></td>
+<td>Integer index of the depositional event (0 – 1999)</td>
+</tr>
+<tr>
+<td><code>col_0</code> … <code>col_39</code></td>
+<td>Cumulative surface elevation at each of the 40 spatial grid points</td>
+</tr>
+</tbody>
+</table>
+<p>Rows are ordered in time (earliest first).  Each cell value is the total
+accumulated elevation at that spatial position after the given timestep.
+Incremental thicknesses deposited at step <em>t</em> are the row-wise differences
+<code>elevation[t] − elevation[t−1]</code>.</p>
+<p>The 40 spatial columns are dimensionless grid units (channel width ≈ 5 grid
+units).  Each row represents one depositional event. </p>
+<h2>Submission format</h2>
+<p>Create a YAML file named <code>results.yaml</code> with one top-level key for each
+T_A = 1 dataset:</p>
+<pre><code class="language-yaml">compensational_stacking:
+  kappa: &lt;float&gt;
+
+random_stacking:
+  kappa: &lt;float&gt;
+</code></pre>
+<ul>
+<li>Dataset keys must match the CSV file stems exactly
+  (<code>compensational_stacking</code> and <code>random_stacking</code>).</li>
+<li><code>kappa</code> is dimensionless.</li>
+</ul>
+<h2>Scoring</h2>
+<p>Scoring compares submitted <code>kappa</code> values against theoretical values for the
+two T_A = 1 datasets. The companion sensitivity benchmark reports κ and T_c
+values for the longer avulsion periods without treating them as ground truth.
+Two metrics are reported per submission:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Absolute error</strong></td>
+<td>|κ_submitted − κ_reference| for each dataset</td>
+</tr>
+<tr>
+<td><strong>Relative error (%)</strong></td>
+<td>|κ_submitted − κ_reference| / κ_reference × 100 for each dataset</td>
+</tr>
+</tbody>
+</table>
+<p>Run the scorer locally (from the <strong>repository root</strong>):</p>
+<pre><code class="language-bash"># Score one submission:
+python score.py compensation submissions/my-method/results.yaml
+
+# Compile all submissions → results_table.json:
+python score.py compensation --compile
+</code></pre>
+<p>A <code>score_output.json</code> is written next to each <code>results.yaml</code>.</p>
+<h2>How to submit</h2>
+<ol>
+<li>Fork this repository.</li>
+<li>Create a folder under <code>submissions/</code> named after your method, containing
+   <code>results.yaml</code> and <code>metadata.yaml</code> (copy the metadata template from
+   <code>submissions/sandplover/</code>).</li>
+<li>Open a pull request.  CI will automatically score your submission against the
+   reference values and post the results as a build artifact.</li>
+</ol>
+    </section>
+    <section class="submission-details" aria-labelledby="submission-details-title">
+      <h2 id="submission-details-title">Submission details</h2>
+      <div class="submission-records">
+        <article class="submission-record">
+          <h3>sandplover compute_compensation</h3>
+          <table>
+            <tbody>
+              <tr>
+                <th scope="row">method_name</th>
+                <td>
+                  sandplover compute_compensation
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_description</th>
+                <td>
+                  Compute compensation statistic (sigma_ss) for all time windows. Bin sigma_ss values into log-spaced bins. Fit a line in log-log space.
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_version</th>
+                <td>
+                  0.5.1
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_url</th>
+                <td>
+                  https://sandpiper-toolchain.org/sandplover/_autosummary/sandplover.strat.compute_compensation.html#sandplover.strat.compute_compensation
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_name</th>
+                <td>
+                  sandpiper toolchain contributors
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_orcid</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">preferred_citation</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">date</th>
+                <td>
+                  2026-11-12
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_seconds</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_machine</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">vs_references</th>
+                <td>
+                  <pre>{
+  "compensational_stacking": {
+    "kappa_reference": 1.0,
+    "kappa_submitted": 0.9024,
+    "abs_error": 0.0976,
+    "rel_error_pct": 9.76
+  },
+  "random_stacking": {
+    "kappa_reference": 0.5,
+    "kappa_submitted": 0.5173,
+    "abs_error": 0.0173,
+    "rel_error_pct": 3.46
+  }
+}</pre>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">vs_references_summary</th>
+                <td>
+                  <pre>{
+  "abs_error": {
+    "mean": 0.05745,
+    "std": 0.04015
+  },
+  "rel_error_pct": {
+    "mean": 6.61,
+    "std": 3.15
+  }
+}</pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p><a href="https://sandpiper-toolchain.org/" style="color: inherit">sandpiper toolchain</a> · acquisition to analysis toolchain for geomorphology</p>
+      <p><a href="../../CONTRIBUTING.html" style="color: inherit">Contribute a method</a></p>
+    </div>
+  </footer>
+  <script>
+  window.BENCHMARK_CONFIG = {"name": "Compensation Index \u2014 Validation", "slug": "compensation", "tagline": "Compute \u03ba for two synthetic sequences with known theoretical values", "domain": "stratigraphy", "status": "active", "reference_type": "validation", "data_type": "value", "submission_file_pattern": "results.yaml", "scoring": {"metrics": [{"name": "abs_error", "label": "Absolute error", "direction": "lower_better"}, {"name": "rel_error_pct", "label": "Relative error (%)", "direction": "lower_better"}]}, "website": {}};
+  </script>
+
+  <!-- Chart.js core (all benchmark pages) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+
+  <!-- chartjs-plugin-annotation: reference-value line for validation benchmarks -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/3.0.1/chartjs-plugin-annotation.min.js" defer></script>
+
+
+
+  <script src="../../assets/benchmark-page.js" defer></script>
+</body>
+</html>

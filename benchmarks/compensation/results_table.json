@@ -1,0 +1,40 @@
+[
+  {
+    "method_name": "sandplover compute_compensation",
+    "method_description": "Compute compensation statistic (sigma_ss) for all time windows. Bin sigma_ss values into log-spaced bins. Fit a line in log-log space.\n",
+    "method_version": "0.5.1",
+    "method_url": "https://sandpiper-toolchain.org/sandplover/_autosummary/sandplover.strat.compute_compensation.html#sandplover.strat.compute_compensation",
+    "author_name": "sandpiper toolchain contributors",
+    "author_orcid": null,
+    "preferred_citation": null,
+    "date": "2026-11-12",
+    "notes": null,
+    "runtime_seconds": null,
+    "runtime_machine": null,
+    "runtime_notes": null,
+    "vs_references": {
+      "compensational_stacking": {
+        "kappa_reference": 1.0,
+        "kappa_submitted": 0.9024,
+        "abs_error": 0.0976,
+        "rel_error_pct": 9.76
+      },
+      "random_stacking": {
+        "kappa_reference": 0.5,
+        "kappa_submitted": 0.5173,
+        "abs_error": 0.0173,
+        "rel_error_pct": 3.46
+      }
+    },
+    "vs_references_summary": {
+      "abs_error": {
+        "mean": 0.05745,
+        "std": 0.04015
+      },
+      "rel_error_pct": {
+        "mean": 6.61,
+        "std": 3.15
+      }
+    }
+  }
+]

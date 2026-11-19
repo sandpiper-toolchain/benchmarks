@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ee">
+  <meta name="description" content="Identify and measure dunes across 370 bathymetric profiles">
+  <title>Paraná River Bedform Geometry — Sandpiper Benchmarks</title>
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="stylesheet" href="../../assets/benchmark-dashboard.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <a href="https://sandpiper-toolchain.org/" aria-label="Sandpiper Toolchain home" style="display: inline-flex; align-items: center; gap: inherit; text-decoration: none; color: inherit;">
+          <img class="brand-mark" src="../../assets/symbol.svg" alt="" aria-hidden="true">
+          <span>sandpiper-toolchain</span>
+        </a>
+        <span style="color: var(--muted); font-weight: 500" aria-hidden="true">/</span>
+        <a href="../../" aria-label="Sandpiper Benchmarks home" style="color: var(--muted); font-weight: 500; text-decoration: none;">benchmarks</a>
+      </div>
+      <nav class="topnav" aria-label="Main navigation">
+        <a href="../../#benchmarks">Benchmarks</a>
+        <a href="../../CONTRIBUTING.html">Contribute</a>
+      </nav>
+    </div>
+  </header>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../">sandpiper benchmarks</a>
+        <span aria-hidden="true">/</span>
+        <span>Paraná River Bedform Geometry</span>
+      </nav>
+      <p class="eyebrow"><span class="domain-pill domain--fluvial">fluvial</span> · intercomparison</p>
+      <h1 class="page-title">Paraná River Bedform Geometry</h1>
+      <p class="page-tagline">Identify and measure dunes across 370 bathymetric profiles</p>
+      <div class="meta-tags">
+        <span class="meta-tag">intercomparison</span>
+        <span class="meta-tag">identification</span>
+        <span class="meta-tag">5 submissions</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap" style="padding: 44px 0 76px">
+    <div id="benchmark-root">
+      <!-- Phase 6 (benchmark-page.js) will render charts here based on window.BENCHMARK_CONFIG -->
+      <div class="chart-empty" style="min-height: 300px">
+        Charts loading… (requires benchmark-page.js — coming in Phase 6)
+      </div>
+    </div>
+    <section class="benchmark-readme" aria-label="Benchmark documentation">
+      <h1>River Bedform Geometry Benchmark — Paraná River</h1>
+<h2>Problem</h2>
+<p>Given a set of 1-D bathymetric bed-elevation profiles from the Paraná River,
+detect individual bedforms in each profile and extract their key geometric
+properties:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Symbol</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bedform height</td>
+<td><em>H</em></td>
+<td>m</td>
+</tr>
+<tr>
+<td>Bedform length</td>
+<td><em>L</em></td>
+<td>m</td>
+</tr>
+<tr>
+<td>Bedform depth</td>
+<td><em>d</em></td>
+<td>m</td>
+</tr>
+</tbody>
+</table>
+<p>Submissions are a single CSV file — one row per detected bedform, across all
+370 profiles.</p>
+<p><strong>This benchmark is an adaptation of the exhaustive testing in a 2024 peer-reviewed study.</strong>
+The study should be referenced and cited for complete information and proper attribution.</p>
+<blockquote>
+<p>Scheiber, L., Zomer, J., Wang, L., Cisneros, J., Gutierrez, R. R., &amp; Lefebvre, A. (2024). Automated bedform identification—A meta-analysis of current methods and the heterogeneity of their outputs. JGR: Earth Surface. https://doi.org/10.1029/2023JF007607  </p>
+</blockquote>
+<h2>Why intercomparison, not scoring</h2>
+<p>There is no authoritative ground-truth delineation for this dataset.  Expert
+analysts differ substantially in which bedforms they identify and in the
+geometric measurements they assign to each.  The goal of this benchmark is
+therefore <strong>not</strong> to rank methods against a reference, but to place any new
+tool or workflow in context alongside documented methods from the literature.
+Comparing the distributions of <em>H</em>, <em>L</em>, and <em>d</em> — and the total number of
+detected bedforms — reveals method-specific biases and sensitivities that
+would otherwise be invisible.</p>
+<h2>Input data</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data/Parana-370BFPs_Format-NT2D/ParanaBFP-&lt;N&gt;.txt</code></td>
+<td>370 bed-elevation profiles (NT2D format; see below).</td>
+</tr>
+</tbody>
+</table>
+<h3>Data provenance</h3>
+<p>The profiles were collected from the Paraná River.
+The original publication for the data is Parsons et al., 2005.</p>
+<p>The data are distributed with the <strong>Bedforms-ATM</strong> software package:</p>
+<blockquote>
+<p>Bedforms-ATM. Available at: https://sourceforge.net/projects/bedforms-atm/</p>
+</blockquote>
+<h3>NT2D file format</h3>
+<p>Each <code>ParanaBFP-&lt;N&gt;.txt</code> file contains a single profile in NT2D format:</p>
+<pre><code>&lt;profile_index&gt;
+&lt;point_index&gt;  &lt;x_nominal_m&gt;  &lt;x_precise_m&gt;  &lt;z_m&gt;
+&lt;point_index&gt;  &lt;x_nominal_m&gt;  &lt;x_precise_m&gt;  &lt;z_m&gt;
+...
+</code></pre>
+<ul>
+<li>Line 1 — the integer profile number (matches <code>&lt;N&gt;</code> in the filename).</li>
+<li>Lines 2 onward — tab-separated: sequential point index, nominal downstream
+  distance (m), precise downstream distance (m), and bed elevation (m,
+  negative downward).</li>
+</ul>
+<h2>Submission format</h2>
+<p>A single CSV file named <code>results.csv</code> with one row per detected bedform:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>profile_id</code></td>
+<td>int</td>
+<td>No</td>
+<td>Profile number (1–370; matches <code>ParanaBFP-&lt;N&gt;.txt</code>).</td>
+</tr>
+<tr>
+<td><code>height_m</code></td>
+<td>float</td>
+<td>Yes</td>
+<td>Bedform height <em>H</em> (crest elevation minus trough elevation), in metres.</td>
+</tr>
+<tr>
+<td><code>length_m</code></td>
+<td>float</td>
+<td>Yes</td>
+<td>Bedform length <em>L</em> (crest-to-crest or trough-to-trough distance), in metres.</td>
+</tr>
+<tr>
+<td><code>depth_m</code></td>
+<td>float</td>
+<td>Yes</td>
+<td>Bedform depth <em>d</em> (depth of the bedform trough below the local mean bed level), in metres.</td>
+</tr>
+</tbody>
+</table>
+<p>Rows may be in any order. Include a header row.</p>
+<p>Example (with optional <code>profile_id</code>):</p>
+<pre><code>profile_id,height_m,length_m,depth_m
+1,0.85,42.3,0.52
+1,0.72,38.1,0.44
+2,1.14,55.0,0.68
+...
+</code></pre>
+<p>Example (without <code>profile_id</code>):</p>
+<pre><code>height_m,length_m,depth_m
+0.85,42.3,0.52
+0.72,38.1,0.44
+1.14,55.0,0.68
+...
+</code></pre>
+<h2>Intercomparison summary</h2>
+<p>The scorer reads every <code>results.csv</code> in <code>submissions/</code>, computes
+distribution-level summary statistics for each geometry column, and writes
+<code>results_table.json</code>.  Run it locally (from the <strong>repository root</strong>):</p>
+<pre><code class="language-bash">python score.py river_dunes --compile
+</code></pre>
+<p>The compiled table reports, for each submission:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_bedforms</code></td>
+<td>Total number of detected bedforms across all profiles.</td>
+</tr>
+<tr>
+<td><code>height_m</code></td>
+<td><code>{mean, median, std, p25, p75}</code> of <em>H</em> across all bedforms.</td>
+</tr>
+<tr>
+<td><code>length_m</code></td>
+<td><code>{mean, median, std, p25, p75}</code> of <em>L</em> across all bedforms.</td>
+</tr>
+<tr>
+<td><code>depth_m</code></td>
+<td><code>{mean, median, std, p25, p75}</code> of <em>d</em> across all bedforms.</td>
+</tr>
+</tbody>
+</table>
+<h2>How to submit</h2>
+<ol>
+<li>Fork this repository.</li>
+<li>Create a folder under <code>submissions/</code> named after your method, containing
+   <code>results.csv</code> and <code>metadata.yaml</code> (copy the metadata template from an
+   existing submission).</li>
+<li>Open a pull request. CI regenerates <code>results_table.json</code> and publishes it
+   with the website on <code>gh-pages</code>; generated result files are not committed to
+   <code>main</code>.</li>
+</ol>
+<h2>References</h2>
+<p>Automated bedform detection and the broader context of method intercomparison
+for riverbed bedform characterization:</p>
+<ul>
+<li>Bedforms-ATM software: https://sourceforge.net/projects/bedforms-atm/</li>
+<li>Scheiber, L., Zomer, J., Wang, L., Cisneros, J., Gutierrez, R. R., &amp; Lefebvre, A. (2024).
+  Automated bedform identification—A meta-analysis of current methods and the heterogeneity
+  of their outputs. <em>JGR: Earth Surface</em>. https://doi.org/10.1029/2023JF007607</li>
+<li>Parsons, D. R., Best, J. L., Orfeo, O., Hardy, R. J., Kostaschuk, R., and Lane, S. N. (2005). 
+  Morphology and flow fields of three-dimensional dunes, Rio Paraná, Argentina: Results from 
+  simultaneous multibeam echo sounding and acoustic Doppler current profiling. <em>JGR: Earth Surface</em>.
+  https://doi.org/10.1029/2004JF000231</li>
+<li>Cisneros, J., Best, J., van Dijk, T. et al. Dunes in the world's big rivers are characterized 
+  by low-angle lee-side slopes and a complex shape (2020). Nature Geoscience 13, 
+  156--162. https://doi.org/10.1038/s41561-019-0511-7</li>
+<li>Lefebvre, A., Herrling, G., Becker, M., Zorndt, A., Krämer, K., Winter, C. (2021). 
+  Morphology of estuarine bedforms, Weser Estuary, Germany. Earth Surface Processes 
+  and Landforms https://doi.org/10.1002/esp.5243</li>
+<li>Scheiber, L., Lojek, O., Götschenberg, A., Visscher, J., and Schlurmann, T. (2021) 
+  Robust methods for the decomposition and interpretation of compound dunes applied to 
+  a complex hydromorphological setting. Earth Surf. Process. Landforms, 46: 478--489. 
+  https://doi.org/10.1002/esp.5040. </li>
+<li>Wang, L., Yu, Q., Zhang, Y., Flemming, B. W., Wang, Y., and Gao, S. (2020) An automated 
+  procedure to calculate the morphological parameters of superimposed rhythmic bedforms. 
+  Earth Surf. Process. Landforms, 45: 3496--3509. https://doi.org/10.1002/esp.4983</li>
+<li>Zomer, J. Y., Naqshband, S., Vermeulen, B., &amp; Hoitink, A. J. F. (2021). Rapidly 
+  migrating secondary bedforms can persist on the lee of slowly migrating primary 
+  river dunes. Journal of Geophysical Research: Earth Surface, 126, e2020JF005918.
+  https://doi.org/10.1029/2020JF005918</li>
+</ul>
+    </section>
+    <section class="submission-details" aria-labelledby="submission-details-title">
+      <h2 id="submission-details-title">Submission details</h2>
+      <div class="submission-records">
+        <article class="submission-record">
+          <h3>Bedform Analysis Method for Bathymetric Information (BAMBI)</h3>
+          <table>
+            <tbody>
+              <tr>
+                <th scope="row">method_name</th>
+                <td>
+                  Bedform Analysis Method for Bathymetric Information (BAMBI)
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_description</th>
+                <td>
+                  Spatial/geo-statistical method for river dune crestline detection using scale separation and dune shape analysis. Detects local extremes via resolution scale slope changes (local aspect changes).
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_version</th>
+                <td>
+                  0.1.0
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_url</th>
+                <td>
+                  https://github.com/juliamorphology/bambi_0.1.0
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_name</th>
+                <td>
+                  Cisneros et al.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_orcid</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">preferred_citation</th>
+                <td>
+                  Cisneros, J., Best, J., van Dijk, T. et al. Dunes in the world&#39;s big rivers are characterized by low-angle lee-side slopes and a complex shape (2020). Nature Geoscience 13, 156--162. https://doi.org/10.1038/s41561-019-0511-7
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">date</th>
+                <td>
+                  2020
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_seconds</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_machine</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">reported</th>
+                <td>
+                  <pre>{
+  "n_bedforms": 1807,
+  "height_m": {
+    "min": 0.002,
+    "mean": 0.4997,
+    "median": 0.225,
+    "std": 0.5972,
+    "p25": 0.1175,
+    "p75": 0.6465,
+    "max": 2.771
+  },
+  "length_m": {
+    "min": 3.0,
+    "mean": 24.29,
+    "median": 9.0,
+    "std": 29.578,
+    "p25": 5.0,
+    "p75": 43.0,
+    "max": 252.0
+  },
+  "depth_m": {
+    "min": -10.753,
+    "mean": -8.5186,
+    "median": -8.484,
+    "std": 0.9687,
+    "p25": -9.086,
+    "p75": -7.7845,
+    "max": -6.011
+  }
+}</pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="submission-record">
+          <h3>Weser Bedform Analysis</h3>
+          <table>
+            <tbody>
+              <tr>
+                <th scope="row">method_name</th>
+                <td>
+                  Weser Bedform Analysis
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_description</th>
+                <td>
+                  Combined method for river dune crestline detection using dune shape analysis. Detects local extremes via minimum curvature and minimum elevation criteria.
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_version</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_url</th>
+                <td>
+                  https://github.com/DrAliceLefebvre/Weser_Bedform_Analysis_Codes
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_name</th>
+                <td>
+                  Lefebvre et al.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_orcid</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">preferred_citation</th>
+                <td>
+                  Lefebvre, A., Herrling, G., Becker, M., Zorndt, A., Krämer, K., Winter, C. (2021). Morphology of estuarine bedforms, Weser Estuary, Germany. Earth Surface Processes and Landforms https://doi.org/10.1002/esp.5243
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">date</th>
+                <td>
+                  2022
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_seconds</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_machine</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">reported</th>
+                <td>
+                  <pre>{
+  "n_bedforms": 377,
+  "height_m": {
+    "min": 0.434,
+    "mean": 1.4378,
+    "median": 1.323,
+    "std": 0.4695,
+    "p25": 1.13,
+    "p75": 1.731,
+    "max": 2.628
+  },
+  "length_m": {
+    "min": 27.0,
+    "mean": 66.1698,
+    "median": 58.0,
+    "std": 28.726,
+    "p25": 54.0,
+    "p75": 64.0,
+    "max": 233.0
+  },
+  "depth_m": {
+    "min": -9.309,
+    "mean": -8.384,
+    "median": -8.458,
+    "std": 0.5152,
+    "p25": -8.711,
+    "p75": -8.035,
+    "max": -6.876
+  }
+}</pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="submission-record">
+          <h3>Scheiber, Lojek, et al. (2021)</h3>
+          <table>
+            <tbody>
+              <tr>
+                <th scope="row">method_name</th>
+                <td>
+                  Scheiber, Lojek, et al. (2021)
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_description</th>
+                <td>
+                  Spatial/geo-statistical method for river dune crestline detection applied to compound dunes. Detects local extremes using the findpeaks.m algorithm.
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_version</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_url</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_name</th>
+                <td>
+                  Scheiber, Lojek, et al.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_orcid</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">preferred_citation</th>
+                <td>
+                  Scheiber, L., Lojek, O., Götschenberg, A., Visscher, J., and Schlurmann, T. (2021) Robust methods for the decomposition and interpretation of compound dunes applied to a complex hydromorphological setting. Earth Surf. Process. Landforms, 46: 478--489. https://doi.org/10.1002/esp.5040.
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">date</th>
+                <td>
+                  2021
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_seconds</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_machine</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">reported</th>
+                <td>
+                  <pre>{
+  "n_bedforms": 12187,
+  "height_m": {
+    "min": 0.042,
+    "mean": 0.3534,
+    "median": 0.19,
+    "std": 0.4406,
+    "p25": 0.126,
+    "p75": 0.318,
+    "max": 3.171
+  },
+  "length_m": {
+    "min": 2.0,
+    "mean": 9.6261,
+    "median": 5.0,
+    "std": 13.3301,
+    "p25": 3.0,
+    "p75": 9.0,
+    "max": 106.0
+  },
+  "depth_m": {
+    "min": -10.576,
+    "mean": -8.1671,
+    "median": -8.246,
+    "std": 0.7719,
+    "p25": -8.685,
+    "p75": -7.614,
+    "max": -5.925
+  }
+}</pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="submission-record">
+          <h3>Dune Parameters Analysis (DPA)</h3>
+          <table>
+            <tbody>
+              <tr>
+                <th scope="row">method_name</th>
+                <td>
+                  Dune Parameters Analysis (DPA)
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_description</th>
+                <td>
+                  Combined method for river dune crestline detection using scale separation for compound dunes. Identifies maxima between zero-crossings via spectral/wavelet analysis and filtering.
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_version</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_url</th>
+                <td>
+                  https://github.com/twilight5284/Bedform-analysis
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_name</th>
+                <td>
+                  Wang et al.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_orcid</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">preferred_citation</th>
+                <td>
+                  Wang, L., Yu, Q., Zhang, Y., Flemming, B. W., Wang, Y., and Gao, S. (2020) An automated procedure to calculate the morphological parameters of superimposed rhythmic bedforms. Earth Surf. Process. Landforms, 45: 3496--3509. https://doi.org/10.1002/esp.4983
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">date</th>
+                <td>
+                  2020
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_seconds</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_machine</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">reported</th>
+                <td>
+                  <pre>{
+  "n_bedforms": 653,
+  "height_m": {
+    "min": 0.289,
+    "mean": 1.6017,
+    "median": 1.644,
+    "std": 0.4846,
+    "p25": 1.243,
+    "p75": 1.93,
+    "max": 2.798
+  },
+  "length_m": {
+    "min": 21.002,
+    "mean": 58.8325,
+    "median": 58.0,
+    "std": 15.8092,
+    "p25": 52.001,
+    "p75": 68.004,
+    "max": 136.001
+  },
+  "depth_m": {
+    "min": -9.007,
+    "mean": -7.7078,
+    "median": -7.617,
+    "std": 0.5908,
+    "p25": -8.201,
+    "p75": -7.305,
+    "max": -6.071
+  }
+}</pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="submission-record">
+          <h3>Bedform Separation - LOESS</h3>
+          <table>
+            <tbody>
+              <tr>
+                <th scope="row">method_name</th>
+                <td>
+                  Bedform Separation - LOESS
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_description</th>
+                <td>
+                  Combined method for river dune crestline detection using scale separation. Identifies maxima between zero-crossings after LOESS filtering. Reference: bib-0070.
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_version</th>
+                <td>
+                  1.0
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">method_url</th>
+                <td>
+                  https://zenodo.org/records/4486605
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_name</th>
+                <td>
+                  Zomer et al.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">author_orcid</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">preferred_citation</th>
+                <td>
+                  Zomer, J. Y., Naqshband, S., Vermeulen, B., &amp; Hoitink, A. J. F. (2021). Rapidly migrating secondary bedforms can persist on the lee of slowly migrating primary river dunes. Journal of Geophysical Research: Earth Surface, 126, e2020JF005918. https://doi.org/10.1029/2020JF005918
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">date</th>
+                <td>
+                  2022
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_seconds</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_machine</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">runtime_notes</th>
+                <td>
+                  —
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">reported</th>
+                <td>
+                  <pre>{
+  "n_bedforms": 649,
+  "height_m": {
+    "min": 0.194,
+    "mean": 1.7555,
+    "median": 1.816,
+    "std": 0.4892,
+    "p25": 1.394,
+    "p75": 2.053,
+    "max": 2.939
+  },
+  "length_m": {
+    "min": 18.0,
+    "mean": 59.5994,
+    "median": 58.0,
+    "std": 13.6935,
+    "p25": 53.0,
+    "p75": 71.0,
+    "max": 89.0
+  },
+  "depth_m": {
+    "min": -9.328,
+    "mean": -8.3942,
+    "median": -8.483,
+    "std": 0.5717,
+    "p25": -8.926,
+    "p75": -7.893,
+    "max": -7.106
+  }
+}</pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p><a href="https://sandpiper-toolchain.org/" style="color: inherit">sandpiper toolchain</a> · acquisition to analysis toolchain for geomorphology</p>
+      <p><a href="../../CONTRIBUTING.html" style="color: inherit">Contribute a method</a></p>
+    </div>
+  </footer>
+  <script>
+  window.BENCHMARK_CONFIG = {"name": "Paran\u00e1 River Bedform Geometry", "slug": "river_dunes", "tagline": "Identify and measure dunes across 370 bathymetric profiles", "domain": "fluvial", "status": "active", "reference_type": "intercomparison", "data_type": "identification", "submission_file_pattern": "results.csv", "scoring": {"mode": "distribution_summary", "columns": ["height_m", "length_m", "depth_m"], "stats": ["min", "mean", "median", "std", "p25", "p75", "max"]}, "website": {}};
+  </script>
+
+  <!-- Chart.js core (all benchmark pages) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+
+
+  <!-- Boxplot chart type: identification benchmarks only -->
+  <script src="https://cdn.jsdelivr.net/npm/@sgratzl/chartjs-chart-boxplot@4.4.4/build/index.umd.min.js" defer></script>
+
+
+  <script src="../../assets/benchmark-page.js" defer></script>
+</body>
+</html>

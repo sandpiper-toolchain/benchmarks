@@ -1,0 +1,222 @@
+[
+  {
+    "method_name": "Bedform Analysis Method for Bathymetric Information (BAMBI)",
+    "method_description": "Spatial/geo-statistical method for river dune crestline detection using scale separation and dune shape analysis. Detects local extremes via resolution scale slope changes (local aspect changes).\n",
+    "method_version": "0.1.0",
+    "method_url": "https://github.com/juliamorphology/bambi_0.1.0",
+    "author_name": "Cisneros et al.",
+    "author_orcid": null,
+    "preferred_citation": "Cisneros, J., Best, J., van Dijk, T. et al. Dunes in the world's big rivers are characterized by low-angle lee-side slopes and a complex shape (2020). Nature Geoscience 13, 156--162. https://doi.org/10.1038/s41561-019-0511-7\n",
+    "date": "2020",
+    "notes": null,
+    "runtime_seconds": null,
+    "runtime_machine": null,
+    "runtime_notes": null,
+    "reported": {
+      "n_bedforms": 1807,
+      "height_m": {
+        "min": 0.002,
+        "mean": 0.4997,
+        "median": 0.225,
+        "std": 0.5972,
+        "p25": 0.1175,
+        "p75": 0.6465,
+        "max": 2.771
+      },
+      "length_m": {
+        "min": 3.0,
+        "mean": 24.29,
+        "median": 9.0,
+        "std": 29.578,
+        "p25": 5.0,
+        "p75": 43.0,
+        "max": 252.0
+      },
+      "depth_m": {
+        "min": -10.753,
+        "mean": -8.5186,
+        "median": -8.484,
+        "std": 0.9687,
+        "p25": -9.086,
+        "p75": -7.7845,
+        "max": -6.011
+      }
+    }
+  },
+  {
+    "method_name": "Weser Bedform Analysis",
+    "method_description": "Combined method for river dune crestline detection using dune shape analysis. Detects local extremes via minimum curvature and minimum elevation criteria.\n",
+    "method_version": null,
+    "method_url": "https://github.com/DrAliceLefebvre/Weser_Bedform_Analysis_Codes",
+    "author_name": "Lefebvre et al.",
+    "author_orcid": null,
+    "preferred_citation": "Lefebvre, A., Herrling, G., Becker, M., Zorndt, A., Kr\u00e4mer, K., Winter, C. (2021). Morphology of estuarine bedforms, Weser Estuary, Germany. Earth Surface Processes and Landforms https://doi.org/10.1002/esp.5243\n",
+    "date": "2022",
+    "notes": null,
+    "runtime_seconds": null,
+    "runtime_machine": null,
+    "runtime_notes": null,
+    "reported": {
+      "n_bedforms": 377,
+      "height_m": {
+        "min": 0.434,
+        "mean": 1.4378,
+        "median": 1.323,
+        "std": 0.4695,
+        "p25": 1.13,
+        "p75": 1.731,
+        "max": 2.628
+      },
+      "length_m": {
+        "min": 27.0,
+        "mean": 66.1698,
+        "median": 58.0,
+        "std": 28.726,
+        "p25": 54.0,
+        "p75": 64.0,
+        "max": 233.0
+      },
+      "depth_m": {
+        "min": -9.309,
+        "mean": -8.384,
+        "median": -8.458,
+        "std": 0.5152,
+        "p25": -8.711,
+        "p75": -8.035,
+        "max": -6.876
+      }
+    }
+  },
+  {
+    "method_name": "Scheiber, Lojek, et al. (2021)",
+    "method_description": "Spatial/geo-statistical method for river dune crestline detection applied to compound dunes. Detects local extremes using the findpeaks.m algorithm.\n",
+    "method_version": null,
+    "method_url": null,
+    "author_name": "Scheiber, Lojek, et al.",
+    "author_orcid": null,
+    "preferred_citation": "Scheiber, L., Lojek, O., G\u00f6tschenberg, A., Visscher, J., and Schlurmann, T. (2021) Robust methods for the decomposition and interpretation of compound dunes applied to a complex hydromorphological setting. Earth Surf. Process. Landforms, 46: 478--489. https://doi.org/10.1002/esp.5040.\n",
+    "date": "2021",
+    "notes": null,
+    "runtime_seconds": null,
+    "runtime_machine": null,
+    "runtime_notes": null,
+    "reported": {
+      "n_bedforms": 12187,
+      "height_m": {
+        "min": 0.042,
+        "mean": 0.3534,
+        "median": 0.19,
+        "std": 0.4406,
+        "p25": 0.126,
+        "p75": 0.318,
+        "max": 3.171
+      },
+      "length_m": {
+        "min": 2.0,
+        "mean": 9.6261,
+        "median": 5.0,
+        "std": 13.3301,
+        "p25": 3.0,
+        "p75": 9.0,
+        "max": 106.0
+      },
+      "depth_m": {
+        "min": -10.576,
+        "mean": -8.1671,
+        "median": -8.246,
+        "std": 0.7719,
+        "p25": -8.685,
+        "p75": -7.614,
+        "max": -5.925
+      }
+    }
+  },
+  {
+    "method_name": "Dune Parameters Analysis (DPA)",
+    "method_description": "Combined method for river dune crestline detection using scale separation for compound dunes. Identifies maxima between zero-crossings via spectral/wavelet analysis and filtering.\n",
+    "method_version": null,
+    "method_url": "https://github.com/twilight5284/Bedform-analysis",
+    "author_name": "Wang et al.",
+    "author_orcid": null,
+    "preferred_citation": "Wang, L., Yu, Q., Zhang, Y., Flemming, B. W., Wang, Y., and Gao, S. (2020) An automated procedure to calculate the morphological parameters of superimposed rhythmic bedforms. Earth Surf. Process. Landforms, 45: 3496--3509. https://doi.org/10.1002/esp.4983\n",
+    "date": "2020",
+    "notes": null,
+    "runtime_seconds": null,
+    "runtime_machine": null,
+    "runtime_notes": null,
+    "reported": {
+      "n_bedforms": 653,
+      "height_m": {
+        "min": 0.289,
+        "mean": 1.6017,
+        "median": 1.644,
+        "std": 0.4846,
+        "p25": 1.243,
+        "p75": 1.93,
+        "max": 2.798
+      },
+      "length_m": {
+        "min": 21.002,
+        "mean": 58.8325,
+        "median": 58.0,
+        "std": 15.8092,
+        "p25": 52.001,
+        "p75": 68.004,
+        "max": 136.001
+      },
+      "depth_m": {
+        "min": -9.007,
+        "mean": -7.7078,
+        "median": -7.617,
+        "std": 0.5908,
+        "p25": -8.201,
+        "p75": -7.305,
+        "max": -6.071
+      }
+    }
+  },
+  {
+    "method_name": "Bedform Separation - LOESS",
+    "method_description": "Combined method for river dune crestline detection using scale separation. Identifies maxima between zero-crossings after LOESS filtering. Reference: bib-0070.\n",
+    "method_version": "1.0",
+    "method_url": "https://zenodo.org/records/4486605",
+    "author_name": "Zomer et al.",
+    "author_orcid": null,
+    "preferred_citation": "Zomer, J. Y., Naqshband, S., Vermeulen, B., & Hoitink, A. J. F. (2021). Rapidly migrating secondary bedforms can persist on the lee of slowly migrating primary river dunes. Journal of Geophysical Research: Earth Surface, 126, e2020JF005918. https://doi.org/10.1029/2020JF005918\n",
+    "date": "2022",
+    "notes": null,
+    "runtime_seconds": null,
+    "runtime_machine": null,
+    "runtime_notes": null,
+    "reported": {
+      "n_bedforms": 649,
+      "height_m": {
+        "min": 0.194,
+        "mean": 1.7555,
+        "median": 1.816,
+        "std": 0.4892,
+        "p25": 1.394,
+        "p75": 2.053,
+        "max": 2.939
+      },
+      "length_m": {
+        "min": 18.0,
+        "mean": 59.5994,
+        "median": 58.0,
+        "std": 13.6935,
+        "p25": 53.0,
+        "p75": 71.0,
+        "max": 89.0
+      },
+      "depth_m": {
+        "min": -9.328,
+        "mean": -8.3942,
+        "median": -8.483,
+        "std": 0.5717,
+        "p25": -8.926,
+        "p75": -7.893,
+        "max": -7.106
+      }
+    }
+  }
+]

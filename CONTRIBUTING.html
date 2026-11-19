@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ee">
+  <meta name="description" content="How to contribute submissions, reference solutions, and benchmark ideas to sandpiper benchmarks.">
+  <title>Contributing — Sandpiper Benchmarks</title>
+  <link rel="icon" type="image/png" href="./assets/favicon.png">
+  <link rel="stylesheet" href="./assets/benchmark-dashboard.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <a href="https://sandpiper-toolchain.org/" aria-label="Sandpiper Toolchain home" style="display: inline-flex; align-items: center; gap: inherit; text-decoration: none; color: inherit;">
+          <img class="brand-mark" src="./assets/symbol.svg" alt="" aria-hidden="true">
+          <span>sandpiper-toolchain</span>
+        </a>
+        <span style="color: var(--muted); font-weight: 500" aria-hidden="true">/</span>
+        <a href="./" aria-label="Sandpiper Benchmarks home" style="color: var(--muted); font-weight: 500; text-decoration: none;">benchmarks</a>
+      </div>
+      <nav class="topnav" aria-label="Main navigation">
+        <a href="./#benchmarks">Benchmarks</a>
+        <a href="./CONTRIBUTING.html">Contribute</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap" style="padding: 44px 0 76px">
+    <section class="benchmark-readme" aria-label="Contribution guide" style="margin-top: 0; padding-top: 0; border-top: 0">
+      <h1>Contributing to sandpiper benchmarks</h1>
+<h2>Adding a submission to an existing benchmark</h2>
+<ol>
+<li><strong>Fork</strong> this repository and create a branch.</li>
+<li>Inside the benchmark folder (e.g. <code>benchmarks/selenga_shoreline/</code>), create
+   a subfolder under <code>submissions/</code> named after your method:
+   <code>submissions/your-method-name/
+   ├── &lt;result-file&gt;    # your output (see benchmark README for the required format)
+   └── metadata.yaml    # see submissions/example/metadata.yaml in the benchmark folder</code></li>
+<li>The required result file name and format are defined in the benchmark's
+   <code>benchmark.yaml</code> under the <code>submission:</code> block (e.g. <code>file_pattern: "results.geojson"</code>).
+   Each benchmark's README also describes what the file must contain and any
+   CRS or column requirements.</li>
+<li>Fill in <code>metadata.yaml</code> — at minimum provide <code>method_name</code>,
+   <code>method_version</code>, and <code>date</code>.  See the table below for all allowed
+   fields.</li>
+<li>Open a pull request. CI will automatically score your submission and
+   upload a <code>score_output.json</code> artifact with the results.</li>
+</ol>
+<p>To test locally before opening a PR, run from the <strong>repository root</strong>:
+   <code>bash
+   python score.py &lt;benchmark_slug&gt; submissions/your-method-name/&lt;result-file&gt;</code></p>
+<h3><code>metadata.yaml</code> fields</h3>
+<p>Every submission folder must contain a <code>metadata.yaml</code> file.
+The table below defines all recognised fields; unknown fields are ignored.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>method_name</code></td>
+<td><strong>yes</strong></td>
+<td>Short name of the method or tool (e.g. <code>"BAMBI"</code>, <code>"sandplover OAM"</code>)</td>
+</tr>
+<tr>
+<td><code>method_description</code></td>
+<td><strong>yes</strong></td>
+<td>One-paragraph plain-English description of the approach</td>
+</tr>
+<tr>
+<td><code>method_version</code></td>
+<td>recommended</td>
+<td>Version string of the tool or script (e.g. <code>"0.5.1"</code>, <code>"1.0"</code>)</td>
+</tr>
+<tr>
+<td><code>method_url</code></td>
+<td>recommended</td>
+<td>URL for the tool's repository, documentation, or Zenodo archive</td>
+</tr>
+<tr>
+<td><code>author_name</code></td>
+<td><strong>yes</strong></td>
+<td>Name(s) of the person(s) submitting the result (e.g. <code>"Smith et al."</code>)</td>
+</tr>
+<tr>
+<td><code>author_orcid</code></td>
+<td>optional</td>
+<td>ORCID iD of the submitting author (e.g. <code>"0000-0000-0000-0000"</code>)</td>
+</tr>
+<tr>
+<td><code>preferred_citation</code></td>
+<td>optional</td>
+<td>Full citation for the paper describing the method</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td><strong>yes</strong></td>
+<td>ISO 8601 date the result was produced (e.g. <code>"2025-01-15"</code>)</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>optional</td>
+<td>Caveats, preprocessing steps, parameter choices, or other remarks</td>
+</tr>
+<tr>
+<td><code>runtime_seconds</code></td>
+<td>optional</td>
+<td>Wall-clock compute time in seconds (exclude pre/post-processing)</td>
+</tr>
+<tr>
+<td><code>runtime_machine</code></td>
+<td>optional</td>
+<td>Hardware description (e.g. <code>"Intel i7-10700, 64 GB RAM"</code>)</td>
+</tr>
+<tr>
+<td><code>runtime_notes</code></td>
+<td>optional</td>
+<td>Free-text notes on the runtime environment (e.g. <code>"single-thread, CPU"</code>)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>How the website updates:</strong> once your PR is merged to <code>main</code>, CI
+recompiles the results tables, builds the site with <code>build_site.py</code>, and
+publishes it to the <code>gh-pages</code> branch. Your submission will appear on the
+live site after that step finishes (usually within a few minutes of merge).
+Generated HTML is not committed to <code>main</code>; you do not need to run any
+build or scoring scripts yourself.</p>
+</blockquote>
+<h2>Adding a reference solution to an existing benchmark</h2>
+<blockquote>
+<p>This section applies only to benchmarks of <code>reference_type</code> <code>reference</code>. 
+See below about defining new benchmarks for more information.</p>
+</blockquote>
+<p>Reference solutions are one or more expert digitizations of the benchmark
+answer (e.g. a hand-mapped shoreline).  They are <strong>not</strong> treated as
+absolute ground truth — inter-reference spread reflects genuine
+interpretation uncertainty.</p>
+<p>To add a new reference digitization:</p>
+<ol>
+<li>Add the GeoJSON file to the benchmark's <code>data/</code> directory, following the
+   naming convention <code>ref_&lt;author&gt;_&lt;year&gt;.geojson</code>
+   (e.g. <code>ref_smith_2026.geojson</code>).</li>
+<li>Add a corresponding entry to <code>data/references.yaml</code> with full provenance
+   metadata (author, ORCID if available, date, digitization method, any
+   relevant notes).</li>
+<li>Open a pull request describing how the reference was produced.</li>
+</ol>
+<h2>Proposing a new benchmark</h2>
+<p>Open an issue describing:
+- The geomorphic problem (shoreline mapping, channel width, etc.)
+- The input data you can provide and its licence
+- A proposed reference solution or ground truth (if applicable — see taxonomy below)
+- Why this problem is useful to the community</p>
+<p>Once the issue is discussed and the benchmark is accepted, create the
+required files and open a pull request.</p>
+<h3>Required files and directories</h3>
+<p>Every benchmark must include the following layout under <code>benchmarks/</code>:</p>
+<pre><code>benchmarks/&lt;benchmark-name&gt;/
+├── benchmark.yaml      ← required: benchmark identity, taxonomy, submission format,
+│                                   scoring config (see below)
+├── README.md           ← required: problem statement, input data description,
+│                                   instructions for downloading large data files,
+│                                   data licence, etc.
+├── data/               ← required: input data files and reference solutions;
+│                                   [FUTURE: large binary files (GeoTIFFs, etc.) are 
+│                                   gitignored and distributed separately — document 
+│                                   the download location in the README]
+└── submissions/        ← required: one subfolder per submission; can be empty
+    └── example/           initially, but should include a template so contributors
+        └── metadata.yaml  know what to fill in
+</code></pre>
+<p>The <code>data/</code> and <code>submissions/</code> folders may be empty at first (use a <code>.gitkeep</code>
+file to track them), but all four items must be present before the benchmark
+is merged.</p>
+<h3>Benchmark taxonomy and <code>benchmark.yaml</code></h3>
+<p>Every benchmark is classified by two independent attributes declared in
+<code>benchmark.yaml</code>. Together they determine which scoring runner is used,
+what output the scorer produces, and how results are displayed on the website.</p>
+<h4>Reference type</h4>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>validation</code></td>
+<td>A known analytical or theoretical answer exists; submissions are scored against it</td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td>One or more expert interpretations exist; submissions are compared to them, but they are not treated as absolute truth</td>
+</tr>
+<tr>
+<td><code>intercomparison</code></td>
+<td>No ground truth; submissions are shown side-by-side to reveal method differences</td>
+</tr>
+</tbody>
+</table>
+<h4>Data type</h4>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>value</code></td>
+<td>Submission is a small set of scalar numbers (e.g. a YAML file with computed statistics)</td>
+</tr>
+<tr>
+<td><code>identification</code></td>
+<td>Submission is a table of detected objects with per-object attributes (e.g. a CSV of bedform heights and lengths)</td>
+</tr>
+<tr>
+<td><code>map</code></td>
+<td>Submission is a spatial file — a vector GeoJSON (polyline, polygon, or point) or raster — compared geometrically against references</td>
+</tr>
+</tbody>
+</table>
+<h4>Supported combinations</h4>
+<p>The scoring infrastructure dispatches entirely on the <code>(reference_type, data_type)</code> pair:</p>
+<table>
+<thead>
+<tr>
+<th><code>reference_type</code></th>
+<th><code>data_type</code></th>
+<th>Status</th>
+<th>Example benchmark</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>validation</code></td>
+<td><code>value</code></td>
+<td>✅ implemented</td>
+<td><code>compensation</code></td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td><code>value</code></td>
+<td>✅ implemented</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>intercomparison</code></td>
+<td><code>value</code></td>
+<td>✅ implemented</td>
+<td><code>compensation_sensitivity</code></td>
+</tr>
+<tr>
+<td><code>intercomparison</code></td>
+<td><code>identification</code></td>
+<td>✅ implemented</td>
+<td><code>river_dunes</code></td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td><code>map</code></td>
+<td>✅ implemented</td>
+<td><code>selenga_shoreline</code></td>
+</tr>
+<tr>
+<td><code>validation</code></td>
+<td><code>map</code></td>
+<td>✅ implemented</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td><code>identification</code></td>
+<td>⚠️ not yet implemented</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>validation</code></td>
+<td><code>identification</code></td>
+<td>⚠️ not yet implemented</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>intercomparison</code></td>
+<td><code>map</code></td>
+<td>⚠️ not yet implemented</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>If your proposed benchmark requires a combination marked "not yet implemented",
+mention it in the issue — adding a new runner is straightforward and can be
+done as part of the same pull request.</p>
+<h4><code>benchmark.yaml</code> overview</h4>
+<p>The <code>benchmark.yaml</code> file is the single source of truth for the benchmark.
+The scoring CLI reads it to know what to compute; the website reads it to
+know what to display.  Full examples for each reference type follow.</p>
+<hr />
+<h5><code>validation</code></h5>
+<p>A known theoretical or analytical answer exists.  <code>fields</code> is a dict mapping
+each submitted field name to its truth value; the scorer computes the
+configured error metrics against those targets.</p>
+<pre><code class="language-yaml"># ── Identity ───────────────────────────────────────────────────────
+name:    &quot;My Validation Benchmark&quot;
+slug:    &quot;my-benchmark&quot;          # URL path segment; keep it short and lowercase
+tagline: &quot;One-sentence description for benchmark cards&quot;
+domain:  &quot;fluvial&quot;               # fluvial | coastal | stratigraphy | aeolian | lab | other
+status:  &quot;active&quot;                # active | draft | archived
+
+# ── Taxonomy ───────────────────────────────────────────────────────
+reference_type: &quot;validation&quot;
+data_type:      &quot;value&quot;          # value | identification | map
+
+# ── Submission format ──────────────────────────────────────────────
+submission:
+  file_pattern: &quot;results.yaml&quot;   # glob pattern the scorer uses to find the result file
+
+# ── References ─────────────────────────────────────────────────────
+# Each entry is one dataset.  fields is a dict mapping field name → truth value.
+# The scorer computes the configured metrics for each submitted field.
+references:
+  dataset_a:
+    label:     &quot;Dataset A&quot;
+    data_file: &quot;data/dataset_a.csv&quot;
+    fields:                      # dict → validation; scored against known truth values
+      myvarname: 1.0
+  dataset_b:
+    label:     &quot;Dataset B&quot;
+    data_file: &quot;data/dataset_b.csv&quot;
+    fields:
+      myvarname: 0.5
+
+# ── Scoring ────────────────────────────────────────────────────────
+scoring:
+  metrics:
+    - name:      abs_error
+      label:     &quot;Absolute error&quot;
+      direction: lower_better    # lower_better | higher_better
+    - name:      rel_error_pct
+      label:     &quot;Relative error (%)&quot;
+      direction: lower_better
+</code></pre>
+<p>Available value metrics: <code>abs_error</code>, <code>rel_error_pct</code>, <code>mae</code>, <code>rmse</code>.</p>
+<hr />
+<h5><code>reference</code></h5>
+<p>One or more expert interpretations exist; submissions are compared to them but
+they are not treated as absolute truth.  Inter-reference spread reflects genuine
+interpretation uncertainty.</p>
+<p>For <code>map</code> benchmarks each reference entry points to a GeoJSON file and the
+scorer computes geometric metrics against each one.  For <code>value</code> benchmarks
+the structure is identical to <code>validation</code> — <code>fields</code> is a dict of expert
+values and the scorer computes error metrics against them.</p>
+<pre><code class="language-yaml"># ── Identity ───────────────────────────────────────────────────────
+name:    &quot;My Reference Benchmark&quot;
+slug:    &quot;my-benchmark&quot;
+tagline: &quot;One-sentence description for benchmark cards&quot;
+domain:  &quot;coastal&quot;               # fluvial | coastal | stratigraphy | aeolian | lab | other
+status:  &quot;active&quot;
+
+# ── Taxonomy ───────────────────────────────────────────────────────
+reference_type: &quot;reference&quot;
+data_type:      &quot;map&quot;
+map_subtype:    &quot;vector&quot;         # vector | raster
+geometry_type:  &quot;polyline&quot;       # polyline | polygon | point
+
+# ── Submission format ──────────────────────────────────────────────
+submission:
+  file_pattern: &quot;results.geojson&quot;
+
+# ── References ─────────────────────────────────────────────────────
+# Each entry is one expert-digitized reference solution.
+# Provenance metadata (author, date, method) is kept in data/references.yaml;
+# the scorer reads paths directly from the file: key here.
+references:
+  expert_a_2025:
+    label: &quot;Expert A 2025&quot;
+    file:  &quot;data/ref_expert_a_2025.geojson&quot;
+  expert_b_2025:
+    label: &quot;Expert B 2025&quot;
+    file:  &quot;data/ref_expert_b_2025.geojson&quot;
+
+# ── Scoring ────────────────────────────────────────────────────────
+scoring:
+  raster_grid: &quot;data/input.tif&quot;  # gitignored; downloaded separately; required by pixel_f1
+  metrics:
+    - name:      mean_distance_error_m
+      label:     &quot;Mean distance error&quot;
+      unit:      m
+      direction: lower_better
+    - name:        pixel_f1
+      label:       &quot;Pixel F1&quot;
+      unit:        &quot;&quot;
+      direction:   higher_better
+      result_path: &quot;pixel_f1.f1&quot;  # scorer returns {precision, recall, f1}; extract f1 scalar
+
+# ── Website ────────────────────────────────────────────────────────
+# Required for map benchmarks only — see &quot;Website configuration&quot; below.
+website:
+  map_panel:
+    raster:      &quot;data/input.tif&quot;
+    reference:                   # a single reference line to overlay for visual context
+      path: &quot;data/ref_expert_a_2025.geojson&quot;
+      name: &quot;reference (manual)&quot;
+    land_color:  &quot;#e8dfc7&quot;       # hex fill for land pixels in the binary mask
+    water_color: &quot;#c5dfe2&quot;       # hex fill for water pixels
+    crs:         &quot;EPSG:32648&quot;    # projected CRS of the raster and submission files
+    crs_proj4:   &quot;+proj=utm +zone=48 +datum=WGS84 +units=m +no_defs&quot;
+                                 # proj4 string for the same CRS; required together with crs
+</code></pre>
+<p>Available map metrics: <code>mean_distance_error_m</code>, <code>pixel_f1</code>.</p>
+<p>The <code>result_path</code> field is required for any metric where the scorer returns a
+nested dict rather than a flat scalar.  For example, <code>pixel_f1</code> returns
+<code>{precision, recall, f1}</code> — setting <code>result_path: "pixel_f1.f1"</code> tells the
+site to extract and display the <code>f1</code> value.  Omit <code>result_path</code> when the
+metric is already a flat scalar (e.g. <code>mean_distance_error_m</code>).</p>
+<hr />
+<h5><code>intercomparison</code></h5>
+<p>No ground truth exists; submissions are shown side-by-side.</p>
+<p><strong>Value data type</strong> — <code>fields</code> is a plain list of field names.  The scorer
+collects submitted values as-is and reports them without computing errors:</p>
+<pre><code class="language-yaml"># ── Identity ───────────────────────────────────────────────────────
+name:    &quot;My Intercomparison Benchmark&quot;
+slug:    &quot;my-benchmark&quot;
+tagline: &quot;One-sentence description for benchmark cards&quot;
+domain:  &quot;fluvial&quot;
+status:  &quot;active&quot;
+
+# ── Taxonomy ───────────────────────────────────────────────────────
+reference_type: &quot;intercomparison&quot;
+data_type:      &quot;value&quot;
+
+# ── Submission format ──────────────────────────────────────────────
+submission:
+  file_pattern: &quot;results.yaml&quot;
+
+# ── References ─────────────────────────────────────────────────────
+references:
+  dataset_a:
+    label:     &quot;Dataset A&quot;
+    data_file: &quot;data/dataset_a.csv&quot;
+    fields:    [myvarname, anothervarname]  # list → intercomparison; values reported as-is
+  dataset_b:
+    label:     &quot;Dataset B&quot;
+    data_file: &quot;data/dataset_b.csv&quot;
+    fields:    [myvarname, anothervarname]
+
+# ── Scoring ────────────────────────────────────────────────────────
+scoring:
+  data_dir: &quot;data/&quot;              # optional; only needed if data lives in a sibling directory
+  # No metrics block: intercomparison value benchmarks report submitted values as-is.
+</code></pre>
+<p><strong>Identification data type</strong> — no <code>references:</code> block at all.  The scorer
+reads <code>scoring.columns</code> to determine which CSV columns to summarise, and
+computes distribution statistics for each:</p>
+<pre><code class="language-yaml"># ── Taxonomy ───────────────────────────────────────────────────────
+reference_type: &quot;intercomparison&quot;
+data_type:      &quot;identification&quot;
+
+# ── Submission format ──────────────────────────────────────────────
+submission:
+  file_pattern: &quot;results.csv&quot;
+  required_columns:              # documented for contributors; also validated by the scorer
+    - name: height_m
+      type: float
+      unit: m
+  optional_columns:
+    - name: profile_id
+      type: int
+
+# ── Scoring ────────────────────────────────────────────────────────
+scoring:
+  columns: [height_m, length_m, width_m]  # columns to compute distribution statistics for
+  stats:   [min, mean, median, std, p25, p75, max]
+</code></pre>
+<hr />
+<h4>Website configuration</h4>
+<p>The <code>website:</code> block is <strong>only required for <code>map</code> benchmarks</strong>.  Value and
+identification benchmarks do not need it — the site generates result charts
+automatically from <code>results_table.json</code>.</p>
+<p>For map benchmarks, <code>website.map_panel</code> configures the interactive map canvas
+shown alongside the results table on the benchmark's page.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>raster</code></td>
+<td><strong>yes</strong></td>
+<td>Path to the benchmark raster (usually the same file as <code>scoring.raster_grid</code>). The site renders it as a coloured binary mask behind all submission lines.</td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td>recommended</td>
+<td>A single reference GeoJSON to overlay on the map for visual context. Contains <code>path</code> (file path relative to the benchmark directory) and <code>name</code> (display label shown in the map legend). When multiple references exist, pick the one most useful as a visual anchor.</td>
+</tr>
+<tr>
+<td><code>land_color</code></td>
+<td><strong>yes</strong></td>
+<td>Hex colour for land pixels in the binary mask (e.g. <code>"#e8dfc7"</code>).</td>
+</tr>
+<tr>
+<td><code>water_color</code></td>
+<td><strong>yes</strong></td>
+<td>Hex colour for water pixels (e.g. <code>"#c5dfe2"</code>).</td>
+</tr>
+<tr>
+<td><code>crs</code></td>
+<td><strong>yes</strong></td>
+<td>EPSG code of the projected CRS used by the raster and expected by the scorer (e.g. <code>"EPSG:32648"</code>). The site reprojects submissions that arrive in geographic coordinates (lon/lat) into this CRS before drawing them on the canvas.</td>
+</tr>
+<tr>
+<td><code>crs_proj4</code></td>
+<td><strong>yes</strong></td>
+<td>Proj4 string for the same CRS (e.g. <code>"+proj=utm +zone=48 +datum=WGS84 +units=m +no_defs"</code>). Must be provided together with <code>crs</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2>Data licensing</h2>
+<p>All input datasets and reference solutions (digitizations) must be openly
+licensed (CC-BY or equivalent). Please include a note in the benchmark
+README about the data source and licence.</p>
+<h2>Code style</h2>
+<p>Scoring is handled by a shared Python library under <code>scoring/</code> at the repository
+root.  Metric functions live in <code>scoring/metrics/</code>; the dispatch logic lives in
+<code>scoring/runners.py</code>; <code>score.py</code> at the repository root is the CLI entry point.
+Dependencies are minimal: <code>geopandas</code>, <code>rasterio</code>, <code>scipy</code>, <code>numpy</code>, <code>shapely</code>,
+<code>pyyaml</code>. Do not add heavy ML frameworks to the scoring layer.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p><a href="https://sandpiper-toolchain.org/" style="color: inherit">sandpiper toolchain</a> · acquisition to analysis toolchain for geomorphology</p>
+      <p><a href="./CONTRIBUTING.html" style="color: inherit">Contribute a method</a></p>
+    </div>
+  </footer></body>
+</html>
