@@ -96,12 +96,12 @@ height_m,length_m,depth_m
 
 ## Intercomparison summary
 
-The compile script reads every `results.csv` in `submissions/`, computes
+The scorer reads every `results.csv` in `submissions/`, computes
 distribution-level summary statistics for each geometry column, and writes
-`results_table.json`.  Run it locally with:
+`results_table.json`.  Run it locally (from the **repository root**):
 
 ```bash
-python benchmarks/river_dunes/scoring/compile_results.py benchmarks/river_dunes/
+python score.py river_dunes --compile
 ```
 
 The compiled table reports, for each submission:

@@ -14,11 +14,26 @@ Browse the benchmarks, datasets, and results on the
 The site templates and assets are maintained in this repository. To build and
 preview the site:
 
+Linux, MacOS `bash`:
 ```bash
-python run_all.py
+# Compile results for every benchmark (run from the repository root):
+for bench in benchmarks/*/; do python score.py "$bench" --compile; done
+
+# Build and preview:
 python build_site.py --output-dir _site
 python -m http.server 8000 --directory _site
 ```
+
+Windows Command Prompt `cmd.exe`:
+```DOS
+:: Compile results for every benchmark (run from the repository root):
+for /d %i in (benchmarks\*) do python score.py "%i" --compile
+
+:: Build and preview:
+python build_site.py --output-dir _site
+    python -m http.server 8000 --directory _site
+```
+
 
 Then visit `http://localhost:8000`.
 

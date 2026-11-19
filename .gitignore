@@ -25,3 +25,6 @@ __pycache__/
 
 # any private folders anywhere
 private/
+
+# AI-related
+CLAUDE.local.md

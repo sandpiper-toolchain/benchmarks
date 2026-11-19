@@ -134,9 +134,20 @@ consistent layout:
 ├── README.md                    ← table of all benchmarks
 ├── CONTRIBUTING.md
 ├── brainstorm.md                ← ideas for future benchmarks
+├── score.py                     ← top-level scoring CLI (score one submission or compile all)
 ├── .github/
 │   └── workflows/
 │       └── score.yml            ← CI workflow (score on PRs; compile on push to main)
+├── scoring/                     ← shared scoring library
+│   ├── benchmark.py             ← loads benchmark.yaml → BenchmarkConfig
+│   ├── compile.py               ← discover submissions, compile results_table.json
+│   ├── metadata.py              ← reads metadata.yaml
+│   ├── output.py                ← writes score_output.json and results_table.json
+│   ├── runners.py               ← score_one_* functions + RUNNERS dispatch table
+│   └── metrics/
+│       ├── value_metrics.py
+│       ├── identification_metrics.py
+│       └── map_metrics.py
 ├── assets/                      ← website styles and scripts
 ├── index.html                   ← generated locally; published from gh-pages, not tracked
 └── benchmarks/
@@ -149,10 +160,6 @@ consistent layout:
         │   ├── <input>          ← benchmark input (raster, image, CSV, …); large files gitignored
         │   ├── references.yaml  ← manifest of reference digitizations with provenance metadata
         │   └── ref_<author>_<year>.geojson  ← one or more expert reference solutions
-        ├── scoring/
-        │   ├── metrics.py       ← scoring functions (importable, never modified by CI)
-        │   ├── score.py         ← CLI: python score.py <submission> [--output results.json]
-        │   └── compile_results.py  ← CLI: python compile_results.py <benchmark_dir>/
         └── submissions/
             ├── example/
             │   └── metadata.yaml  ← template for contributors
@@ -167,26 +174,31 @@ consistent layout:
 
 ## Scoring conventions
 
-Scoring scripts follow a consistent interface:
+All benchmarks are scored by a single top-level CLI, `score.py`, which reads
+`benchmark.yaml` to understand what to compute and dispatches to the correct
+runner automatically:
 
 ```
-python benchmarks/<benchmark>/scoring/score.py <submission> [--output results.json]
+# Score one submission:
+python score.py <benchmark> <submission> [--output results.json]
+
+# Compile all submissions → results_table.json:
+python score.py <benchmark> [--compile]
 ```
 
-- Exits with code 0 on success; prints a JSON summary to stdout.
-- Writes the same JSON to `--output` (default: `score_output.json` next to the submission).
-- All metrics are computed against **every** reference listed in `<benchmark>/data/references.yaml`.
+`<benchmark>` is either a directory path (e.g. `benchmarks/compensation/`) or a
+benchmark slug (e.g. `compensation`).  Both forms work from the repository root.
+
+- Exits with code 0 on success; prints a JSON summary to stdout (single-submission mode).
+- Writes `score_output.json` next to the submission (or to `--output`).
+- All metrics are computed against **every** reference in the `references:` block of `benchmark.yaml`.
 - Output structure has two top-level keys:
-  - `vs_references` — per-reference metric dicts, keyed by the GeoJSON filename stem.
+  - `vs_references` — per-reference metric dicts, keyed by the reference slug.
   - `vs_references_summary` — mean and std across references (populated only when ≥2 references exist; empty dict `{}` otherwise).
 
-A companion script aggregates all scored submissions into one file:
+Compile mode discovers all submissions, scores each one, and aggregates them:
 
-```
-python benchmarks/<benchmark>/scoring/compile_results.py <benchmark_dir>/
-```
-
-- Walks `submissions/` and collects every `score_output.json`.
+- Walks `submissions/` and scores every file matching `submission.file_pattern`.
 - Merges scoring results with the adjacent `metadata.yaml` for each submission.
 - Writes `<benchmark_dir>/results_table.json` (a JSON array, one record per submission).
   This generated file is not tracked on `main`; CI includes it in the published site.
@@ -202,16 +214,15 @@ Common metric patterns across benchmarks:
 | CSV of measurements | MAE / RMSE per column |
 | Binary raster mask | Pixel F1, IoU |
 
-## CI workflow
+**CI workflow**
 
 **`score` job** — triggered on pull requests that touch `benchmarks/*/submissions/**`:
-- Detects changed `results.*` files via `git diff`
-- Runs `score.py` for each changed submission under `benchmarks/`
+- Detects changed submission files via `git diff`
+- Runs `python score.py <benchmark_slug> <submission_path>` for each changed submission
 - Uploads `score_output.json` as a build artifact
 
 **`compile` job** — triggered on relevant pushes to `main`:
-- Finds every benchmark that has a `scoring/compile_results.py` script
-- Runs `compile_results.py <benchmark_dir>/` for each one
+- Runs `python score.py <benchmark_dir> --compile` for every benchmark
 - Builds the static site into `_site/` and publishes it to the `gh-pages` branch
 - Generated HTML pages and results tables are not committed to `main`
 
@@ -221,8 +232,3 @@ See `brainstorm.md` for a full list of ideas across deltas, rivers, barrier isla
 aeolian dunes, alluvial fans, riverbed dunes, stratigraphy, and laboratory experiments.
 Priority candidates: Colville delta channel network (RivGraph), dune crestline extraction,
 single-thread river centerline, compensation statistic (κ), lab RGB → channel mask.
-
-## Key people
-
-- **Andrew Moodie** — project lead, geomorphology researcher, also develops sandplover
-  (a separate Python package for delta analysis; sibling repo in the sandpiper project)

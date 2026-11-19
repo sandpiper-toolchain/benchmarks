@@ -59,4 +59,8 @@ compensational_stacking_mean2X:
 2. Create a folder under `submissions/` named after your method, containing
    `results.yaml` and `metadata.yaml` (copy the metadata template from
    `submissions/example/`).
-3. Open a pull request. CI will post your submitted values as a build artifact.
+3. To test locally before opening a PR, run from the **repository root**:
+   ```bash
+   python score.py compensation_sensitivity submissions/your-method/results.yaml
+   ```
+4. Open a pull request. CI will post your submitted values as a build artifact.

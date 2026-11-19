@@ -85,8 +85,7 @@ def config_to_dict(cfg: BenchmarkConfig) -> dict:
         "data_type": cfg.data_type,
         "submission_file_pattern": cfg.submission_file_pattern,
         "scoring": cfg.scoring,
-        "datasets": cfg.datasets,
-        # references_manifest and benchmark_dir are Path objects — omit them
+        # references and benchmark_dir are Path objects / ReferenceEntry objects — omit them
         "website": cfg.website,
     }
 

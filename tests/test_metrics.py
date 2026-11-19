@@ -120,3 +120,71 @@ def test_map_metrics_public_api():
     """Confirm the two public metric functions are importable."""
     assert callable(map_metrics_mod.mean_distance_error)
     assert callable(map_metrics_mod.pixel_f1)
+
+
+# ---------------------------------------------------------------------------
+# runner helpers (metric-adjacent)
+# ---------------------------------------------------------------------------
+
+from scoring.runners import _get_nested, _summarise_across_refs
+
+
+def test_get_nested_flat():
+    assert _get_nested({"a": 1}, "a") == 1
+
+
+def test_get_nested_deep():
+    assert _get_nested({"a": {"b": {"c": 42}}}, "a.b.c") == 42
+
+
+def test_get_nested_missing_top_key_raises():
+    with pytest.raises(KeyError):
+        _get_nested({"a": 1}, "b")
+
+
+def test_get_nested_missing_deep_key_raises():
+    with pytest.raises(KeyError):
+        _get_nested({"a": {"b": 1}}, "a.c")
+
+
+def test_summarise_across_refs_single_ref():
+    per_ref = {"ref_a": {"abs_error": 0.1}}
+    metrics = [{"name": "abs_error"}]
+    result = _summarise_across_refs(per_ref, metrics)
+    assert result["abs_error"]["mean"] == pytest.approx(0.1)
+    assert result["abs_error"]["std"] == pytest.approx(0.0)
+
+
+def test_summarise_across_refs_two_refs():
+    per_ref = {
+        "ref_a": {"abs_error": 0.1},
+        "ref_b": {"abs_error": 0.3},
+    }
+    metrics = [{"name": "abs_error"}]
+    result = _summarise_across_refs(per_ref, metrics)
+    assert result["abs_error"]["mean"] == pytest.approx(0.2)
+    # ddof=0: std = sqrt(((0.1-0.2)^2 + (0.3-0.2)^2) / 2) = 0.1
+    assert result["abs_error"]["std"] == pytest.approx(0.1)
+
+
+def test_summarise_across_refs_with_result_path():
+    per_ref = {
+        "ref_a": {"pixel_f1": {"f1": 0.9, "precision": 0.95, "recall": 0.86}},
+        "ref_b": {"pixel_f1": {"f1": 0.7, "precision": 0.80, "recall": 0.63}},
+    }
+    metrics = [{"name": "pixel_f1", "result_path": "pixel_f1.f1"}]
+    result = _summarise_across_refs(per_ref, metrics)
+    assert result["pixel_f1"]["mean"] == pytest.approx(0.8)
+    assert result["pixel_f1"]["std"] == pytest.approx(0.1)
+
+
+def test_summarise_across_refs_missing_key_skipped():
+    per_ref = {
+        "ref_a": {"abs_error": 0.1},
+        "ref_b": {},  # missing metric — silently skipped
+    }
+    metrics = [{"name": "abs_error"}]
+    result = _summarise_across_refs(per_ref, metrics)
+    # Only one valid value → mean = 0.1, std = 0.0
+    assert result["abs_error"]["mean"] == pytest.approx(0.1)
+    assert result["abs_error"]["std"] == pytest.approx(0.0)
